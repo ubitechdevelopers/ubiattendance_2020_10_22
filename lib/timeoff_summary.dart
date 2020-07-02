@@ -308,7 +308,46 @@ class _TimeoffSummary extends State<TimeoffSummary> {
         ),
         bottomNavigationBar: Bottomnavigationbar(),
         endDrawer: new AppDrawer(),
-        body: (act1 == '') ? Center(child: loader()) : checkalreadylogin(),
+        body: Container(
+          child: Column(
+              children: <Widget>[
+                SizedBox(height: 8.0),
+          Text('My Time Off History',
+              style: new TextStyle(fontSize: 22.0, color: appcolor)),
+          SizedBox(height: 5.0),
+
+          new Divider(color: Colors.black54,height: 1.5,),
+          new Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+//            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(height: 50.0,),
+              SizedBox(width: MediaQuery.of(context).size.width*0.02),
+              Container(
+                width: MediaQuery.of(context).size.width*0.30,
+                child:Text(' Date',style: TextStyle(color: appcolor,fontWeight:FontWeight.bold,fontSize: 16.0),),
+              ),
+
+              SizedBox(height: 50.0,),
+              Container(
+                width: MediaQuery.of(context).size.width*0.22,
+                child:Text('Start \nTime',style: TextStyle(color: appcolor,fontWeight:FontWeight.bold,fontSize: 16.0),),
+              ),
+              SizedBox(height: 50.0,),
+              Container(
+                width: MediaQuery.of(context).size.width*0.24,
+                child:Text(' End \nTime',style: TextStyle(color: appcolor,fontWeight:FontWeight.bold,fontSize: 16.0),),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width*0.22,
+                child:Text('Duration',style: TextStyle(color: appcolor,fontWeight:FontWeight.bold,fontSize: 16.0),),
+              ),
+            ],
+          ),
+          new Divider(height: 1.5,),
+                new Expanded(child: getMarkAttendanceWidgit(act1))
+
+        ])),
         floatingActionButton: timeoffRunning==false?new RaisedButton(
           color: buttoncolor,
           onPressed: (){
@@ -341,14 +380,7 @@ class _TimeoffSummary extends State<TimeoffSummary> {
     }
   }
 
-  loader() { return new Center(
-    child: Container(
-      width: MediaQuery.of(context).size.width*1,
-      color: appcolor.withOpacity(0.1),
-      padding:EdgeInsets.only(top:5.0,bottom: 5.0),
-      child:Text("You have not taken any time off  ",style: TextStyle(fontSize: 18.0),textAlign: TextAlign.center,),
-    ),
-  );/*
+  loader() {
     return new Container(
       child: Center(
         child: Row(
@@ -358,7 +390,7 @@ class _TimeoffSummary extends State<TimeoffSummary> {
                   'assets/spinner.gif', height: 150.0, width: 150.0),
             ]),
       ),
-    );*/
+    );
   }
 
   underdevelopment() {
@@ -405,39 +437,7 @@ class _TimeoffSummary extends State<TimeoffSummary> {
     return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          Text('My Time Off History',
-              style: new TextStyle(fontSize: 22.0, color: appcolor)),
-          SizedBox(height: 5.0),
 
-          new Divider(color: Colors.black54,height: 1.5,),
-          new Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-//            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              SizedBox(height: 50.0,),
-              SizedBox(width: MediaQuery.of(context).size.width*0.02),
-              Container(
-                width: MediaQuery.of(context).size.width*0.30,
-                child:Text(' Date',style: TextStyle(color: appcolor,fontWeight:FontWeight.bold,fontSize: 16.0),),
-              ),
-
-              SizedBox(height: 50.0,),
-              Container(
-                width: MediaQuery.of(context).size.width*0.22,
-                child:Text('Start \nTime',style: TextStyle(color: appcolor,fontWeight:FontWeight.bold,fontSize: 16.0),),
-              ),
-              SizedBox(height: 50.0,),
-              Container(
-                width: MediaQuery.of(context).size.width*0.24,
-                child:Text(' End \nTime',style: TextStyle(color: appcolor,fontWeight:FontWeight.bold,fontSize: 16.0),),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width*0.22,
-                child:Text('Duration',style: TextStyle(color: appcolor,fontWeight:FontWeight.bold,fontSize: 16.0),),
-              ),
-            ],
-          ),
-          new Divider(height: 1.5,),
 
           new Container(
             height: MediaQuery.of(context).size.height*.68,

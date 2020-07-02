@@ -95,23 +95,31 @@ class _CameraState extends State<Camera> {
         NativeDeviceOrientation orientation =
             NativeDeviceOrientationReader.orientation(context);
 
-        _buttonPhoto() => CircleAvatar(
-              child: IconButton(
-                icon: OrientationWidget(
-                  orientation: orientation,
-                  child: Icon(
-                    Icons.camera_alt,
-                    color: Colors.white,
+        _buttonPhoto() => Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(100),
+              color: Colors.white,
+              border: Border.all(
+                  width: 2
+              )),
+          child: CircleAvatar(
+                child: IconButton(
+                  icon: OrientationWidget(
+                    orientation: orientation,
+                    child: Icon(
+                      Icons.camera_alt,
+                      color: Colors.white,
+                    ),
                   ),
+                  onPressed: () {
+                    sizeImage = MediaQuery.of(context).size;
+                    bloc.onTakePictureButtonPressed();
+                  },
                 ),
-                onPressed: () {
-                  sizeImage = MediaQuery.of(context).size;
-                  bloc.onTakePictureButtonPressed();
-                },
+                backgroundColor: Colors.black38,
+                radius: 25.0,
               ),
-              backgroundColor: Colors.black38,
-              radius: 25.0,
-            );
+        );
 
         Widget _getButtonPhoto() {
           if (widget.orientationEnablePhoto == CameraOrientation.all) {
