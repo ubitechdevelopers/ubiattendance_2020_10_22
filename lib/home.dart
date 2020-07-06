@@ -675,8 +675,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           if (mounted) {
             setState(() {
               areaStatus = res.toString();
-              if (areaId != 0 && geoFence == 1)
+              if (areaId != 0 && geoFence == 1) {
                 AbleTomarkAttendance = res.toString();
+                print('insideable to markatt --------->>>>');
+                print('insideabletoatt'+areaId.toString());
+              }
             });
           }
         }).catchError((onError) {
@@ -2898,13 +2901,23 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     //  sl.startStreaming(5);
     print('aidId' + aid);
     var FakeLocationStatus = 0;
-
-    if(areaStatus == '0'){
-      geofence="Outside Fenced Area";
-    }else{
-      geofence="Within Fenced Area";
+    if(globals.geoFence==1) {
+      if (areaStatus == '0') {
+        geofence = "Outside Fenced Area";
+      } else {
+        geofence = "Within Fenced Area";
+      }
     }
-
+    if(globals.geoFence==1 && globals.areaId==0){
+      await showDialog(
+          context: context,
+          // ignore: deprecated_member_use
+          child: new AlertDialog(
+            //title: new Text("Warning!"),
+            content: new Text("Geo Fence has not been assigned"),
+          ));
+      return null;
+    }
     if(globals.departmentid==1||globals.departmentid==0){
       await showDialog(
           context: context,

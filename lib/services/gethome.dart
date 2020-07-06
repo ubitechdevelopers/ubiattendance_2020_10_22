@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:Shrine/globals.dart' as globals;
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -167,8 +168,48 @@ class Home{
           print("logout called");
           return;
         }*/
+        String orgid = prefs.getString('orgdir') ?? '';
+       // if(orgid =='10932') { // this calculation only for welspun
+          List areaids = json.decode(timeinoutMap['areaIds']);
+          double calculateDistance(lat1, lon1, lat2, lon2) {
+            var p = 0.017453292519943295;
+            var c = cos;
+            var a = 0.5 - c((lat2 - lat1) * p) / 2 +
+                c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
+            return 12742 * asin(sqrt(a));
+          }
+          double totalDistance = 0.0;
+          double lat = globals.assign_lat;
+          double long = globals.assign_long;
+          for (var i = 0; i < areaids.length; i++) {
+            double user_lat = double.parse(areaids[i]['lat']);
+            double user_long = double.parse(areaids[i]['long']);
+            globals.assign_radius = double.parse(areaids[i]['radius']);
+
+            double Temp_totalDistance = calculateDistance(
+                user_lat, user_long, lat, long);
+            if (i == 0) {
+              totalDistance = Temp_totalDistance;
+              globals.areaId = int.parse(areaids[i]['id']);
+              globals.assigned_lat = double.parse(areaids[i]['lat']);
+              globals.assigned_long = double.parse(areaids[i]['long']);
+              globals.assign_radius = double.parse(areaids[i]['radius']);
+            }
+            else {
+              if (totalDistance > Temp_totalDistance) {
+                totalDistance = Temp_totalDistance;
+                globals.areaId = int.parse(areaids[i]['id']);
+                print("Area Id :"+globals.areaId.toString());
+                globals.assigned_lat = double.parse(areaids[i]['lat']);
+                globals.assigned_long = double.parse(areaids[i]['long']);
+                globals.assign_radius = double.parse(areaids[i]['radius']);
+              }
+            }
+          }
+      //  }
         return timeinoutMap['act'];
-      } else {
+      }
+      else {
         print('8888');
         return "Poor network connection";
       }

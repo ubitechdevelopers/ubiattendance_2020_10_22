@@ -42,9 +42,9 @@ String path_hrm_india="https://ubiattendance.ubihrm.com/index.php/Att_services/"
 String path="http://ubiattendance.zentylpro.com/index.php/Att_services/";
 String internetConnectivityURL="http://ubiattendance.zentylpro.com/index.php/Att_services/isInternetConnected";
 String path_hrm_india="http://ubiattendance.zentylpro.com/index.php/Att_services/";
+*/
 
 
- */
 
 /*
 String path="http://zentylpro.com/SFUbiattendance/index.php/Att_services/";
@@ -76,6 +76,7 @@ int departmentid = 1;
 int varCheckNet=0;
 int areaId=0;
 int language=1;
+String areaIds = "";
 var assign_lat = 0.0;//These are user to store latitude got from javacode throughout the app
 var assign_long = 0.0;//These are user to store latitude got from javacode throughout the app
 var assigned_lat = 0.0;//These are user to store geofence latitude got from server throughout the app
@@ -129,7 +130,7 @@ String appVersion='5.3.3';
 
 
 
-String geofence='Not Calculated.';
+String geofence='';
 
 /*
 int total_dept = 0;
