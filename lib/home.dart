@@ -2904,6 +2904,15 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     if(globals.geoFence==1) {
       if (areaStatus == '0') {
         geofence = "Outside Fenced Area";
+        await showDialog(
+            context: context,
+            // ignore: deprecated_member_use
+            child: new AlertDialog(
+              //title: new Text("Warning!"),
+              content: new Text("Sorry you can not mark attendance out side fenced area."),
+            ));
+        return null;
+
       } else {
         geofence = "Within Fenced Area";
       }
