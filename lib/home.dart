@@ -2901,32 +2901,34 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     //  sl.startStreaming(5);
     print('aidId' + aid);
     var FakeLocationStatus = 0;
-    if(globals.geoFence==1) {
-      if (areaStatus == '0') {
-        geofence = "Outside Fenced Area";
-        await showDialog(
-            context: context,
-            // ignore: deprecated_member_use
-            child: new AlertDialog(
-              //title: new Text("Warning!"),
-              content: new Text("Sorry you can not mark attendance out side fenced area."),
-            ));
-        return null;
 
-      } else {
-        geofence = "Within Fenced Area";
-      }
-    }
     if(globals.geoFence==1 && globals.areaId==0){
       await showDialog(
           context: context,
           // ignore: deprecated_member_use
           child: new AlertDialog(
             //title: new Text("Warning!"),
-            content: new Text("Geo Fence has not been assigned"),
+            content: new Text("Geofence has not been assigned"),
           ));
       return null;
     }
+    if(globals.geoFence==1) {
+      if (areaStatus == '0' && ableToMarkAttendance==1) {
+        geofence = "Outside Geofence";
+        await showDialog(
+            context: context,
+            // ignore: deprecated_member_use
+            child: new AlertDialog(
+              //title: new Text("Warning!"),
+              content: new Text("You Can't punch Attendance Outside Geofence."),
+            ));
+        return null;
+
+      } else {
+        geofence = "Within Geofence";
+      }
+    }
+
     if(globals.departmentid==1||globals.departmentid==0){
       await showDialog(
           context: context,
@@ -2968,7 +2970,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           // ignore: deprecated_member_use
           child: new AlertDialog(
             //title: new Text("Warning!"),
-            content: new Text("You Can't punch Attendance from Outside fence."),
+            content: new Text("You Can't punch Attendance from Outside Geofence"),
           ));
       return null;
     }
@@ -3091,7 +3093,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             context: context,
             // ignore: deprecated_member_use
             child: new AlertDialog(
-              content: new Text("Selfie was not captured. Please try again."),
+              content: new Text("Selfie was not captured. Please change your Camera from Settings."),
             ));
         if (mounted) {
           setState(() {
