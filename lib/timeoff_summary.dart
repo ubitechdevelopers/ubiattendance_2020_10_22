@@ -684,7 +684,7 @@ class _TimeoffSummary extends State<TimeoffSummary> {
                         width: MediaQuery.of(context).size.width*1,
                         color: appcolor.withOpacity(0.1),
                         padding:EdgeInsets.only(top:5.0,bottom: 5.0),
-                        child:Text("you have not taken any time off  ",style: TextStyle(fontSize: 18.0),textAlign: TextAlign.center,),
+                        child:Text("You have not taken any time off  ",style: TextStyle(fontSize: 18.0),textAlign: TextAlign.center,),
                       ),
                     );
                 } else if (snapshot.hasError) {

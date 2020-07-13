@@ -179,7 +179,7 @@ class _FaceIdScreenState extends State<FaceIdScreen> {
                   ),*/
                         ]),
                       ),*/
-                      SizedBox(height: MediaQuery.of(context).size.height * .02),
+                     // SizedBox(height: MediaQuery.of(context).size.height * .02),
 /*
                       Text(fname.toUpperCase() + " " + lname.toUpperCase(),
 
@@ -190,7 +190,20 @@ class _FaceIdScreenState extends State<FaceIdScreen> {
                             letterSpacing: 3.0,
                           )),
 */
-                      SizedBox(height: MediaQuery.of(context).size.height * .24),
+
+                    SizedBox(height: MediaQuery.of(context).size.height * .08),
+                    Container(
+                    child: Column(children: <Widget>[
+                      Text('Hi '+fname+'!',style: TextStyle(fontSize: 18.0),),
+                      SizedBox(height: 8.0,),
+                      Text('Please Register your Face ID',style: TextStyle(fontSize: 18.0),),
+
+                      ],),
+
+                     ),
+
+                      SizedBox(height: MediaQuery.of(context).size.height * .1),
+
 
                       Image.asset("assets/face-recognition-gif.gif",width: MediaQuery.of(context).size.width * .4,),
                       SizedBox(height: MediaQuery.of(context).size.height * .06),

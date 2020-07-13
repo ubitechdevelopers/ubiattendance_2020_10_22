@@ -981,7 +981,7 @@ print('visit out called for visit id:'+visit_id);
         // ignore: deprecated_member_use
         showDialog(context: context, child:
         new AlertDialog(
-          content: new Text("Attendance marked successfully!"),
+          content: new Text("Flexi Attendance marked successfully!"),
         )
         );
         Navigator.push(

@@ -1217,7 +1217,7 @@ class _EmployeeWise_att extends State<EmployeeWise_att> with SingleTickerProvide
 
                   decoration: InputDecoration(
                     border: InputBorder.none,
-                    labelText: 'Select an Employee',
+                    labelText: 'Select an employee',
                     prefixIcon: Padding(
                       padding: EdgeInsets.all(0.0),
                       child: Icon(

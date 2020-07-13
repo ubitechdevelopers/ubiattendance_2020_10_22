@@ -713,8 +713,8 @@ class _ProfilePageState extends State<ProfilePage> {
       // ignore: deprecated_member_use
       showDialog(context: context, child:
       new AlertDialog(
-        title: new Text("Sorry!"),
-        content: new Text("Phone no. already exists"),
+        //title: new Text("Sorry!"),
+        content: new Text('No Changes Found.'),
       )
       );
     }else{

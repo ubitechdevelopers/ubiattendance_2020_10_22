@@ -2902,32 +2902,37 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     print('aidId' + aid);
     var FakeLocationStatus = 0;
 
-    if(globals.geoFence==1 && globals.areaId==0){
-      await showDialog(
-          context: context,
-          // ignore: deprecated_member_use
-          child: new AlertDialog(
-            //title: new Text("Warning!"),
-            content: new Text("Geofence has not been assigned"),
-          ));
-      return null;
-    }
+
     if(globals.geoFence==1) {
-      if (areaStatus == '0' && ableToMarkAttendance==1) {
-        geofence = "Outside Geofence";
-        await showDialog(
-            context: context,
-            // ignore: deprecated_member_use
-            child: new AlertDialog(
-              //title: new Text("Warning!"),
-              content: new Text("You Can't punch Attendance Outside Geofence."),
-            ));
-        return null;
+      if (areaStatus == '0') {
+        if(areaId==0 || areaId.toString()==""){
+          geofence = "";
+        }else{
+          geofence = "Outside Geofence";
+        }
+
+        print('thisisgeofencefortesting123---->>>>'+geofence);
+        print('thisisabletomarkatt---->>>>'+ableToMarkAttendance.toString());
+
+        if(ableToMarkAttendance==1) {
+          print('thisisgeofencefortesting456---->>>>'+geofence);
+          await showDialog(
+              context: context,
+              // ignore: deprecated_member_use
+              child: new AlertDialog(
+                //title: new Text("Warning!"),
+                content: new Text(
+                    "You Can't punch Attendance Outside Geofence."),
+              ));
+          return null;
+        }
 
       } else {
         geofence = "Within Geofence";
+        print('thisisgeofencefortesting789---->>>>'+geofence);
       }
     }
+    print('thisisgeofencefortesting---->>>>'+geofence);
 
     if(globals.departmentid==1||globals.departmentid==0){
       await showDialog(

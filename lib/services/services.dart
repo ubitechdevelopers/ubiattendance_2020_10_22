@@ -344,7 +344,7 @@ generateAndShareReferralLink()async{
   ReferrerenceMessagesList[1]="I am using a great App to monitor attendance. Give it a try. You will get ${referrenceAmt} off on your purchase. ";
   ReferrerenceMessagesList[2]="Attendance Analytics, Geo Fencing, Location Tracking  and more! Here’s ${referrenceAmt} off your order. Check it out!";
   ReferrerenceMessagesList[3]="Looking for a foolproof  attendance tracker? I suggest ubiAttendance. Sign up now: ${referrenceAmt} discount! via @${referrerName}";
-  ReferrerenceMessagesList[4]="Use this link to get ${referrenceAmt} off your first purchase at ubiAttendance – the best time tracker for your employees via @${referrerName}";
+  ReferrerenceMessagesList[4]="Use this link to get ${referrenceAmt} off on your first purchase at ubiAttendance – the best time tracker for your employees via @${referrerName}";
   ReferrerenceMessagesList[5]="Got headache Managing Attendance of your employees? Try ubiAttendance. Get ${referrenceAmt} off on your purchase amount via @${referrerName}";
   ReferrerenceMessagesList[6]="Try ubiAttendance and get ${referrenceAmt} off on your purchase amount";
 

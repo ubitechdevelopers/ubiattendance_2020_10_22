@@ -237,7 +237,7 @@ class _FlexiReport extends State<FlexiReport> {
                 //    width: MediaQuery.of(context).size.width*.45,
                 child: InputDecorator(
                   decoration: InputDecoration(
-                    labelText: 'Select an Employee',
+                    labelText: 'Select an employee',
                     prefixIcon: Padding(
                       padding: EdgeInsets.all(1.0),
                       child: Icon(

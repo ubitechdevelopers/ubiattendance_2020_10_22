@@ -90,7 +90,7 @@ class _Outsidegeofance extends State<Outsidegeofance> {
             SizedBox(height: 10.0),
             Center(
               child: Text(
-                'Outside the geo fence',
+                'Outside the Geofence',
                 style: new TextStyle(
                   fontSize: 22.0,
                   color: appcolor,
@@ -240,7 +240,7 @@ class _Outsidegeofance extends State<Outsidegeofance> {
                 //    width: MediaQuery.of(context).size.width*.45,
                 child: InputDecorator(
                   decoration: InputDecoration(
-                    labelText: 'Select an Employee',
+                    labelText: 'Select an employee',
                     prefixIcon: Padding(
                       padding: EdgeInsets.all(1.0),
                       child: Icon(
