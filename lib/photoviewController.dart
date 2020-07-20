@@ -209,6 +209,7 @@ class _ControllerExampleState extends State<ControllerExample> {
             },
           ),
         ),*/
+        /*
         Text(
           "Scale ${value.scale}",
           style: const TextStyle(color: Colors.white),
@@ -227,6 +228,7 @@ class _ControllerExampleState extends State<ControllerExample> {
             },
           ),
         ),
+        */
         /*
         Text(
           "Zoom",

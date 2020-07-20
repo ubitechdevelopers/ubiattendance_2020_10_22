@@ -116,7 +116,7 @@ class _HolidayList extends State<HolidayList> {
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width*0.10,
-                      child: Text('days', style: TextStyle(color: appcolor,fontSize: 16.0, fontWeight: FontWeight.bold ),textAlign: TextAlign.right),
+                      child: Text('Days', style: TextStyle(color: appcolor,fontSize: 16.0, fontWeight: FontWeight.bold ),textAlign: TextAlign.right),
                     ),
 
                   ],

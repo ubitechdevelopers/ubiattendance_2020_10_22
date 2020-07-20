@@ -28,6 +28,7 @@ import 'package:geocoder/geocoder.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:location/location.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -2036,7 +2037,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   }
 
   refreshPageWidgit() {
+    print('thisisglobalstreamaddr---->>>>'+globalstreamlocationaddr);
     if (globals.globalstreamlocationaddr.isNotEmpty) {
+      print('thisisglobalstreamaddr---->>>>'+globalstreamlocationaddr);
       return new Container(
         child: Center(
           child: new Column(
@@ -2133,6 +2136,19 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       );
     } else {
       return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Text('Kindly allow location access from settings',
+            textAlign: TextAlign.center,
+            style: new TextStyle(fontSize: 14.0, color: Colors.red)),
+        RaisedButton(
+          child: Text('Open Settings'),
+          onPressed: () {
+            PermissionHandler().openAppSettings();
+          },
+        ),
+      ]);
+    }
+      /*
+      return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         Text('Kindly refresh the page to fetch the location.',
             textAlign: TextAlign.center,
             style: new TextStyle(fontSize: 14.0, color: Colors.red)),
@@ -2149,6 +2165,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         ),
       ]);
     }
+
+       */
   }
 
   loader() {
@@ -2224,6 +2242,22 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   mainbodyWidget() {
     ////to do check act1 for poor network connection
+    if(globalstreamlocationaddr == "Location not fetched."){
+      return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+         Text('Location permission is restricted from app settings, click "Open Settings" to allow permission.',
+              textAlign: TextAlign.center,
+              style: new TextStyle(fontSize: 14.0, color: Colors.red)),
+            RaisedButton(
+              child: Text('Open Settings'),
+              onPressed: () {
+                PermissionHandler().openAppSettings();
+              },
+            )],);
+
+
+
+
+    }
 
     if (act1 == "Poor network connection") {
       return poorNetworkWidget();

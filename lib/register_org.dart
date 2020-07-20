@@ -784,6 +784,16 @@ class _MyHomePageState extends State<MyHomePage> {
                               //FocusScope.of(context).requestFocus(__cname);
                               return null;
                             }
+                            else if(_phone.text.length<6) {
+                              showDialog(context: context, child:
+                              new AlertDialog(
+                                title: new Text("Alert"),
+                                content: new Text("Please enter a valid Phone No."),
+                                //content: new Text(AppTranslations.of(context).text("key_please_enter_valid_phone")),
+                              ));
+                              // FocusScope.of(context).requestFocus(__phone);
+                              return null;
+                            }
 
                             else if(!(validateEmail(_email.text.trim()))) {
                               //print((validateEmail(_email.text)).toString());
@@ -815,16 +825,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                 title: new Text("Alert"),
                                 content: new Text("Please Select a Country."),
                                 //content: new Text(AppTranslations.of(context).text("key_select_country")),
-                              ));
-                              // FocusScope.of(context).requestFocus(__phone);
-                              return null;
-                            }
-                            else if(_phone.text.length<6) {
-                              showDialog(context: context, child:
-                              new AlertDialog(
-                                title: new Text("Alert"),
-                                content: new Text("Please enter a valid Phone No."),
-                                //content: new Text(AppTranslations.of(context).text("key_please_enter_valid_phone")),
                               ));
                               // FocusScope.of(context).requestFocus(__phone);
                               return null;

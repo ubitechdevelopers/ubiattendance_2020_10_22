@@ -531,7 +531,9 @@ var FakeLocationStatus=0;
 
   }
   getwidget(String addrloc) {
-    if (addrloc != "PermissionStatus.deniedNeverAsk") {
+    print('insidegetwidgetpunchvisit');
+    print(addrloc);
+    if (addrloc != "PermissionStatus.deniedNeverAsk" && globalstreamlocationaddr!='Location not fetched.') {
       return Column(children: [
         ButtonTheme(
           minWidth: 120.0,
