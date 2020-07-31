@@ -645,7 +645,7 @@ class _ProfilePageState extends State<ProfilePage> {
     NewServices ns = NewServices();
 
     var prefs= await SharedPreferences.getInstance();
-    prefix0.showAppInbuiltCamera=prefs.getBool("showAppInbuiltCamera")??false;
+    prefix0.showAppInbuiltCamera=prefs.getBool("showAppInbuiltCamera")??true;
     bool isupdate = showAppInbuiltCamera?await ns.updateProfilePhotoAppCamera(uploadtype,empid,orgid,context):await ns.updateProfilePhoto(uploadtype,empid,orgid,context);
     print('Image status');
     print(isupdate);

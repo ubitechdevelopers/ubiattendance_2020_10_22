@@ -1264,7 +1264,7 @@ class _Bulkatt extends State<Bulkatt> {
     bool issave = false;
     var prefs = await SharedPreferences.getInstance();
     prefix0.showAppInbuiltCamera =
-        prefs.getBool("showAppInbuiltCamera") ?? false;
+        prefs.getBool("showAppInbuiltCamera") ?? true;
     issave = prefix0.showAppInbuiltCamera
         ? await saveImage.saveTimeInOutImagePickerGroupAttFaceCamera(mk, context)
         : await saveImage.saveTimeInOutImagePickerGroupAttFaceCamera(mk, context);

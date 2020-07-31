@@ -95,7 +95,7 @@ bool fakeLocationDetected=false;
 bool showTimeOutNotification=true;
 bool selectimg = true;
 bool showTimeInNotification=true;
-bool showAppInbuiltCamera=false;
+bool showAppInbuiltCamera=true;
 bool showPhoneCamera=false;
 bool timeSpoofed=false;
 bool globalCameraOpenedStatus=false;
@@ -128,7 +128,7 @@ String shiftId='';
 var timeoffRunning=false;
 
 
-String appVersion='5.3.7';
+String appVersion='5.3.8';
 
 
 

@@ -305,7 +305,7 @@ String address="";
                 Navigator.of(context, rootNavigator: true).pop();
 
                 var prefs= await SharedPreferences.getInstance();
-                prefix0.showAppInbuiltCamera=prefs.getBool("showAppInbuiltCamera")??false;
+                prefix0.showAppInbuiltCamera=prefs.getBool("showAppInbuiltCamera")??true;
                 prefix0.showAppInbuiltCamera?
                 saveImage.saveVisitOutAppCamera(empid,streamlocationaddr.toString(),visit_id.toString(),assign_lat.toString(),assign_long.toString(),_comments.text,orgid,FakeLocationStatus,context).then((res){
 

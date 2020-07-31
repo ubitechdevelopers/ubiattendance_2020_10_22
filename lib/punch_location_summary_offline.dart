@@ -333,7 +333,7 @@ class _PunchLocationSummaryOffline extends State<PunchLocationSummaryOffline> {
               onPressed: () async{
                 Navigator.of(context, rootNavigator: true).pop('dialog');
                 var prefs= await SharedPreferences.getInstance();
-                prefix0.showAppInbuiltCamera=prefs.getBool("showAppInbuiltCamera")??false;
+                prefix0.showAppInbuiltCamera=prefs.getBool("showAppInbuiltCamera")??true;
                 prefix0.showAppInbuiltCamera?saveVisitOutOfflineAppCamera(visit_id,_comments.text): saveVisitOutOffline(visit_id,_comments.text);
 
               })

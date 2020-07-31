@@ -41,8 +41,8 @@ class _CameraSettings extends State<CameraSettings> {
     final prefs = await SharedPreferences.getInstance();
     response = prefs.getInt('response') ?? 0;
 
-    prefix0.showAppInbuiltCamera=prefs.getBool("showAppInbuiltCamera")??false;
-    prefix0.showPhoneCamera=prefs.getBool("showPhoneCamera")??true;
+    prefix0.showAppInbuiltCamera=prefs.getBool("showAppInbuiltCamera")??true;
+    prefix0.showPhoneCamera=prefs.getBool("showPhoneCamera")??false;
 
     admin_sts = prefs.getString('sstatus') ?? '0';
     if(response==1) {
@@ -208,7 +208,7 @@ class _CameraSettings extends State<CameraSettings> {
                                   child:Switch(
                                       value: showAppInbuiltCamera,
                                       onChanged: (value) async{
-                                        prefix0.cameraChannel.invokeMethod("askAudioPermission");
+                                        //prefix0.cameraChannel.invokeMethod("askAudioPermission");
                                         var prefs= await SharedPreferences.getInstance();
                                         prefs.setBool("showAppInbuiltCamera", await value);
                                         setState((){
@@ -254,7 +254,7 @@ class _CameraSettings extends State<CameraSettings> {
                                   child:Switch(
                                       value: showPhoneCamera,
                                       onChanged: (value) async{
-                                        prefix0.cameraChannel.invokeMethod("askAudioPermission");
+                                        //prefix0.cameraChannel.invokeMethod("askAudioPermission");
                                         var prefs= await SharedPreferences.getInstance();
                                         prefs.setBool("showPhoneCamera", await value);
                                         setState((){

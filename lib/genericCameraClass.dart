@@ -62,6 +62,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
         this.camera,
         // Define the resolution to use.
         ResolutionPreset.medium,
+          enableAudio: false,
       );
       _initializeControllerFuture = _controller.initialize();
 
@@ -207,6 +208,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                           this.camera,
                           // Define the resolution to use.
                           ResolutionPreset.medium,
+                            enableAudio: false
                         );
                       }
                       else{
@@ -216,6 +218,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                           this.frontCamera,
                           // Define the resolution to use.
                           ResolutionPreset.medium,
+                            enableAudio: false
                         );
                       }
 

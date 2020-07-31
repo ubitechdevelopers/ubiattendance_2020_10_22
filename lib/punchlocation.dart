@@ -682,7 +682,7 @@ var FakeLocationStatus=0;
         act1 = "";
       });
       var prefs= await SharedPreferences.getInstance();
-      showAppInbuiltCamera=prefs.getBool("showAppInbuiltCamera")??false;
+      showAppInbuiltCamera=prefs.getBool("showAppInbuiltCamera")??true;
       issave = showAppInbuiltCamera?await saveImage.saveVisitAppCamera(mk,context):await saveImage.saveVisit(mk,context);
       ////print(issave);
       if (issave) {

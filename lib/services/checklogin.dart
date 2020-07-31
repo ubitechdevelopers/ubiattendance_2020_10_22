@@ -155,7 +155,7 @@ print(globals.path+"checkLogin?userName="+user.userName+"&password="+user.userPa
               SaveImage mark = new SaveImage();
 
               var prefs= await SharedPreferences.getInstance();
-              globals.showAppInbuiltCamera=prefs.getBool("showAppInbuiltCamera")??false;
+              globals.showAppInbuiltCamera=prefs.getBool("showAppInbuiltCamera")??true;
               bool res = globals.showAppInbuiltCamera?await mark.saveTimeInOutQRAppCamera(marktimeinout,context):await mark.saveTimeInOutQR(marktimeinout,context);
               if (res)
                 if(timeinout["aid"].toString() != '0')
@@ -236,7 +236,7 @@ print(globals.path+"checkLogin?userName="+user.userName+"&password="+user.userPa
               SaveImage mark = new SaveImage();
 
               var prefs= await SharedPreferences.getInstance();
-              globals.showAppInbuiltCamera=prefs.getBool("showAppInbuiltCamera")??false;
+              globals.showAppInbuiltCamera=prefs.getBool("showAppInbuiltCamera")??true;
               bool res = globals.showAppInbuiltCamera?await mark.saveTimeInOutQRAppCamera(marktimeinout,context):await mark.saveTimeInOutQR(marktimeinout,context);
               if (res)
                 if(timeinout["aid"].toString() != '0')

@@ -3040,7 +3040,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       bool issave = false;
      var prefs = await SharedPreferences.getInstance();
       globals.showAppInbuiltCamera =
-          prefs.getBool("showAppInbuiltCamera") ?? false;
+          prefs.getBool("showAppInbuiltCamera") ?? true;
       issave = globals.showAppInbuiltCamera
           ? await saveImage.saveTimeInOutImagePickerAppCamera(mk, context)
           : await saveImage.saveTimeInOutImagePicker(mk, context);

@@ -796,7 +796,7 @@ class _Flexitime extends State<Flexitime> {
           print('<<****************************');
 
           var prefs= await SharedPreferences.getInstance();
-          prefix0.showAppInbuiltCamera=prefs.getBool("showAppInbuiltCamera")??false;
+          prefix0.showAppInbuiltCamera=prefs.getBool("showAppInbuiltCamera")??true;
           // Navigator.of(context, rootNavigator: true).pop();
           prefix0.showAppInbuiltCamera?
           saveImage.saveFlexiOutAppCamera(empid,prefix0.globalstreamlocationaddr,fid.toString(),prefix0.assign_lat,prefix0.assign_long,orgid,FakeLocationStatus,context)
@@ -962,7 +962,7 @@ print('visit out called for visit id:'+visit_id);
       });
 
       var prefs= await SharedPreferences.getInstance();
-      prefix0.showAppInbuiltCamera=prefs.getBool("showAppInbuiltCamera")??false;
+      prefix0.showAppInbuiltCamera=prefs.getBool("showAppInbuiltCamera")??true;
       issave = prefix0.showAppInbuiltCamera?await saveImage.saveFlexiAppCamera(mk,context): await saveImage.saveFlexi(mk,context);
       ////print(issave);
       if (issave) {

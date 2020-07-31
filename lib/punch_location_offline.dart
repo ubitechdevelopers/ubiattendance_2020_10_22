@@ -664,7 +664,7 @@ class _PunchLocationOffline extends State<PunchLocationOffline> {
         }else
           {
             var prefs= await SharedPreferences.getInstance();
-            prefix0.showAppInbuiltCamera=prefs.getBool("showAppInbuiltCamera")??false;
+            prefix0.showAppInbuiltCamera=prefs.getBool("showAppInbuiltCamera")??true;
             prefix0.showAppInbuiltCamera?saveVisitInOfflineAppCamera(): saveVisitInOffline();
           }
 

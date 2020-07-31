@@ -696,7 +696,7 @@ class _OfflineHomePageState extends State<OfflineHomePage>{
                                 Navigator.of(context, rootNavigator: true)
                                     .pop();
                                 var prefs= await SharedPreferences.getInstance();
-                                prefix0.showAppInbuiltCamera=prefs.getBool("showAppInbuiltCamera")??false;
+                                prefix0.showAppInbuiltCamera=prefs.getBool("showAppInbuiltCamera")??true;
 
                                 showAppInbuiltCamera?saveOfflineQrAppCamera(0):saveOfflineQr(0);
 
@@ -717,7 +717,7 @@ class _OfflineHomePageState extends State<OfflineHomePage>{
                                 Navigator.of(context, rootNavigator: true)
                                     .pop();
                                 var prefs= await SharedPreferences.getInstance();
-                                prefix0.showAppInbuiltCamera=prefs.getBool("showAppInbuiltCamera")??false;
+                                prefix0.showAppInbuiltCamera=prefs.getBool("showAppInbuiltCamera")??true;
 
                                 showAppInbuiltCamera?saveOfflineQrAppCamera(1):saveOfflineQr(1);
                               },
@@ -1435,7 +1435,7 @@ class _OfflineHomePageState extends State<OfflineHomePage>{
             color: timeInClicked?Colors.grey:Colors.white,
             onPressed: ()async {
               var prefs= await SharedPreferences.getInstance();
-              prefix0.showAppInbuiltCamera=prefs.getBool("showAppInbuiltCamera")??false;
+              prefix0.showAppInbuiltCamera=prefs.getBool("showAppInbuiltCamera")??true;
 
               if(prefix0.showAppInbuiltCamera)
               {
@@ -1492,7 +1492,7 @@ class _OfflineHomePageState extends State<OfflineHomePage>{
                       color: timeOutClicked?Colors.grey:Colors.green,
                       onPressed: () async{
                         var prefs= await SharedPreferences.getInstance();
-                        prefix0.showAppInbuiltCamera=prefs.getBool("showAppInbuiltCamera")??false;
+                        prefix0.showAppInbuiltCamera=prefs.getBool("showAppInbuiltCamera")??true;
 
                         if(prefix0.showAppInbuiltCamera)
                         {
