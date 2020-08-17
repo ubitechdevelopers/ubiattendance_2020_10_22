@@ -27,8 +27,16 @@ class _Designation extends State<Designation> {
     appResumedPausedLogic(context);
     desg = new TextEditingController();
     getOrgName();
-    _designations=getDesignation();
+    getDesgName();
+    //_designations=getDesignation();
   }
+
+  Future<List<Desg>> getDesgName() {    //sgcode1
+    print("inistate");
+    return getDesignation();
+    // print(_shifts);
+  }
+
   getOrgName() async{
     final prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -134,7 +142,7 @@ class _Designation extends State<Designation> {
 
   getDesgWidget() {
     return new FutureBuilder<List<Desg>>(
-        future: _designations,
+        future: getDesgName(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return new ListView.builder(

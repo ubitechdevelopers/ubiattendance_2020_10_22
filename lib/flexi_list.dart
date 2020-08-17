@@ -163,20 +163,20 @@ class _FlexiList extends State<FlexiList> {
                   Container(
                     width: MediaQuery.of(context).size.width * 0.38,
                     child: Text(
-                      'Location',
+                      'Date',
                       style: TextStyle(color: appcolor,fontSize: 16.0,fontWeight: FontWeight.bold),
                       textAlign: TextAlign.left,
                     ),
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width * 0.30,
-                    child: Text('In',
+                    child: Text('Time In',
                         style: TextStyle(color: appcolor,fontSize: 16.0,fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center),
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width * 0.30,
-                    child: Text('Out ',
+                    child: Text('Time Out ',
                         style: TextStyle(color: appcolor,fontSize: 16.0,fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center),
                   ),
@@ -245,16 +245,21 @@ class _FlexiList extends State<FlexiList> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
+                                  Text(snapshot.data[index].timeindate
+                                      .toString(), style: TextStyle(
+                                      color: Colors.black87,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16.0),),
                                  /* new Text(
                                     snapshot.data[index].client.toString(),style: TextStyle(fontWeight: FontWeight.bold),textAlign: TextAlign.left,
                                   ),*/
                                   InkWell(
-                                    child:Text("In: "+
+                                    child:Text("Time In: "+
                                         snapshot.data[index].pi_loc.toString(),style: TextStyle(color: Colors.black54,fontSize: 12.0),),
                                     onTap: () {goToMap(snapshot.data[index].pi_latit,snapshot.data[index].pi_longi.toString());},
                                   ),
                                   InkWell(
-                                    child:Text("Out: "+
+                                    child:Text("Time Out: "+
                                         snapshot.data[index].po_loc.toString(),style: TextStyle(color: Colors.black54,fontSize: 12.0),),
                                     onTap: () {goToMap(snapshot.data[index].po_latit.toString(),snapshot.data[index].po_longi.toString());},
                                   ),

@@ -34,6 +34,8 @@ class _AddEmployee extends State<AddEmployee> {
   final _department1 = TextEditingController();
   final _pass = TextEditingController();
   String admin_sts = '0';
+  String appstore="https://apps.apple.com/in/app/track-employee-attendance/id1375252261";
+  String playstore="https://play.google.com/store/apps/details?id=org.ubitech.attendance";
   FocusNode __fullName = new FocusNode();
   FocusNode __email = new FocusNode();
   FocusNode __country = new FocusNode();
@@ -609,9 +611,27 @@ class _AddEmployee extends State<AddEmployee> {
                             );
                             //generateAndShareReferralLink();
                             //openWhatsApp('aa','+918871653803');
+                            /*
                             dialogwidget(
                                 'Hello+'+_firstName.text+'+%0A%0ADownload+ubiAttendance+App+from+the+link+https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dorg.ubitech.attendance%26hl%3Den_IN%0A%0ASign+In+to+the+App+with%0A%0AUser+Name%3A+'+updatedcontact.trim()+'%0APassword%3A+'+_pass.text+'%0A%0AMark+your+%E2%80%9CTime+In%E2%80%9D+now!+Start+punching+Attendance+daily.',
                                 whatscontact);
+
+                             */
+                            if((_firstName.text.trim()).contains(" ")){
+                              var name=_firstName.text.split(" ");
+                              _firstName.text=name[0];
+                              _lastName.text=name[1];
+                              print('First name and Last name');
+                              dialogwidget(
+                                  'Hello+'+_firstName.text+'+'+_lastName.text+'+%0A%0ADownload+ubiAttendance+android+app+from+the+link+%0A'+playstore+'+%0A%0AiPhone+users+can+download+through+%0A'+appstore+'+%0A%0ASign+In+to+the+App+with%0A%0AUser+Name%3A+'+updatedcontact.trim()+'%0APassword%3A+'+_pass.text+'%0A%0AMark+your+%E2%80%9CTime+In%E2%80%9D+now!+Start+punching+Attendance+daily.',
+                                  whatscontact);
+                            }
+                            else{
+                              print('First name');
+                              dialogwidget(
+                                  'Hello+'+_firstName.text+'+%0A%0ADownload+ubiAttendance+android+app+from+the+link+%0A'+playstore+'+%0A%0AiPhone+users+can+download+through+%0A'+appstore+'+%0A%0ASign+In+to+the+App+with%0A%0AUser+Name%3A+'+updatedcontact.trim()+'%0APassword%3A+'+_pass.text+'%0A%0AMark+your+%E2%80%9CTime+In%E2%80%9D+now!+Start+punching+Attendance+daily.',
+                                  whatscontact);
+                            }
 
                           } else if (res == 3)
                             showInSnackBar('Contact already exists');

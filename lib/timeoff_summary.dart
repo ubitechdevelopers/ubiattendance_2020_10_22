@@ -9,6 +9,7 @@ import 'package:Shrine/services/saveimage.dart';
 import 'package:Shrine/services/services.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Bottomnavigationbar.dart';
@@ -703,6 +704,12 @@ class _TimeoffSummary extends State<TimeoffSummary> {
 
   saveVisitImage() async {
     sl.startStreaming(5);
+    var prefs = await SharedPreferences.getInstance();
+    var orgTopic = prefs.getString("OrgTopic") ?? '';
+    var eName = prefs.getString('fname') ?? 'User';
+    String topic = orgTopic+'PushNotifications';
+    var formatter = new DateFormat('HH:mm');
+    var date= formatter.format(DateTime.now());
     var connectivityResult = await (new Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
       SaveImage saveImage = new SaveImage();
@@ -715,6 +722,19 @@ class _TimeoffSummary extends State<TimeoffSummary> {
       print(issave);
       //String tempstatus = timeoffstatus;
       if (issave=='true') {
+        if(TimeOffEndStatus==13||TimeOffEndStatus==9||TimeOffEndStatus==11||TimeOffEndStatus==15){
+          sendPushNotification(eName + ' has ended Time Off at ' + date, '',
+              '(\'' + orgTopic + '\' in topics) && (\'admin\' in topics)');
+          print('(\'' + orgTopic + '\' in topics) && (\'admin\' in topics)');
+
+
+        }
+        if(TimeOffEndStatus==5||TimeOffEndStatus==7||TimeOffEndStatus==13||TimeOffEndStatus==15){
+          String subject = 'Time Off';
+          String content =eName + ' has ended Time Off at ' + date;
+          sendMailByAppToAdmin(subject,content);
+
+        }
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => TimeoffSummary()),

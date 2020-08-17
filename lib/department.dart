@@ -29,8 +29,14 @@ class _Department extends State<Department> {
     appResumedPausedLogic(context);
     dept = new TextEditingController();
     getOrgName();
-    _department = getDepartments();
+    getDeptName();
+    // _department = getDepartments();
 
+  }
+  Future<List<Dept>> getDeptName() {    //sgcode1
+    print("inistate");
+    return getDepartments();
+    // print(_shifts);
   }
 
   getOrgName() async{
@@ -140,7 +146,7 @@ class _Department extends State<Department> {
 
   getDeptWidget() {
     return new FutureBuilder<List<Dept>>(
-        future: _department,
+        future: getDeptName(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return new ListView.builder(

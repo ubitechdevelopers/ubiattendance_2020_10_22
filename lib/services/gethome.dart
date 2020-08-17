@@ -71,6 +71,26 @@ class Home{
         String password_sts = timeinoutMap['password_sts'].toString(); //somya
         String changepasswordStatus = timeinoutMap['admin_password_sts'].toString();
 
+        //////////////////// Push Notification Status ///////////////////////
+
+        UnderTime = int.parse(timeinoutMap['UnderTime'])??0;
+        Visit = int.parse(timeinoutMap['Visit'])??0;
+        OutsideGeofence=int.parse(timeinoutMap['OutsideGeofence'])??0;
+        FakeLocation=int.parse(timeinoutMap['FakeLocation'])??0;
+        FaceIdReg=int.parse(timeinoutMap['FaceIdReg'])??0;
+        FaceIdDisapproved=int.parse(timeinoutMap['FaceIdDisapproved'])??0;
+        SuspiciousSelfie = int.parse(timeinoutMap['SuspiciousSelfie'])??0;
+        SuspiciousDevice = int.parse(timeinoutMap['SuspiciousDevice'])??0;
+        DisapprovedAtt = int.parse(timeinoutMap['DisapprovedAtt'])??0;
+        AttEdited = int.parse(timeinoutMap['AttEdited'])??0;
+        ChangedPassword = int.parse(timeinoutMap['ChangedPassword'])??0;
+        TimeOffStartStatus = int.parse(timeinoutMap['TimeOffStart'])??0;
+        TimeOffEndStatus = int.parse(timeinoutMap['TimeOffEnd'])??0;
+
+
+
+        //////////////////// Push Notification Status ///////////////////////
+
         String org_country = timeinoutMap['orgcountry'].toString();
         prefs.setString('countrycode',timeinoutMap['countrycode']);
         int Is_Delete = int.parse(timeinoutMap['Is_Delete']);
@@ -148,6 +168,7 @@ class Home{
         prefs.setString('CountryName', timeinoutMap['CountryName']);
         globals.globalCountryTopic=timeinoutMap['CountryName'].toString();
         globals.globalOrgTopic= timeinoutMap['OrgTopic'].toString();
+        globals.globalEmployeeTopic= timeinoutMap['EmployeeTopic'].toString();
         print('countru name'+timeinoutMap['CountryName'].toString());
 
         prefs.setString('OutPushNotificationStatus', timeinoutMap['OutPushNotificationStatus']);

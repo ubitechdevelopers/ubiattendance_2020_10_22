@@ -236,6 +236,7 @@ class _FaceIdScreenState extends State<FaceIdScreen> {
     String countryTopic=prefs.get('CountryName')??'admin';
     String orgTopic=prefs.get('OrgTopic')??'admin';
     String currentOrgStatus=prefs.get('CurrentOrgStatus')??'admin';
+    String employeeTopic = prefs.getString("EmployeeTopic") ?? '';
     prefs.remove('response');
     prefs.remove('fname');
     prefs.remove('lname');
@@ -279,6 +280,10 @@ class _FaceIdScreenState extends State<FaceIdScreen> {
     prefs.remove('attendanceNotMarkedButEmpAdded');
     prefs.remove('tool');
     prefs.remove('companyFreshlyRegistered');
+    prefs.remove('showAppInbuiltCamera');
+    prefs.remove('showPhoneCamera');
+
+    _firebaseMessaging.unsubscribeFromTopic(employeeTopic.replaceAll(' ', ''));
 
     _firebaseMessaging.unsubscribeFromTopic("admin");
     _firebaseMessaging.unsubscribeFromTopic("employee");

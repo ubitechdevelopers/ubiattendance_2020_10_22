@@ -120,6 +120,7 @@ class SaveImage {
       File imagei = null;
       var isNextDayAWorkingDay=0;
       var prefs=await SharedPreferences.getInstance();
+      var eName = prefs.getString('fname') ?? 'User';
       isNextDayAWorkingDay=prefs.getInt("isNextDayAWorkingDay")??0;
 
       imageCache.clear();
@@ -196,7 +197,9 @@ class SaveImage {
             "devicenamebrand":globals.devicenamebrand,
             "city": city,
             "appVersion": globals.appVersion,
-            "geofence": globals.geofence
+            "geofence": globals.geofence,
+            "globalOrgTopic": globals.globalOrgTopic,
+            "name": eName
           });
           print(formData);
           Response<String> response1;
@@ -271,7 +274,9 @@ class SaveImage {
           "devicenamebrand":globals.devicenamebrand,
           "city": city,
           "appVersion": globals.appVersion,
-          "geofence": globals.geofence
+          "geofence": globals.geofence,
+          "globalOrgTopic": globals.globalOrgTopic,
+          "name": eName
           // "file": new UploadFileInfo(imagei, "image.png"),
         });
         print("5");
@@ -613,6 +618,7 @@ class SaveImage {
       File imagei = null;
       var isNextDayAWorkingDay=0;
       var prefs=await SharedPreferences.getInstance();
+      var eName = prefs.getString('fname') ?? 'User';
       isNextDayAWorkingDay=prefs.getInt("isNextDayAWorkingDay")??0;
 
       imageCache.clear();
@@ -632,6 +638,7 @@ class SaveImage {
               startTimeInNotificationWorker();
             }
           }
+
           
           var currentTime=DateTime.now();
           int timeDifference=currentTime.difference(globals.timeWhenButtonPressed).inSeconds;
@@ -676,8 +683,11 @@ class SaveImage {
             "devicenamebrand":globals.devicenamebrand,
             "city": city,
             "appVersion": globals.appVersion,
-            "geofence": globals.geofence
+            "geofence": globals.geofence,
+            "globalOrgTopic": globals.globalOrgTopic,
+            "name": eName
           });
+
           print(formData);
          // print(globals.path + "saveImage?uid=${ mk.uid}&location=${location}&aid=${mk.aid}&act=${mk.act}");
           Response<String> response1;
@@ -768,7 +778,9 @@ class SaveImage {
           "devicenamebrand":globals.devicenamebrand,
           "city": city,
           "appVersion": globals.appVersion,
-          "geofence": globals.geofence
+          "geofence": globals.geofence,
+          "globalOrgTopic": globals.globalOrgTopic,
+          "name": eName
          // "file": new UploadFileInfo(imagei, "image.png"),
         });
         print("5");

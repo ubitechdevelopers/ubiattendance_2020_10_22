@@ -28,6 +28,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:rounded_modal/rounded_modal.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -177,6 +178,29 @@ class _LoginPageState extends State<LoginPage> {
                       children: <Widget>[
                         GestureDetector(
                           onTap: () {
+
+                            if(globalstreamlocationaddr == "Location not fetched."){
+                              showDialog(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  // ignore: deprecated_member_use
+                                  child: new AlertDialog(
+                                    content: new Text('Kindly enable location excess from settings'),
+                                    actions: <Widget>[
+                                      RaisedButton(
+                                        child: Text('Open Settings'),
+                                        onPressed: () {
+                                          PermissionHandler().openAppSettings();
+                                        },
+                                      ),
+                                    ],
+                                  ));
+                              return null;
+
+
+
+
+                            }
                             if(loader)
                               return null;
 
@@ -584,6 +608,7 @@ class _LoginPageState extends State<LoginPage> {
     });
 
   }
+  /*
   markAttByQR(var qr, BuildContext context) async{
     Login dologin = Login();
     setState(() {
@@ -649,6 +674,55 @@ class _LoginPageState extends State<LoginPage> {
       Scaffold.of(context)
           .showSnackBar(
           SnackBar(content: Text("Problem while marking attendance")));
+    }
+  }
+  */
+
+  markAttByQR(var qr, BuildContext context) async{
+    final prefs = await SharedPreferences.getInstance();
+    int FakeLocationStatus=0;
+    Login dologin = Login();
+    setState(() {
+      loader = true;
+    });
+    print('ab');
+
+    var islogin = await dologin.markAttByQR(qr,FakeLocationStatus,context);
+    print(islogin);
+    if(islogin=="success"){
+      prefs.setString('username', username);
+      /*Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );*/
+      Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (context) => HomePage()), (Route<dynamic> route) => false,);
+    }else if(islogin == 'MailNotVerified') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Otp(_usernameController.text,_passwordController.text,context)),
+      );
+    } else if(islogin == 'inactive user') {
+      setState(() {
+        loader = false;
+      });
+      Scaffold.of(context)
+          .showSnackBar(
+          SnackBar(content: Text("Your account has been deactivated. You can not login.")));
+      return;
+    }else if(islogin=="failure"){
+      setState(() {
+        loader = false;
+      });
+      Scaffold.of(context)
+          .showSnackBar(
+          SnackBar(content: Text("Invalid login credentials")));
+    }else{
+      setState(() {
+        loader = false;
+      });
+      Scaffold.of(context)
+          .showSnackBar(
+          SnackBar(content: Text("Poor network connection.")));
     }
   }
 

@@ -263,6 +263,8 @@ disapprovesuspiciousattn(String id) async{
   }
 }
 disapprovefaceid(String empid,String orgid) async{
+  var prefs = await SharedPreferences.getInstance();
+  var orgTopic = prefs.getString("OrgTopic") ?? '';
   try{
     Dio dio = new Dio();
     /*
@@ -271,8 +273,45 @@ disapprovefaceid(String empid,String orgid) async{
         "refno": orgid,
       });*/
 
-    print(globals.path+"disapprovefaceid?empid=$empid&orgid=$orgid");
-    await dio.post(globals.path+"disapprovefaceid?empid=$empid&orgid=$orgid");
+    print(globals.path+"disapprovefaceid?empid=$empid&orgid=$orgid&orgTopic=$orgTopic");
+    await dio.post(globals.path+"disapprovefaceid?empid=$empid&orgid=$orgid&orgTopic=$orgTopic");
+
+  }catch(e)
+  {
+    print(e.toString());
+  }
+}
+sendMailByAppToAdmin(String subject,String content) async{
+  var prefs = await SharedPreferences.getInstance();
+  String orgid = prefs.getString('orgid') ?? '';
+  try{
+    Dio dio = new Dio();
+    /*
+      FormData formData = new FormData.from({
+        "uid": empid,
+        "refno": orgid,
+      });*/
+
+    print(globals.path+"sendMailByAppToAdmin?subject=$subject&content=$content&orgid=$orgid");
+    await dio.post(globals.path+"sendMailByAppToAdmin?subject=$subject&content=$content&orgid=$orgid");
+
+
+  }catch(e)
+  {
+    print(e.toString());
+  }
+}
+sendMailByAppToEmployee(String id,String content) async{
+  try{
+    Dio dio = new Dio();
+    /*
+      FormData formData = new FormData.from({
+        "uid": empid,
+        "refno": orgid,
+      });*/
+
+    print(globals.path+"sendMailByApp?id=$id&content=$content");
+    await dio.post(globals.path+"sendMailByApp?id=$id&content=$content");
 
   }catch(e)
   {
@@ -2145,10 +2184,10 @@ getCsvAlldata(associateListP,associateListA,associateListL,associateListE, fname
   List<dynamic> row1 = List();
 
   row1.add('Name');
-  row1.add('TimeIn');
-  row1.add('TimeIn Location');
-  row1.add('TimeOut');
-  row1.add('TimeOut Location');
+  row1.add('Time In');
+  row1.add('Time In Location');
+  row1.add('Time Out');
+  row1.add('Time Out Location');
   rows.add(row1);
 
   row1 = List();
@@ -3259,10 +3298,10 @@ getCsv(associateList, fname, name) async {
   } else {
     row1.add('Name');
     if (name != 'absent') {
-      row1.add('TimeIn');
-      row1.add('TimeIn Location');
-      row1.add('TimeOut');
-      row1.add('TimeOut Location');
+      row1.add('Time In');
+      row1.add('Time In Location');
+      row1.add('Time Out');
+      row1.add('Time Out Location');
     }
     rows.add(row1);
     for (int i = 0; i < associateList.length; i++) {
@@ -3316,10 +3355,10 @@ getCsvDesg(associateList, fname, name) async {
   List<dynamic> row1 = List();
   row1.add('Name');
   if (name == 'desg') {
-    row1.add('TimeIn');
-    row1.add('TimeIn Location');
-    row1.add('TimeOut');
-    row1.add('TimeOut Location');
+    row1.add('Time In');
+    row1.add('Time In Location');
+    row1.add('Time Out');
+    row1.add('Time Out Location');
     rows.add(row1);
     for (int i = 0; i < associateList.length; i++) {
 //row refer to each column of a row in csv file and rows refer to each row in a file
@@ -3369,10 +3408,10 @@ getCsvEmpWise(associateList, fname, name) async {
   List<dynamic> row1 = List();
   row1.add('Name');
   if (name == 'desg' && name != 'absent') {
-    row1.add('TimeIn');
-    row1.add('TimeIn Location');
-    row1.add('TimeOut');
-    row1.add('TimeOut Location');
+    row1.add('Time In');
+    row1.add('Time In Location');
+    row1.add('Time Out');
+    row1.add('Time Out Location');
     rows.add(row1);
     for (int i = 0; i < associateList.length; i++) {
 //row refer to each column of a row in csv file and rows refer to each row in a file

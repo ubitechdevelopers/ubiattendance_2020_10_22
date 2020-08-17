@@ -476,6 +476,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       var country = prefs.getString("CountryName") ?? '';
       var orgTopic = prefs.getString("OrgTopic") ?? '';
       var isAdmin = admin_sts = prefs.getString('sstatus').toString() ?? '0';
+      var employeeTopic = prefs.getString("EmployeeTopic") ?? '';
       //_firebaseMessaging.subscribeToTopic('101');
       if (isAdmin == '1') {
         _firebaseMessaging.subscribeToTopic('admin');
@@ -484,6 +485,19 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         print("employee topic subscribed");
         if (orgTopic.isNotEmpty)
           _firebaseMessaging.subscribeToTopic('employee');
+      }
+      if (globals.globalEmployeeTopic.isNotEmpty) {
+        _firebaseMessaging.unsubscribeFromTopic(employeeTopic.replaceAll(' ', ''));
+        _firebaseMessaging
+            .subscribeToTopic(globals.globalEmployeeTopic.replaceAll(' ', ''));
+
+        print('globals.globalEmployeeTopic' + globals.globalEmployeeTopic.toString());
+
+        prefs.setString("EmployeeTopic", globals.globalEmployeeTopic);
+      } else {
+        if (employeeTopic.isNotEmpty)
+          _firebaseMessaging.subscribeToTopic(employeeTopic.replaceAll(' ', ''));
+        print('globals.globalEMployeeTopic11111' + employeeTopic);
       }
 
       if (globals.globalOrgTopic.isNotEmpty) {
@@ -3077,10 +3091,25 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           var empId = prefs.getString('empid') ?? '';
           var orgId = prefs.getString("orgid") ?? '';
           var eName = prefs.getString('fname') ?? 'User';
+          var formatter = new DateFormat('HH:mm');
+          var date= formatter.format(DateTime.now());
           String topic = empId + 'TI' + orgId;
           if (InPushNotificationStatus == '1') {
-            sendPushNotification(eName + ' has marked Time In', '',
+            sendPushNotification(eName + ' has marked Time In at '+ date, '',
                 '\'' + topic + '\' in topics');
+          }
+          if (FakeLocationStatus==1) {
+            if(FakeLocation==5|| FakeLocation==13 || FakeLocation==7|| FakeLocation==15){
+              String subject="Fake Location";
+              String content= eName + ' has punched Time In from a spoofed location';
+              sendMailByAppToAdmin(subject, content);
+            }
+            if(FakeLocation==9|| FakeLocation==13 || FakeLocation==11|| FakeLocation==15) {
+              sendPushNotification(
+                  eName + ' has punched Time In from a spoofed location', '',
+                  '(\'' + globals.globalOrgTopic +
+                      '\' in topics) && (\'admin\' in topics)');
+            }
           }
         }
         else{
@@ -3093,12 +3122,27 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           var empId = prefs.getString('empid') ?? '';
           var orgId = prefs.getString("orgid") ?? '';
           var eName = prefs.getString('fname') ?? 'User';
+          var formatter = new DateFormat('HH:mm');
+          var date= formatter.format(DateTime.now());
           String topic = empId + 'TO' + orgId;
           if (OutPushNotificationStatus == '1') {
-            sendPushNotification(eName + ' has marked Time Out', '',
+            sendPushNotification(eName + ' has marked Time Out at '+ date, '',
                 '\'' + topic + '\' in topics');
 
             print('\'' + topic + '\' in topics');
+          }
+          if (FakeLocationStatus==1) {
+            if(FakeLocation==5|| FakeLocation==13 || FakeLocation==7|| FakeLocation==15){
+              String subject="Fake Location";
+              String content= eName + ' has punched Time Out from a spoofed location';
+              sendMailByAppToAdmin(subject, content);
+            }
+            if(FakeLocation==9|| FakeLocation==13 || FakeLocation==11|| FakeLocation==15) {
+              sendPushNotification(
+                  eName + ' has punched Time Out from a spoofed location', '',
+                  '(\'' + globals.globalOrgTopic +
+                      '\' in topics) && (\'admin\' in topics)');
+            }
           }
 
         }
@@ -3183,15 +3227,16 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     }*/
   }
 
-  void dialogwidget(BuildContext context) {
+  void dialogwidget(BuildContext context) async{
     print("Sohan patel");
     showDialog(
         context: context,
         barrierDismissible: false,
         // ignore: deprecated_member_use
         child: new AlertDialog(
-          content: new Text('Do you want mark yesterday timeout?'),
+          content: new Text('Your Time Out was not punched Yesterday. Kindly contact Admin to regularize Attendance'),
           actions: <Widget>[
+            /*
             RaisedButton(
               child: Text(
                 ' Yes ',
@@ -3220,9 +3265,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                   act1 = act;
                 });
               },
-            ),
+            ), */
           ],
+
         ));
+    Home ho = new Home();
+    await ho.updateTimeOut(empid, orgdir);
   }
 
 /*

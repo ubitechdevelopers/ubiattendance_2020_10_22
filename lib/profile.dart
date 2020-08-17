@@ -619,7 +619,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
               ],
             ),
-            if(globals.currentOrgStatus=="TrialOrg" )
+         /*   if(globals.currentOrgStatus=="TrialOrg" )
             Container(
               margin: EdgeInsets.only(bottom: 0.0),
               child: AdmobBanner(
@@ -631,6 +631,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 },
               ),
             ),
+            */
           ],
         ),
 

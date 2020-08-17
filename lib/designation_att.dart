@@ -268,7 +268,7 @@ class _Designation_att extends State<Designation_att> with SingleTickerProviderS
                                         latecommerlist,
                                         earlyleaverlist,
                                         'Designation Wise Summary Report\n' + today.text,
-                                        presentlist.toString(),
+                                        presentlist.length.toString(),
                                         'Designation_Wise_Report_' + today.text,
                                         'desg')
                                         .then((res) {

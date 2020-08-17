@@ -20,14 +20,17 @@ class _ShiftList extends State<ShiftList> {
   String _orgName='';
   bool _isButtonDisabled = false;
   String admin_sts='0';
-  var _shifts;
+  // var _shifts;        //sgcode1
+
   @override
   void initState() {
     super.initState();
+    getshiftName();
     checkNetForOfflineMode(context);
     dept = new TextEditingController();
     getOrgName();
-    _shifts = getShifts();
+    //getshiftName();
+    // _shifts = getShifts();
   }
   formatTime(String time){
     if(time.contains(":")){
@@ -44,6 +47,13 @@ class _ShiftList extends State<ShiftList> {
       admin_sts= prefs.getString('sstatus') ?? '0';
     });
   }
+
+  Future<List<Shift>> getshiftName() {    //sgcode1
+    print("inistate");
+    return getShifts();
+    // print(_shifts);
+  }
+
   @override
   Widget build(BuildContext context) {
     return getmainhomewidget();
@@ -129,7 +139,7 @@ class _ShiftList extends State<ShiftList> {
               ),
               Divider(height: 0.2,),
               new Expanded(
-                child: getDeptWidget(),
+                child: getShiftWidget(),
               ),
 
             ],
@@ -166,9 +176,9 @@ class _ShiftList extends State<ShiftList> {
     );
   }
 
-  getDeptWidget() {
+  getShiftWidget() {
     return new FutureBuilder<List<Shift>>(
-        future: _shifts,
+        future: getshiftName() ,                 //sgcode1
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return new ListView.builder(
@@ -322,7 +332,7 @@ class _ShiftList extends State<ShiftList> {
                     else {
                       Navigator.of(context, rootNavigator: true).pop('dialog');
                       showInSnackBar('Shift updated successfully');
-                      getDeptWidget();
+                      getShiftWidget();
                       new_dept.text = '';
                       _sts1 = 'Active';
                     }

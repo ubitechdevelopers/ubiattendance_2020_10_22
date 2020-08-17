@@ -13,6 +13,7 @@ import 'package:Shrine/timeoff_summary.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -734,6 +735,13 @@ class _AddTimeoff extends State<AddTimeoff> {
     // client = _clientname.text;
     client ="";
 
+    var prefs = await SharedPreferences.getInstance();
+    var orgTopic = prefs.getString("OrgTopic") ?? '';
+    var eName = prefs.getString('fname') ?? 'User';
+    String topic = orgTopic+'PushNotifications';
+    var formatter = new DateFormat('HH:mm');
+    var date= formatter.format(DateTime.now());
+
 
     var connectivityResult = await (new Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
@@ -751,6 +759,20 @@ class _AddTimeoff extends State<AddTimeoff> {
       print(issave);
       //String tempstatus = timeoffstatus;
       if (issave=='true') {
+        if(TimeOffStartStatus==13|| TimeOffStartStatus==9||TimeOffStartStatus==11||TimeOffStartStatus==15){
+          sendPushNotification(eName + ' is on Time Off since '+date, '',
+              '(\'' + orgTopic + '\' in topics) && (\'admin\' in topics)');
+          print('(\'' + orgTopic + '\' in topics) && (\'admin\' in topics)');
+
+
+        }
+        if(TimeOffStartStatus==5|| TimeOffStartStatus==7||TimeOffStartStatus==13||TimeOffStartStatus==15){
+          String content = eName + ' is on Time Off since '+date;
+          String subject = 'Time Off';
+          sendMailByAppToAdmin(subject,content);
+
+        }
+
         /*checkTimeOff().then((EmpList) {
           setState(() {
             flexiidsts = EmpList;

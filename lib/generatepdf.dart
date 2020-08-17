@@ -43,10 +43,10 @@ CreateDeptpdf(pdata, HeaderText, Total, pdfName, name) async {
     } else {
       a2.add('Name');
       if (name != 'absent') {
-        a2.add('TimeIn');
-        a2.add('TimeIn Location');
-        a2.add('TimeOut');
-        a2.add('TimeOut Location');
+        a2.add('Time In');
+        a2.add('Time In Location');
+        a2.add('Time Out');
+        a2.add('Time Out Location');
       }
       list.add(a2);
       for (var i = 0; i < pdata.length; i++) {
@@ -140,7 +140,7 @@ Createpdf(pdata, HeaderText, Total, pdfName, name) async {
     if (name == 'lateComers') {
       a2.add('Name');
       a2.add('Shift');
-      a2.add('TimeIn');
+      a2.add('Time In');
       a2.add('Late By');
       list.add(a2);
       for (var i = 0; i < pdata.length; i++) {
@@ -168,10 +168,10 @@ Createpdf(pdata, HeaderText, Total, pdfName, name) async {
     }else if(name == 'visitlist'){
       a2.add('Name');
       a2.add('Client Name');
-      a2.add('VisitIn');
-      a2.add('VisitIn Location');
-      a2.add('VisitOut');
-      a2.add('VisitOut Location');
+      a2.add('Visit In');
+      a2.add('Visit In Location');
+      a2.add('Visit Out');
+      a2.add('Visit Out Location');
       a2.add('Remarks');
       list.add(a2);
       for (var i = 0; i < pdata.length; i++) {
@@ -263,10 +263,10 @@ CreateDesgpdfAll(pdata, adata, ldata, edata, HeaderText, Total, pdfName, name) a
 
 
     a2.add('Name');
-    a2.add('TimeIn');
-    a2.add('TimeIn Location');
-    a2.add('TimeOut');
-    a2.add('TimeOut Location');
+    a2.add('Time In');
+    a2.add('Time In Location');
+    a2.add('Time Out');
+    a2.add('Time Out Location');
     list.add(a2);
     a2 = new List<String>();
     a2.add(' ');
@@ -453,10 +453,10 @@ CreateEmployeeWisepdf(pdata, adata, ldata, edata, HeaderText, pdfName, name) asy
 
    // a2.add('Name');
     a2.add('Date');
-    a2.add('TimeIn ');
-    a2.add('TimeIn Location');
-    a2.add('TimeOut ');
-    a2.add('TimeOut Location');
+    a2.add('Time In ');
+    a2.add('Time In Location');
+    a2.add('Time Out ');
+    a2.add('Time Out Location');
     list.add(a2);
    /* a2 = new List<String>();
   //  a2.add(' ');

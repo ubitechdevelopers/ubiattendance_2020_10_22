@@ -396,7 +396,7 @@ class _Settings extends State<Settings> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Icon(const IconData(0xe806, fontFamily: "CustomIcon"),size: 30.0,),
+            Icon(const IconData(58400, fontFamily: 'MaterialIcons'),size: 30.0,color: Colors.black38,),
             SizedBox(width: 20.0,),
             Expanded(
 //                            widthFactor: MediaQuery.of(context).size.width*0.10,

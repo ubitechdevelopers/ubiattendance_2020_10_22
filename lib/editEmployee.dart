@@ -767,6 +767,7 @@ class _EditEmployee extends State<EditEmployee> {
                             width: MediaQuery.of(context).size.width * .9,
                             child: TextFormField(
                               controller: _contact,
+                              enabled: false,
                              // initialValue: widget.phone,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
@@ -864,6 +865,9 @@ class _EditEmployee extends State<EditEmployee> {
                             validator: (value) {
                               if (value.isEmpty || value.length < 6) {
                                 return 'Password must be at least 6 characters';
+                              }
+                              if (value.trim()=="") {
+                                return 'Password can not be spaces';
                               }
                             },
                             onFieldSubmitted: (String value) {

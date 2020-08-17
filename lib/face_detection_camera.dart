@@ -398,7 +398,7 @@ Future<bool> saveTimeInOutImagePickerGroupAttFaceCamera(MarkTime mk,context,imag
               context: context,
               barrierDismissible: false,
               builder: (context) {
-                Future.delayed(Duration(seconds: 2), () {
+                Future.delayed(Duration(seconds: 3), () {
 
 
                   Navigator.of(context).pop(true);
@@ -419,7 +419,7 @@ Future<bool> saveTimeInOutImagePickerGroupAttFaceCamera(MarkTime mk,context,imag
               context: context,
               barrierDismissible: false,
               builder: (context) {
-                Future.delayed(Duration(seconds: 2), () {
+                Future.delayed(Duration(seconds: 3), () {
 
 
                   Navigator.of(context).pop(true);
@@ -442,7 +442,7 @@ Future<bool> saveTimeInOutImagePickerGroupAttFaceCamera(MarkTime mk,context,imag
               context: context,
               barrierDismissible: false,
               builder: (context) {
-                Future.delayed(Duration(seconds: 2), () {
+                Future.delayed(Duration(seconds: 3), () {
 
 
                   Navigator.of(context).pop(true);
@@ -466,7 +466,7 @@ Future<bool> saveTimeInOutImagePickerGroupAttFaceCamera(MarkTime mk,context,imag
               context: context,
               barrierDismissible: false,
               builder: (context) {
-                Future.delayed(Duration(seconds: 2), () {
+                Future.delayed(Duration(seconds: 3), () {
 
 
                   Navigator.of(context).pop(true);
@@ -491,7 +491,7 @@ Future<bool> saveTimeInOutImagePickerGroupAttFaceCamera(MarkTime mk,context,imag
                 context: context,
                 barrierDismissible: false,
                 builder: (context) {
-                  Future.delayed(Duration(seconds: 2), () {
+                  Future.delayed(Duration(seconds: 3), () {
                     Navigator.of(context).pop(true);
                     alertShowing=false;
 
