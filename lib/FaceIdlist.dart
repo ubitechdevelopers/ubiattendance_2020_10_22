@@ -202,7 +202,7 @@ class _FaceIdList extends State<FaceIdList> with SingleTickerProviderStateMixin 
                       labelText: 'Visit Feedback ', hintText: 'Visit Feedback (Optional)'),
                 ),
               ),*/
-              Text('Disapprove?'
+              Text('Disapprove?',style: TextStyle(color: Colors.black,fontSize: 18.0)
               ),
               SizedBox(height: 4.0,),
 

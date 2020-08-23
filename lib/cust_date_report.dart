@@ -429,7 +429,7 @@ class _CustomDateAttendance extends State<CustomDateAttendance> with SingleTicke
                                                           top: 3.0,
                                                           bottom: 3.0),
                                                       child: Text(
-                                                          "For More Information Pay Now ",
+                                                          "To view complete data, upgrade to Premium Plan ",
                                                           style: TextStyle(
                                                               fontSize: 18.0,
                                                               color: Colors
@@ -589,7 +589,7 @@ class _CustomDateAttendance extends State<CustomDateAttendance> with SingleTicke
                                                         bottom:
                                                         3.0),
                                                     child: Text(
-                                                        "For More Information Pay Now ",
+                                                        "To view complete data, upgrade to Premium Plan ",
                                                         style: TextStyle(
                                                             fontSize:
                                                             18.0,
@@ -843,7 +843,7 @@ class _CustomDateAttendance extends State<CustomDateAttendance> with SingleTicke
                                                           top: 3.0,
                                                           bottom: 3.0),
                                                       child: Text(
-                                                          "For More Information Pay Now ",
+                                                          "To view complete data, upgrade to Premium Plan ",
                                                           style: TextStyle(
                                                               fontSize: 18.0,
                                                               color: Colors
@@ -1088,7 +1088,7 @@ class _CustomDateAttendance extends State<CustomDateAttendance> with SingleTicke
                                                           top: 3.0,
                                                           bottom: 3.0),
                                                       child: Text(
-                                                          "For More Information Pay Now ",
+                                                          "To view complete data, upgrade to Premium Plan ",
                                                           style: TextStyle(
                                                               fontSize: 18.0,
                                                               color: Colors

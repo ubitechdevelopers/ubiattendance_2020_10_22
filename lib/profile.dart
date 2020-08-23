@@ -493,6 +493,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           labelText: 'Phone',
                         ),
                         controller: _phone,
+                        enabled: false,
                         keyboardType: TextInputType.phone,
                         validator: (date) {
                           if (_phone.text==null||_phone.text.trim()==''){
@@ -500,7 +501,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           }
                         },
                       ),
-                      ButtonBar(
+                    /*  ButtonBar(
                         children: <Widget>[
                           FlatButton(
                             highlightColor: Colors.transparent,
@@ -550,6 +551,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ],
                       ),
+                      */
                     ],
                   ),
                   width: MediaQuery.of(context).size.width*.9,

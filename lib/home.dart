@@ -478,6 +478,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       var isAdmin = admin_sts = prefs.getString('sstatus').toString() ?? '0';
       var employeeTopic = prefs.getString("EmployeeTopic") ?? '';
       //_firebaseMessaging.subscribeToTopic('101');
+       _firebaseMessaging.subscribeToTopic('testtopic');
       if (isAdmin == '1') {
         _firebaseMessaging.subscribeToTopic('admin');
         print("Admin topic subscribed");
@@ -2257,16 +2258,19 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   mainbodyWidget() {
     ////to do check act1 for poor network connection
     if(globalstreamlocationaddr == "Location not fetched."){
-      return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-         Text('Location permission is restricted from app settings, click "Open Settings" to allow permission.',
-              textAlign: TextAlign.center,
-              style: new TextStyle(fontSize: 14.0, color: Colors.red)),
-            RaisedButton(
-              child: Text('Open Settings'),
-              onPressed: () {
-                PermissionHandler().openAppSettings();
-              },
-            )],);
+      return Padding(
+        padding: const EdgeInsets.only(left:45.0),
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+           Text('Kindly enable location excess from settings',
+                textAlign: TextAlign.center,
+                style: new TextStyle(fontSize: 14.0, color: Colors.red)),
+              RaisedButton(
+                child: Text('Open Settings'),
+                onPressed: () {
+                  PermissionHandler().openAppSettings();
+                },
+              )],),
+      );
 
 
 

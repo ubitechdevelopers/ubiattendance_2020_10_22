@@ -552,7 +552,7 @@ class _TodayAttendance extends State<TodayAttendance>
                                                                 top: 3.0,
                                                                 bottom: 3.0),
                                                         child: Text(
-                                                            "For More Information Pay Now ",
+                                                            "To view complete data, upgrade to Premium Plan ",
                                                             style: TextStyle(
                                                                 fontSize: 18.0,
                                                                 color: Colors
@@ -831,7 +831,7 @@ class _TodayAttendance extends State<TodayAttendance>
                                                                     bottom:
                                                                         3.0),
                                                             child: Text(
-                                                                "For More Information Pay Now ",
+                                                                "To view complete data, upgrade to Premium Plan ",
                                                                 style: TextStyle(
                                                                     fontSize:
                                                                         18.0,
@@ -1206,7 +1206,7 @@ class _TodayAttendance extends State<TodayAttendance>
                                                                 top: 3.0,
                                                                 bottom: 3.0),
                                                         child: Text(
-                                                            "For More Information Pay Now ",
+                                                            "To view complete data, upgrade to Premium Plan ",
                                                             style: TextStyle(
                                                                 fontSize: 18.0,
                                                                 color: Colors

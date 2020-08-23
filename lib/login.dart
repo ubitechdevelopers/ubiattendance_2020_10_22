@@ -185,7 +185,7 @@ class _LoginPageState extends State<LoginPage> {
                                   barrierDismissible: false,
                                   // ignore: deprecated_member_use
                                   child: new AlertDialog(
-                                    content: new Text('Kindly enable location excess from settings'),
+                                    content: new Text('Kindly enable location excess from settings',style:TextStyle(fontSize: 16.0,)),
                                     actions: <Widget>[
                                       RaisedButton(
                                         child: Text('Open Settings'),
@@ -707,7 +707,7 @@ class _LoginPageState extends State<LoginPage> {
       });
       Scaffold.of(context)
           .showSnackBar(
-          SnackBar(content: Text("Your account has been deactivated. You can not login.")));
+          SnackBar(content: Text("Your account has been deactivated or archived. You can not login.")));
       return;
     }else if(islogin=="failure"){
       setState(() {
@@ -765,7 +765,7 @@ class _LoginPageState extends State<LoginPage> {
         });
         Scaffold.of(context)
             .showSnackBar(
-            SnackBar(content: Text("Your account has been deactivated. You can not login.")));
+            SnackBar(content: Text("Your account has been deactivated or archived. You can not login.")));
         return;
       }
       else if(islogin=="failure"){

@@ -723,7 +723,7 @@ class _TimeoffSummary extends State<TimeoffSummary> {
       //String tempstatus = timeoffstatus;
       if (issave=='true') {
         if(TimeOffEndStatus==13||TimeOffEndStatus==9||TimeOffEndStatus==11||TimeOffEndStatus==15){
-          sendPushNotification(eName + ' has ended Time Off at ' + date, '',
+          sendPushNotification(eName + ' ' +TimeOffEndStatusMessage+' '+ date, '',
               '(\'' + orgTopic + '\' in topics) && (\'admin\' in topics)');
           print('(\'' + orgTopic + '\' in topics) && (\'admin\' in topics)');
 
@@ -731,7 +731,7 @@ class _TimeoffSummary extends State<TimeoffSummary> {
         }
         if(TimeOffEndStatus==5||TimeOffEndStatus==7||TimeOffEndStatus==13||TimeOffEndStatus==15){
           String subject = 'Time Off';
-          String content =eName + ' has ended Time Off at ' + date;
+          String content =eName + ' ' +TimeOffEndStatusMessage+' '+ date;
           sendMailByAppToAdmin(subject,content);
 
         }

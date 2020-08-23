@@ -353,7 +353,7 @@ class _YesAttendance extends State<YesAttendance> with SingleTickerProviderState
                                                       width: MediaQuery.of(context).size.width*0.88,
                                                       color: Colors.red[400],
                                                       padding:EdgeInsets.only(top:3.0,bottom: 3.0),
-                                                      child:Text("For More Information Pay Now ",style: TextStyle(fontSize: 18.0,color: Colors.white),textAlign: TextAlign.center),
+                                                      child:Text("To view complete data, upgrade to Premium Plan ",style: TextStyle(fontSize: 18.0,color: Colors.white),textAlign: TextAlign.center),
                                                     ),
                                                   ),
                                                   onTap: () {
@@ -482,7 +482,7 @@ class _YesAttendance extends State<YesAttendance> with SingleTickerProviderState
                                                     width: MediaQuery.of(context).size.width*0.88,
                                                     color: Colors.red[400],
                                                     padding:EdgeInsets.only(top:3.0,bottom: 3.0),
-                                                    child:Text("For More Information Pay Now ",style: TextStyle(fontSize: 18.0,color: Colors.white),textAlign: TextAlign.center),
+                                                    child:Text("To view complete data, upgrade to Premium Plan ",style: TextStyle(fontSize: 18.0,color: Colors.white),textAlign: TextAlign.center),
                                                   ),
                                                 ),
                                                 onTap: () {
@@ -705,7 +705,7 @@ class _YesAttendance extends State<YesAttendance> with SingleTickerProviderState
                                                       width: MediaQuery.of(context).size.width*0.88,
                                                       color: Colors.red[400],
                                                       padding:EdgeInsets.only(top:3.0,bottom: 3.0),
-                                                      child:Text("For More Information Pay Now ",style: TextStyle(fontSize: 18.0,color: Colors.white),textAlign: TextAlign.center),
+                                                      child:Text("To view complete data, upgrade to Premium Plan ",style: TextStyle(fontSize: 18.0,color: Colors.white),textAlign: TextAlign.center),
                                                     ),
                                                   ),
                                                   onTap: () {
@@ -930,7 +930,7 @@ class _YesAttendance extends State<YesAttendance> with SingleTickerProviderState
                                                       width: MediaQuery.of(context).size.width*0.88,
                                                       color: Colors.red[400],
                                                       padding:EdgeInsets.only(top:3.0,bottom: 3.0),
-                                                      child:Text("For More Information Pay Now ",style: TextStyle(fontSize: 18.0,color: Colors.white),textAlign: TextAlign.center),
+                                                      child:Text("To view complete data, upgrade to Premium Plan ",style: TextStyle(fontSize: 18.0,color: Colors.white),textAlign: TextAlign.center),
                                                     ),
                                                   ),
                                                   onTap: () {

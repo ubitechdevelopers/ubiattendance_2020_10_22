@@ -70,6 +70,7 @@ class Home{
         String newpwd = timeinoutMap['pwd'].toString();
         String password_sts = timeinoutMap['password_sts'].toString(); //somya
         String changepasswordStatus = timeinoutMap['admin_password_sts'].toString();
+        print('beforepushnotification');
 
         //////////////////// Push Notification Status ///////////////////////
 
@@ -87,9 +88,25 @@ class Home{
         TimeOffStartStatus = int.parse(timeinoutMap['TimeOffStart'])??0;
         TimeOffEndStatus = int.parse(timeinoutMap['TimeOffEnd'])??0;
 
+        UnderTimeMessage = timeinoutMap['UnderTimeMessage'].toString();
+        VisitMessage = timeinoutMap['VisitMessage'].toString();
+        OutsideGeofenceMessage=timeinoutMap['OutsideGeofenceMessage'].toString();
+        FakeLocationMessage=timeinoutMap['FakeLocationMessage'].toString();
+        FaceIdRegMessage=timeinoutMap['FaceIdRegMessage'].toString();
+        FaceIdDisapprovedMessage=timeinoutMap['FaceIdDisapprovedMessage'].toString();
+        SuspiciousSelfieMessage = timeinoutMap['SuspiciousSelfieMessage'].toString();
+        SuspiciousDeviceMessage = timeinoutMap['SuspiciousDeviceMessage'].toString();
+        DisapprovedAttMessage = timeinoutMap['DisapprovedAttMessage'].toString();
+        AttEditedMessage = timeinoutMap['AttEditedMessage'].toString();
+        ChangedPasswordMessage = timeinoutMap['ChangedPasswordMessage'].toString();
+        TimeOffStartStatusMessage = timeinoutMap['TimeOffStartStatusMessage'].toString();
+        TimeOffEndStatusMessage = timeinoutMap['TimeOffEndStatusMessage'].toString();
+
 
 
         //////////////////// Push Notification Status ///////////////////////
+
+        print('afterpushnotification');
 
         String org_country = timeinoutMap['orgcountry'].toString();
         prefs.setString('countrycode',timeinoutMap['countrycode']);

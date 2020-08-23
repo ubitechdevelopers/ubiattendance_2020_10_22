@@ -415,7 +415,7 @@ class _Flexitime extends State<Flexitime> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-                'Location permission is restricted from app settings, click "Open Settings" to allow permission.',
+                'Kindly enable location excess from settings',
                 textAlign: TextAlign.center,
                 style: new TextStyle(fontSize: 14.0, color: Colors.red)),
             RaisedButton(
@@ -685,7 +685,7 @@ class _Flexitime extends State<Flexitime> {
     } else {
       return Column(children: [
         Text(
-            'Location permission is restricted from app settings, click "Open Settings" to allow permission.',
+            'Kindly enable location excess from settings',
             textAlign: TextAlign.center,
             style: new TextStyle(fontSize: 14.0, color: Colors.red)),
         RaisedButton(
