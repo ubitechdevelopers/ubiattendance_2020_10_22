@@ -124,6 +124,24 @@ storeDeviceInfo(empid,deviceid,devicename) async{
     print(e.toString());
   }
 }
+storeRating(empid,orgid,rating,remark) async{
+  try{
+    Dio dio = new Dio();
+    /*
+      FormData formData = new FormData.from({
+        "uid": empid,
+        "refno": orgid,
+      });*/
+
+    print(globals.path+"storeRating?empid=$empid&refid=$orgid&rating=$rating&remark=$remark");
+    await dio.post(globals.path+"storeRating?empid=$empid&refid=$orgid&rating=$rating&remark=$remark");
+
+  }catch(e)
+  {
+    print(e.toString());
+  }
+}
+
 
 
 
@@ -135,6 +153,7 @@ Future<Map<String, dynamic>> sendPushNotification(String title,String nBody,Stri
     'condition': topic,
     'notification': {'body': nBody,
       'title': title,
+      'click_action': 'FLUTTER_NOTIFICATION_CLICK'
     }
   });
 
@@ -317,6 +336,406 @@ sendMailByAppToEmployee(String id,String content) async{
   {
     print(e.toString());
   }
+}
+class LeaveList {
+  String Id;
+  String Name;
+  String AppliedDate;
+  String FromDate;
+  String ToDate;
+  String Reason;
+  String ApprovalStatus;
+  String Remarks;
+  String LeaveId;
+  String NoofLeaves;
+
+  LeaveList({
+    this.Id,
+    this.Name,
+    this.AppliedDate,
+    this.FromDate,
+    this.ToDate,
+    this.Reason,
+    this.ApprovalStatus,
+    this.Remarks,
+    this.LeaveId,
+    this.NoofLeaves
+  });
+}
+
+Future<List<LeaveList>> getLeaveSummary() async{
+  Dio dio = new Dio();
+  final prefs = await SharedPreferences.getInstance();
+  String orgid = prefs.getString('orgid') ?? '';
+  String empid = prefs.getString('empid')??"";
+  try {
+    FormData formData = new FormData.from({
+      "uid": empid,
+      "refid":orgid
+    });
+    //Response response = await dio.post("https://sandbox.ubiattendance.com/index.php/services/getInfo", data: formData);
+    Response response = await dio.post(globals.path+"getListofLeave", data: formData);
+    print(globals.path+"getListofLeave?uid=$empid&refid=$orgid");
+    //print(response.data.toString());
+    //print('--------------------getLeaveSummary Called-----------------------');
+    List responseJson = json.decode(response.data.toString());
+      print("LEAVE LIST");
+  //  print(userList);
+    print(response.data.toString());
+    print("LEAVE LIST");
+    List<LeaveList> userList = createLeaveList(responseJson);
+
+    return userList;
+
+  }catch(e){
+    //print(e.toString());
+  }
+}
+
+List<LeaveList> createLeaveList(List data){
+  List<LeaveList> list = new List();
+  for (int i = 0; i < data.length; i++) {
+    String Id = data[i]["Id"];
+    String Name = data[i]["name"];
+    String AppliedDate = data[i]["AppliedDate"];
+    String Reason=data[i]["Reason"];
+    String ApprovalStatus='';
+    String Remarks=data[i]["Remarks"];
+    String FromDate = data[i]["Date"].toString();
+    String ToDate = data[i]["ToDate"].toString();
+    String LeaveId = data[i]["LeaveId"].toString();
+    String NoofLeaves = data[i]["NoofLeaves"].toString();
+    if(data[i]["ApprovalStatus"].toString()=='1')
+      ApprovalStatus='Pending';
+    else  if(data[i]["ApprovalStatus"].toString()=='2')
+      ApprovalStatus='Approved';
+    else  if(data[i]["ApprovalStatus"].toString()=='3')
+      ApprovalStatus='Rejected';
+    else  if(data[i]["ApprovalStatus"].toString()=='4')
+      ApprovalStatus='Withdraw';
+    //print(LeaveDate);
+    LeaveList leave = new LeaveList(Id: Id,Name: Name,AppliedDate: AppliedDate,FromDate :FromDate,ToDate: ToDate, Reason: Reason, ApprovalStatus: ApprovalStatus, Remarks: Remarks, LeaveId: LeaveId,NoofLeaves: NoofLeaves);
+    list.add(leave);
+     //print("LEAVE LIST");
+   // print(list);
+    print("LEAVE LIST Here");
+  }
+  return list;
+}
+class LeaveListAll {
+  String Id;
+  String name;
+  String ApprovalStatus;
+  String Reason;
+  String applydate;
+  String Fdate;
+  String Tdate;
+  String LeaveId;
+  String Remark;
+  int NoofLeaves;
+  String EmployeeId;
+
+  LeaveListAll(
+      { this.Id,
+        this.name,
+        this.ApprovalStatus,
+        this.Reason,
+        this.applydate,
+        this.Fdate,
+        this.Tdate,
+        this.LeaveId,
+        this.Remark,
+        this.NoofLeaves,
+        this.EmployeeId
+      });
+}
+class LeaveH {
+  String Id;
+  String LeaveId;
+  String name;
+  String Reason;
+  String Date;
+  String ApprovalStatus;
+  String Remarks;
+  String AppliedDate;
+  LeaveH(
+      { this.Id,
+        this.LeaveId,
+        this.name,
+        this.Reason,
+        this.Date,
+        this.ApprovalStatus,
+        this.Remarks,
+        this.AppliedDate
+
+      });
+}
+class Person {
+  final String LeaveId;
+  final String empid;
+
+  Person(this.LeaveId,this.empid);
+}
+
+Future<List<LeaveListAll>> getLeaveApprovals() async {
+  Dio dio = new Dio();
+  final prefs = await SharedPreferences.getInstance();
+  String orgid = prefs.getString('orgid') ?? '';
+  print('====================HELLO==================');
+  FormData formData = new FormData.from({
+    "refid":orgid
+  });
+  Response response = await dio.post(globals.path+"getListofLeaveAll", data: formData);
+  print(globals.path+"getListofLeaveAll?refid=$orgid");
+  final res = json.decode(response.data.toString());
+
+  print(res);
+  List<LeaveListAll> userList1 = createTeamleaveapporval(res);
+
+  return userList1;
+}
+
+
+List<LeaveListAll> createTeamleaveapporval(List data) {
+
+  List<LeaveListAll> list = new List();
+  for (int i = 0; i < data.length; i++) {
+
+    String Id = data[i]["Id"].toString();
+    String name = data[i]["name"].toString();
+    String Reason = data[i]["Reason"].toString();
+    String applydate = data[i]["AppliedDate"].toString();
+    String Fdate = data[i]["Date"].toString();
+    String Tdate = data[i]["ToDate"].toString();
+    String LeaveId = data[i]["LeaveId"].toString();
+    int NoofLeaves = int.parse(data[i]["NoofLeaves"]);
+    String EmployeeId = data[i]["EmployeeId"];
+    String ApprovalStatus='';
+    if(data[i]["ApprovalStatus"].toString()=='1')
+       ApprovalStatus='Pending';
+    else  if(data[i]["ApprovalStatus"].toString()=='2')
+       ApprovalStatus='Approved';
+    else  if(data[i]["ApprovalStatus"].toString()=='3')
+       ApprovalStatus='Rejected';
+    else  if(data[i]["ApprovalStatus"].toString()=='4')
+       ApprovalStatus='Withdraw';
+
+
+    LeaveListAll tos = new LeaveListAll(
+        Id: Id,
+        name: name,
+        Reason: Reason,
+        applydate: applydate,
+        Fdate: Fdate,
+        Tdate: Tdate,
+        LeaveId: LeaveId,
+        ApprovalStatus:  ApprovalStatus,
+        NoofLeaves: NoofLeaves,
+        EmployeeId: EmployeeId);
+    list.add(tos);
+
+  }
+  return list;
+}
+withdrawLeave(LeaveId,orgid,empid) async{
+  Dio dio = new Dio();
+  try {
+    final prefs = await SharedPreferences.getInstance();
+    FormData formData = new FormData.from({
+      "LeaveId": LeaveId,
+      "uid": empid,
+      "refid": orgid,
+    });
+
+    //Response response = await dio.post("https://sandbox.ubiattendance.com/index.php/services/getInfo", data: formData);
+    print(globals.path+"withdrawLeave?refid=$orgid");
+    Response response = await dio.post(
+        globals.path+"withdrawLeave",
+        data: formData);
+    //print(response.toString());
+    if (response.statusCode == 200) {
+      Map leaveMap = json.decode(response.data);
+      if(leaveMap["status"]=='true'){
+        return "success";
+      }else{
+        return "failure";
+      }
+    }else{
+      return "No Connection";
+    }
+  }catch(e){
+    //print(e.toString());
+    return "Poor network connection";
+  }
+}
+ApproveLeave(Leaveid,comment,sts) async{
+  String empid;
+  String orgid;
+  // Employee emp;
+  Dio dio = new Dio();
+  final prefs = await SharedPreferences.getInstance();
+  empid = prefs.getString('empid');
+  orgid =prefs.getString('orgid');
+  //emp = new Employee(employeeid: empid, organization: organization);
+  try {
+    FormData formData = new FormData.from({
+      "uid": empid,
+      "refid": orgid,
+      "LeaveId": Leaveid,
+      "comment": comment,
+      "sts": sts,
+      // "leavests": leave.approverstatus
+    });
+    /*  print(comment);
+    print(Leaveid);
+    print(empid);
+    print(organization);
+    print(sts);*/
+    //Response response = await dio.post("https://sandbox.ubiattendance.com/index.php/services/getInfo", data: formData);
+//Response response = await dio.post(  path_hrm_india+"ApproveLeave",data: formData);
+    print(globals.path+"Approveleave?LeaveId=$Leaveid&refid=$orgid&comment=$comment&sts=$sts");
+    Response response = await dio.post(
+        globals.path+"Approveleave",
+        data: formData);
+    final leaveMap = response.data.toString();
+    print("-------------------");
+    print(response.toString());
+    if (leaveMap.contains("false"))
+    {
+      print("false approve leave function--->" + response.data.toString());
+      return "false";
+    } else {
+      print("true  approve leave function---" + response.data.toString());
+      return "true";
+    }
+    //print(response.toString());
+    /* if (response.statusCode == 200) {
+      Map leaveMap = json.decode(response.data);
+      if(leaveMap["status"]==true){
+        return "success";
+
+      }else{
+        return "failure";
+      }
+    }else{
+      return "No Connection";
+    }*/
+  }catch(e){
+    //print(e.toString());
+    return "Poor network connection";
+  }
+}
+ApproveLeaveEmp(Ids,comment,sts) async{
+  String empid;
+  String orgid;
+  // Employee emp;
+  Dio dio = new Dio();
+  final prefs = await SharedPreferences.getInstance();
+  empid = prefs.getString('empid');
+  orgid =prefs.getString('orgid');
+  //emp = new Employee(employeeid: empid, organization: organization);
+  try {
+    FormData formData = new FormData.from({
+      "uid": empid,
+      "refid": orgid,
+      "Ids": Ids,
+      "comment": comment,
+      "sts": sts,
+      // "leavests": leave.approverstatus
+    });
+    /*  print(comment);
+    print(Leaveid);
+    print(empid);
+    print(organization);
+    print(sts);*/
+    //Response response = await dio.post("https://sandbox.ubiattendance.com/index.php/services/getInfo", data: formData);
+//Response response = await dio.post(  path_hrm_india+"ApproveLeave",data: formData);
+    print(globals.path+"ApproveleaveEmp?LeaveId=$Ids&refid=$orgid&comment=$comment&sts=$sts");
+    Response response = await dio.post(
+        globals.path+"ApproveleaveEmp",
+        data: formData);
+    final leaveMap = response.data.toString();
+    print("-------------------");
+    print(response.toString());
+    if (leaveMap.contains("false"))
+    {
+      print("false approve leave function--->" + response.data.toString());
+      return "false";
+    } else {
+      print("true  approve leave function---" + response.data.toString());
+      return "true";
+    }
+    //print(response.toString());
+    /* if (response.statusCode == 200) {
+      Map leaveMap = json.decode(response.data);
+      if(leaveMap["status"]==true){
+        return "success";
+
+      }else{
+        return "failure";
+      }
+    }else{
+      return "No Connection";
+    }*/
+  }catch(e){
+    //print(e.toString());
+    return "Poor network connection";
+  }
+}
+
+
+Future<List<LeaveH>> getleavehistory(LeaveId,empid) async{
+  final prefs = await SharedPreferences.getInstance();
+  Dio dio = new Dio();
+  String orgid = prefs.getString('orgid') ?? '';
+  final response = await dio.post(globals.path + 'getListofLeaveEmployee?refid=$orgid&empid=$empid&LeaveId=$LeaveId');
+  // print("leavetype22----------->");
+  // print(response);
+  List data = json.decode(response.data.toString());
+  // print("leavetype----------->");
+  // print(data);
+  List<LeaveH> leavetype = createleavehistory(data);
+  return leavetype;
+}
+
+List<LeaveH> createleavehistory(List data) {
+
+  List<LeaveH> list = new List();
+  for (int i = 0; i < data.length; i++) {
+
+    String Id = data[i]["Id"].toString();
+    String name = data[i]["name"].toString();
+    String LeaveId =data[i]["LeaveId"].toString();
+    String Reason=data[i]["Reason"].toString();
+    String Date=data[i]["Date"].toString();
+    String Remarks=data[i]["Remarks"].toString();
+    String AppliedDate=data[i]["AppliedDate"].toString();
+    String ApprovalStatus='';
+    if(data[i]["ApprovalStatus"].toString()=='1')
+      ApprovalStatus='Pending';
+    else  if(data[i]["ApprovalStatus"].toString()=='2')
+      ApprovalStatus='Approved';
+    else  if(data[i]["ApprovalStatus"].toString()=='3')
+      ApprovalStatus='Rejected';
+    else  if(data[i]["ApprovalStatus"].toString()=='4')
+      ApprovalStatus='Withdraw';
+
+
+    //  print("********************"+Left+"***"+Used+"***"+Entitle);
+    LeaveH tos = new LeaveH(
+        Id: Id,
+        name: name,
+        LeaveId:LeaveId,
+        Reason: Reason,
+        Date: Date,
+        ApprovalStatus:ApprovalStatus,
+        Remarks:Remarks,
+        AppliedDate:AppliedDate
+
+    );
+    list.add(tos);
+  }
+  return list;
 }
 
 

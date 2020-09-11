@@ -1856,7 +1856,7 @@ class SaveImage {
         /*getTempImageDirectory();*/
         Map MarkAttMap = json.decode(response1.toString());
         print('------------1*');
-        print(MarkAttMap["res"].toString());
+        print(MarkAttMap["status"].toString());
         print('------------2*');
         if (MarkAttMap["status"].toString() == 'true')
           return 'true';
@@ -1870,6 +1870,56 @@ class SaveImage {
         }
         else
           return 'false';
+    } catch (e) {
+      print('7--');
+      globals.globalCameraOpenedStatus=false;
+      print(e.toString());
+      return 'false';
+    }
+  }
+  Future<String> applyLeave(empid, reason, fromdate, todate,halfdaysts,halfdaysts1,orgid) async {
+    try {
+      globals.globalCameraOpenedStatus=false;
+      print('------------**vvxxbb');
+      print('fromdate---->>>>'+fromdate);
+      print('todate------->>>>'+todate);
+      //// sending this base64image string +to rest api
+      Dio dio = new Dio();
+      Response<String> response1;
+      try {
+        print(globals.path + "applyLeave?uid=$empid&reason=$reason&refid=$orgid&fromdate=$fromdate&todate=$todate&halfdaysts=$halfdaysts&halfdaysts1=$halfdaysts1");
+        response1 =
+        await dio.post(globals.path + "applyLeave?uid=$empid&reason=$reason&refid=$orgid&fromdate=$fromdate&todate=$todate&halfdaysts=$halfdaysts&halfdaysts1=$halfdaysts1");
+        print("----->apply leave --->" + response1.toString());
+      } catch (e) {
+        print('------------*');
+        print(e.toString());
+        print('------------*');
+      }
+
+      /*getTempImageDirectory();*/
+      Map MarkAttMap = json.decode(response1.toString());
+      print('------------1*');
+      print(MarkAttMap["res"].toString());
+      print('------------2*');
+      if (MarkAttMap["status"].toString() == 'true')
+        return 'true';
+      else if(MarkAttMap["status"].toString() == 'false1')
+      {
+        return 'false1';
+      }
+      else if(MarkAttMap["status"].toString() == 'false2')
+      {
+        return 'false2';
+      }else if(MarkAttMap["status"].toString() == 'false3')
+      {
+        return 'false3';
+      }else if(MarkAttMap["status"].toString() == 'false4')
+      {
+        return 'false4';
+      }
+      else
+        return 'false';
     } catch (e) {
       print('7--');
       globals.globalCameraOpenedStatus=false;

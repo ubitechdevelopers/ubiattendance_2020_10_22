@@ -204,7 +204,7 @@ class _FaceIdList extends State<FaceIdList> with SingleTickerProviderStateMixin 
               ),*/
               Text('Disapprove?',style: TextStyle(color: Colors.black,fontSize: 18.0)
               ),
-              SizedBox(height: 4.0,),
+              SizedBox(height: 3.0,),
 
             ],
           ),

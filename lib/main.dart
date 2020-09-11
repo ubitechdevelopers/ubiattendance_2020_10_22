@@ -17,6 +17,8 @@ import 'dart:convert';
 
 import 'package:Shrine/app.dart';
 import 'package:Shrine/globals.dart' as prefix0;
+import 'package:Shrine/reports.dart';
+import 'package:Shrine/timeoff_list.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -39,6 +41,9 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey(debugLabel: "Main Navigator");
+
+
   void initState() {
     //checknetonpage(context);
     // StreamLocation sl = new StreamLocation();
@@ -117,4 +122,5 @@ class _MyAppState extends State<MyApp> {
       },
     );
   }
+
 }

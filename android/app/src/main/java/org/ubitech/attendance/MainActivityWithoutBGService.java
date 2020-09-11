@@ -198,21 +198,23 @@ public class MainActivityWithoutBGService extends FlutterActivity {
 
       channel=new MethodChannel(getFlutterView(), CHANNEL);
       fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+      for(int ij=0;ij<10;ij++){
+          fusedLocationClient.getLastLocation()
+                  .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                      @Override
+                      public void onSuccess(Location location) {
+                          // Got last known location. In some rare situations this can be null.
+                          if (location != null) {
 
-      fusedLocationClient.getLastLocation()
-              .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                  @Override
-                  public void onSuccess(Location location) {
-                      // Got last known location. In some rare situations this can be null.
-                      if (location != null) {
+                              mCurrentLocation=location;
+                              //if(mCurrentLocation.hasAccuracy())
+                                  updateLocationToFlutter(channel,mCurrentLocation);
 
-                          mCurrentLocation=location;
-                          if(mCurrentLocation.hasAccuracy())
-                          updateLocationToFlutter(channel,mCurrentLocation);
-
+                          }
                       }
-                  }
-              });
+                  });
+      }
+
       locationRequest = LocationRequest.create();
       locationRequest.setInterval(10000);
       locationRequest.setFastestInterval(5000);
@@ -723,6 +725,25 @@ Log.i("WorkerMinutesForTimeOut",minutes+"");
   protected void onResume() {
     super.onResume();
     try{
+
+
+
+        for(int ij=0;ij<10;ij++){
+            fusedLocationClient.getLastLocation()
+                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            // Got last known location. In some rare situations this can be null.
+                            if (location != null) {
+
+                                mCurrentLocation=location;
+                                //if(mCurrentLocation.hasAccuracy())
+                                updateLocationToFlutter(channel,mCurrentLocation);
+
+                            }
+                        }
+                    });
+        }
 
        fusedLocationClient.requestLocationUpdates(locationRequest,
                locationCallback,

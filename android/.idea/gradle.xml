@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="GradleMigrationSettings" migrationVersion="1" />
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
@@ -9,8 +8,6 @@
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/app" />
             <option value="D:/flutter/.pub-cache/git/flutter_native_image-884d50a6cd4b88d78a849dc7ccd70eaf23fd0cab/android" />
             <option value="D:/flutter/.pub-cache/hosted/pub.dartlang.org/admob_flutter-0.3.4/android" />
             <option value="D:/flutter/.pub-cache/hosted/pub.dartlang.org/android_intent-0.3.7+2/android" />
@@ -58,6 +55,8 @@
             <option value="D:/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_macos-0.0.1+7/android" />
             <option value="D:/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_web-0.1.1+6/android" />
             <option value="D:/flutter/.pub-cache/hosted/pub.dartlang.org/wakelock-0.1.4+1/android" />
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/app" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

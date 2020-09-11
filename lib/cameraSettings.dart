@@ -183,7 +183,7 @@ class _CameraSettings extends State<CameraSettings> {
                 children: <Widget>[
                   SizedBox(height: 20.0),
                   Center(
-                    child:Text("App\'s Camera",style: new TextStyle(fontSize: 22.0,color: appcolor)),
+                    child:Text("Choose Camera",style: new TextStyle(fontSize: 22.0,color: appcolor)),
                   ),
                   SizedBox(height: 30.0),
                   Container(
@@ -194,7 +194,7 @@ class _CameraSettings extends State<CameraSettings> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[    Container(
                                 width: MediaQuery.of(context).size.width*.65,
-                                child: Text("ubiAttendance Camera",style: TextStyle(fontSize: 22.0),
+                                child: Text("App\'s Camera",style: TextStyle(fontSize: 22.0),
 
                                 ),
                               ),

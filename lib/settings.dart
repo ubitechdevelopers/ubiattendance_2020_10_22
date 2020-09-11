@@ -1,4 +1,5 @@
 import 'package:Shrine/FaceIdlist.dart';
+import 'package:Shrine/applyLeave.dart';
 import 'package:Shrine/globals.dart' as prefix0;
 import 'package:Shrine/push_notification_for_employee_settings.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ import 'employee_list.dart';
 import 'globals.dart';
 import 'holidays.dart';
 import 'home.dart';
+import 'myleave.dart';
 import 'notification_settings.dart';
 import 'payment.dart';
 import 'permission.dart';
@@ -733,7 +735,7 @@ class _Settings extends State<Settings> {
                   Padding(
                     padding: const EdgeInsets.only(top: 5.0),
                     child: Container(
-                        child: Text('Choose phone camera or ubiAttendance camera',style: TextStyle(fontSize: 12.0,letterSpacing: 1),)
+                        child: Text('Choose Camera',style: TextStyle(fontSize: 12.0,letterSpacing: 1),)
                     ),
                   ),
                 ],
@@ -924,6 +926,8 @@ class _Settings extends State<Settings> {
         );
       },
     ));
+
+
 
     return list;
   }
