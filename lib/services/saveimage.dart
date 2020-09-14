@@ -114,8 +114,8 @@ class SaveImage {
 
 
 
-  Future<bool> saveTimeInOutImagePickerAppCamera(MarkTime mk,context) async {
-
+  Future<Map> saveTimeInOutImagePickerAppCamera(MarkTime mk,context) async {
+    var MarkAttMap;
     try{
       File imagei = null;
       var isNextDayAWorkingDay=0;
@@ -226,15 +226,15 @@ class SaveImage {
               tempimage.save();
             }
 
-            return true;
+            return MarkAttMap;
           }
           else
-            return false;
+            return MarkAttMap;
         }
         else {
           globals.globalCameraOpenedStatus=false;
           print("6");
-          return false;
+          return MarkAttMap;
         }
       }else{
 
@@ -292,14 +292,14 @@ class SaveImage {
         Map MarkAttMap = json.decode(response1.data);
         print(MarkAttMap["status"].toString());
         if (MarkAttMap["status"] == 1 || MarkAttMap["status"] == 2)
-          return true;
+          return MarkAttMap;
         else
-          return false;
+          return MarkAttMap;
       }
     } catch (e) {
       print(e.toString());
       globals.globalCameraOpenedStatus=false;
-      return false;
+      return MarkAttMap;
     }
   }
 
@@ -564,7 +564,7 @@ class SaveImage {
     }
   }
 
-  Future<bool> saveTimeInOutImagePicker(MarkTime mk,context) async {
+  Future<Map> saveTimeInOutImagePicker(MarkTime mk,context) async {
 
  /*  int EmployeeId = 123;
     String Action = "AttendanceTimein";
@@ -614,6 +614,7 @@ class SaveImage {
       print(img[i].OrganizationId);
       print(img[i].Module);
     }*/
+  Map MarkAttMap;
     try{
       File imagei = null;
       var isNextDayAWorkingDay=0;
@@ -704,7 +705,7 @@ class SaveImage {
           globals.cameraChannel.invokeMethod("cameraClosed");
           print("This is response");
           /*getTempImageDirectory();*/
-          Map MarkAttMap = json.decode(response1.data);
+          MarkAttMap = json.decode(response1.data);
           print("This is response1");
           print(MarkAttMap["status"].toString());
           if (MarkAttMap["status"] == 1 || MarkAttMap["status"] == 2){
@@ -730,15 +731,15 @@ class SaveImage {
             else{
               prefs.remove("TimeInTime");
             }
-            return true;
+            return MarkAttMap;
           }
           else
-            return false;
+            return MarkAttMap;
         }
         else {
           globals.globalCameraOpenedStatus=false;
           print("6");
-          return false;
+          return MarkAttMap;
         }
       }else{
 
@@ -797,14 +798,14 @@ class SaveImage {
         Map MarkAttMap = json.decode(response1.data);
         print(MarkAttMap["status"].toString());
         if (MarkAttMap["status"] == 1 || MarkAttMap["status"] == 2)
-          return true;
+          return MarkAttMap;
         else
-          return false;
+          return MarkAttMap;
       }
     } catch (e) {
       print(e.toString());
       globals.globalCameraOpenedStatus=false;
-      return false;
+      return MarkAttMap;
     }
   }
 

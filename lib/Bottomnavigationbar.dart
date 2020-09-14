@@ -1,8 +1,13 @@
 
+import 'package:Shrine/attendance_summary.dart';
 import 'package:Shrine/globals.dart' as prefix0;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'AdminShiftCalendar.dart';
+//import 'NewHomePage.dart';
+import 'ShiftPlannerList.dart';
+import 'UserShiftCalendar.dart';
 import 'globals.dart';
 import 'home.dart';
 import 'profile.dart';
@@ -41,13 +46,13 @@ class _Bottomnavigationbar extends State<Bottomnavigationbar> {
 //      fixedColor: Colors.yellowAccent,
       type: BottomNavigationBarType.fixed,
       onTap: (newIndex) {
-        if(newIndex==1){
+        if(newIndex==0){
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => HomePage()),
           );
           return;
-        }else if (newIndex == 0) {
+        }else if (newIndex == 2) {
           (admin_sts == '1' || admin_sts == '2')
               ? Navigator.push(
             context,
@@ -58,8 +63,15 @@ class _Bottomnavigationbar extends State<Bottomnavigationbar> {
             MaterialPageRoute(builder: (context) => ProfilePage()),
           );
           return;
+        }else if (newIndex == 1) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => userShiftCalendar()),
+          );
+
+          return;
         }
-        if(newIndex==2){
+        if(newIndex==3){
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => Settings()),
@@ -77,6 +89,14 @@ class _Bottomnavigationbar extends State<Bottomnavigationbar> {
 
       }, // this will be set when a new tab is tapped
       items:  [
+        BottomNavigationBarItem(
+          icon: new Icon(Icons.home,color: Colors.white,size: 30.0,),
+          title: new Text('Home', textAlign: TextAlign.center,style: TextStyle(color: Colors.white,)),
+        ),
+        BottomNavigationBarItem(
+          icon:new Icon(Icons.move_to_inbox,color: Colors.white,size: 30.0),
+          title: new Text('Log', textAlign: TextAlign.center,style: TextStyle(color: Colors.white,)),
+        ),
         (admin_sts == '1' || admin_sts == '2' )
             ? BottomNavigationBarItem(
           icon:new Icon(Icons.library_books,color: Colors.white,size: 30.0),
@@ -86,10 +106,6 @@ class _Bottomnavigationbar extends State<Bottomnavigationbar> {
           icon: new Icon(
               Icons.person, color: Colors.white,size: 30.0),
           title: new Text('Profile',style: TextStyle(color: Colors.white,)),
-        ),
-        BottomNavigationBarItem(
-          icon: new Icon(Icons.home,color: Colors.white,size: 30.0,),
-          title: new Text('Home', textAlign: TextAlign.center,style: TextStyle(color: Colors.white,)),
         ),
         BottomNavigationBarItem(
             icon: Icon(Icons.settings,color: Colors.white,size: 30.0),
