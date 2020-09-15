@@ -177,8 +177,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                         new Container(height: 6.0),
                         Container(
                           //margin: new EdgeInsets.fromLTRB(32.0, 1.0, 16.0, 16.0),
-                          child: new Text(val3,
-                            style: TextStyle(fontSize: 16,color: Colors.white),),
+                          child: val3.toString().length >=170 ? new Text(val3.toString().substring(0,170),style: TextStyle(fontSize: 14,color: Colors.white),):new Text(val3.toString(),style: TextStyle(fontSize: 14,color: Colors.white),),
+
+
                         ),
 
 

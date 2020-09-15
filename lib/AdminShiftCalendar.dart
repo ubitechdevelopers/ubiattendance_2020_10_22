@@ -629,12 +629,12 @@ print("daysgone2l,l,");
                     day,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        color: Colors.black, fontSize: 16
+                        color: Colors.black, fontSize: 12,fontWeight: FontWeight.bold
                     ),
                   ),
                 ]
             ),
-            SizedBox(height: 4,),
+            SizedBox(height: 1,),
             new Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -692,12 +692,12 @@ print("daysgone2l,l,");
                   day,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      color: Colors.black,fontSize: 16
+                      color: Colors.black,fontSize: 12,fontWeight: FontWeight.bold
                   ),
                 ),
               ]
           ),
-          SizedBox(height: 4,),
+          SizedBox(height: 1,),
           new Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -753,12 +753,12 @@ print("daysgone2l,l,");
                   day,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      color: Colors.black,fontSize: 16
+                      color: Colors.black,fontSize: 12,fontWeight: FontWeight.bold
                   ),
                 ),
               ]
           ),
-          SizedBox(height: 4,),
+          SizedBox(height: 1,),
           new Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -797,7 +797,7 @@ print("daysgone2l,l,");
       child: Text(
         day,
         style: TextStyle(
-            color: Colors.black,fontSize: 16
+            color: Colors.black,fontSize: 12,fontWeight: FontWeight.bold
         ),
       ),
     ),
@@ -814,7 +814,7 @@ print("daysgone2l,l,");
       child: Text(
         day,
         style: TextStyle(
-            color: Colors.black,fontSize: 16
+            color: Colors.black,fontSize: 12,fontWeight: FontWeight.bold
         ),
       ),
     ),
@@ -840,12 +840,12 @@ print("daysgone2l,l,");
                   day,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      color: Colors.black, fontSize: 16
+                      color: Colors.black, fontSize: 12,fontWeight: FontWeight.bold
                   ),
                 ),
               ]
           ),
-          SizedBox(height: 4,),
+          SizedBox(height: 1,),
           new Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -902,12 +902,12 @@ print("daysgone2l,l,");
                     day,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        color: Colors.black, fontSize: 16
+                        color: Colors.black, fontSize: 12,fontWeight: FontWeight.bold
                     ),
                   ),
                 ]
             ),
-            SizedBox(height: 4,),
+            SizedBox(height: 1,),
             new Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -956,12 +956,12 @@ print("daysgone2l,l,");
                   day,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      color: Colors.black, fontSize: 16
+                      color: Colors.black, fontSize: 12,fontWeight: FontWeight.bold
                   ),
                 ),
               ]
           ),
-          SizedBox(height: 4,),
+          SizedBox(height: 1,),
           new Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -1108,6 +1108,7 @@ print("daysgone2l,l,");
       minSelectedDate: DateTime(now.year , now.month -4 , 1),
       maxSelectedDate:  DateTime(now.year , now.month +6  , now.day),
       markedDateIconMaxShown: 1,
+      //markedDateWidget:Positioned(child: Container(color: Colors.blueAccent, height: 50.0, width: 50.0), bottom: 4.0, left: 18.0),
       markedDateMoreShowTotal: null,
       iconColor: globals.appcolor,
       //  weekDayBackgroundColor: Colors.teal[100],
@@ -2497,6 +2498,7 @@ Future<List<User>> getPlannerWiseSummary(attDate,Id) async {
   List<User> userList = createUserList(responseJson);
   return userList;
 }
+
 
 List<User> createUserList(List data){
   List<User> list = new List();
