@@ -3460,6 +3460,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         prefs.setBool("FirstAttendance", true);
 
         //prefs.setBool("companyFreshlyRegistered",false );
+
         showInSnackBarforTimeInOut(issave['TimeInOut'],issave['EntryExitImage'],issave['checkInOutLoc'],);
         /*
         showDialog(
