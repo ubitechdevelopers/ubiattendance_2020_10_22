@@ -670,6 +670,27 @@ class _ApplyLeave extends State<ApplyLeave> with SingleTickerProviderStateMixin 
           content: new Text("Leave can not be applied after marking Time In"),
         )
         );
+      }else if(issave=='false5') {
+        /*Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()),
+        );*/
+        showDialog(context: context, child:
+        new AlertDialog(
+          content: new Text("Leave can not be applied before joining date"),
+        )
+        );
+      }
+      else if(issave=='false6') {
+        /*Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()),
+        );*/
+        showDialog(context: context, child:
+        new AlertDialog(
+          content: new Text("Contact admin and get date of joining assigned to you"),
+        )
+        );
       }else {
         // ignore: deprecated_member_use
         showDialog(context: context, child:

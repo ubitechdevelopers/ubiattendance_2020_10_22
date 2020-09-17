@@ -128,7 +128,7 @@ class _MyLeaveState extends State<MyLeave> {
   confirmWithdrawl(String leaveid) async{
     showDialog(context: context, child:
     new AlertDialog(
-      title: new Text("Withdraw leave?",textAlign: TextAlign.center,),
+      title: new Text("Withdraw leave?",textAlign: TextAlign.center,style: TextStyle(fontSize: 17.0,fontWeight: FontWeight.normal),),
       content:  Padding(
         padding: const EdgeInsets.only(right:28.0),
         child: ButtonBar(
@@ -390,10 +390,13 @@ class _MyLeaveState extends State<MyLeave> {
                     // SizedBox(width: MediaQuery.of(context).size.width*0.0),
 
                     new Expanded(
-                      child: Container(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left:8.0),
+                        child: Container(
                    //     color: Colors.red,
-                        width: MediaQuery.of(context).size.width*0.60,
-                        child:Text('Applied on',style: TextStyle(color: appcolor,fontWeight:FontWeight.bold,fontSize: 16.0),),
+                          width: MediaQuery.of(context).size.width*0.60,
+                          child:Text('Applied on',style: TextStyle(color: appcolor,fontWeight:FontWeight.bold,fontSize: 16.0),),
+                        ),
                       ),),
 
                     //SizedBox(height: 50.0,),
@@ -432,163 +435,166 @@ class _MyLeaveState extends State<MyLeave> {
                                 itemCount: snapshot.data.length,
 
                                 itemBuilder: (BuildContext context, int index) {
-                                  return new Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: <Widget>[
+                                  return Padding(
+                                    padding: const EdgeInsets.only(left:8.0),
+                                    child: new Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: <Widget>[
 
-                                        new Row(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          children: <Widget>[
+                                          new Row(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            children: <Widget>[
 
-                                            new Expanded(
-                                              child: Padding(
-                                                padding: const EdgeInsets.fromLTRB(0.0,5.0,0.0,0.0),
-                                                child: Container(
-                                            //     color:Colors.red,
-                                                    height: MediaQuery .of(context).size.height * 0.04,
-                                                    width: MediaQuery .of(context).size.width * 0.60,
-                                                    child: Column(
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                      children: <Widget>[
-
-                                                        new Text(snapshot.data[index].AppliedDate.toString(), style: TextStyle(fontSize:14.0,fontWeight: FontWeight.bold),),
-                                                       // new Text('To:     '+snapshot.data[index].ToDate.toString(), style: TextStyle(fontSize:12.0,fontWeight: FontWeight.bold),),
-                                                       // new Text('Reason:'+snapshot.data[index].Reason.toString(), style: TextStyle(fontSize:14.0,fontWeight: FontWeight.bold),)
-                                                      ],
-                                                    )
-                                                ),
-                                              ),
-                                            ),
-
-
-
-                                            (snapshot.data[index].ApprovalStatus.toString() !='Withdraw' && snapshot.data[index].ApprovalStatus.toString() !="Rejected" && snapshot.data[index].ApprovalStatus.toString()!="Approved")?
                                               new Expanded(
                                                 child: Padding(
-                                                  padding: const EdgeInsets.fromLTRB(115.0,3.0,0.0,0.0),
-                                                  child: Container (
-                            //                   color:Colors.yellow,
-                                                   height: MediaQuery .of(context).size.height * 0.04,
-                                                   //margin: EdgeInsets.only(left:40.0),
-                                                   //padding: EdgeInsets.only(left:40.0),
-                                                   width: MediaQuery .of(context).size.width * 0.50,
+                                                  padding: const EdgeInsets.fromLTRB(0.0,5.0,0.0,0.0),
+                                                  child: Container(
+                                              //     color:Colors.red,
+                                                      height: MediaQuery .of(context).size.height * 0.04,
+                                                      width: MediaQuery .of(context).size.width * 0.60,
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        children: <Widget>[
 
-                                                   child: new OutlineButton(
-                                                      onPressed: () {
-                                                        if(_isButtonDisabled)
-                                                          return null;
-                                                        setState(() {
-                                                          _isButtonDisabled=true;
-                                                          checkProcessing = index;
-                                                        });
-                                                        confirmWithdrawl(snapshot.data[index].LeaveId.toString());
-                                                      },
-                                                       child:new Icon(
-                                                         Icons.replay,
-                                                         size: 18.0,
-                                                         color:appcolor,
-                                                   //      textDirection: TextDirection.rtl,
-                                                       ),
-                                                       borderSide: BorderSide(color:appcolor),
-                                                       shape: new CircleBorder(),
-                                            //         padding:EdgeInsets.all(5.0),
-                                                    )
-                                                      /*
-                                                   child: RaisedButton(
-                                                     elevation: 2.0,
-                                                     highlightElevation: 5.0,
-                                                     highlightColor: Colors.transparent,
-                                                     disabledElevation: 0.0,
-                                                     focusColor: Colors.transparent,
-                                                     shape: RoundedRectangleBorder(
-                                                       borderRadius: BorderRadius.circular(5),
-                                                     ),
-                                                     child: _isButtonDisabled?Text(
-                                                       'Processing..',
-                                                       style: TextStyle(
-                                                           color: Colors.white),
-                                                     )
-                                                         :Text(
-                                                       'Withdraw',
-                                                       style: TextStyle(
-                                                           color: Colors.white),),
-                                                     color: buttoncolor,
-                                                     onPressed: (){
-                                                       if(_isButtonDisabled)
-                                                         return null;
-                                                       setState(() {
-                                                         _isButtonDisabled=true;
-                                                         checkProcessing = index;
-                                                       });
-                                                       confirmWithdrawl(snapshot.data[index].LeaveId.toString());
-
-                                                     },
-                                                   ),
-                                  */
+                                                          new Text(snapshot.data[index].AppliedDate.toString(), style: TextStyle(fontSize:14.0,fontWeight: FontWeight.bold),),
+                                                         // new Text('To:     '+snapshot.data[index].ToDate.toString(), style: TextStyle(fontSize:12.0,fontWeight: FontWeight.bold),),
+                                                         // new Text('Reason:'+snapshot.data[index].Reason.toString(), style: TextStyle(fontSize:14.0,fontWeight: FontWeight.bold),)
+                                                        ],
+                                                      )
                                                   ),
                                                 ),
-                                              ):Center(),
-                                          ],
-                                        ),
-                                        new SizedBox(width: 5.0,),
-                                        Container(
-                                          width: MediaQuery.of(context).size.width*.90,
-                                          //padding: EdgeInsets.only(top:1.5,bottom: .5),
-                                          //margin: EdgeInsets.only(top: 4.0),
-                                          child: Text('Duration: '+snapshot.data[index].FromDate.toString()+' To '+snapshot.data[index].ToDate.toString() +"  ",style: TextStyle(color: Colors.grey[600])),
-                                        ),
-
-
-                                        snapshot.data[index].Reason.toString()!='-'?Container(
-                                          width: MediaQuery.of(context).size.width*.90,
-                                          //padding: EdgeInsets.only(top:1.5,bottom: .5),
-                                          margin: EdgeInsets.only(top: 4.0),
-                                          child: Text('Reason: '+snapshot.data[index].Reason.toString(), style: TextStyle(color: Colors.black54),),
-                                        ):Center(),
-
-                                        Container(
-                                          width: MediaQuery.of(context).size.width*.90,
-                                          //padding: EdgeInsets.only(top:1.5,bottom: .5),
-                                          margin: EdgeInsets.only(top: 4.0),
-                                          child: Text('No of Leaves: '+snapshot.data[index].NoofLeaves.toString(), style: TextStyle(color: Colors.black54),),
-                                        ),
-
-
-
-                                        snapshot.data[index].ApprovalStatus.toString()!='-'?Container(
-                                          width: MediaQuery.of(context).size.width*.90,
-                                          //padding: EdgeInsets.only(top:.5,bottom: 1.5),
-                                          margin: EdgeInsets.only(top: 4.0),
-                                          child: RichText(
-                                            text: new TextSpan(
-                                              // Note: Styles for TextSpans must be explicitly defined.
-                                              // Child text spans will inherit styles from parent
-                                              style: new TextStyle(
-                                                fontSize: 14.0,
-                                                color: Colors.black,
                                               ),
-                                              children: <TextSpan>[
-                                                new TextSpan(text: 'Status: ',style:TextStyle(color: Colors.black54,), ),
-                                                new TextSpan(text: snapshot.data[index].ApprovalStatus.toString(), style: TextStyle(color: snapshot.data[index].ApprovalStatus.toString()=='Approved'?appcolor :snapshot.data[index].ApprovalStatus.toString()=='Rejected' || snapshot.data[index].ApprovalStatus.toString()=='Cancel' ?Colors.red:snapshot.data[index].ApprovalStatus.toString().startsWith('Pending')?Colors.orange[800]:Colors.blue[600], fontSize: 14.0),),
-                                              ],
-                                            ),
+
+
+
+                                              (snapshot.data[index].ApprovalStatus.toString() !='Withdrawn' && snapshot.data[index].ApprovalStatus.toString() !="Rejected" && snapshot.data[index].ApprovalStatus.toString()!="Approved")?
+                                                new Expanded(
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.fromLTRB(115.0,3.0,0.0,0.0),
+                                                    child: Container (
+                            //                   color:Colors.yellow,
+                                                     height: MediaQuery .of(context).size.height * 0.04,
+                                                     //margin: EdgeInsets.only(left:40.0),
+                                                     //padding: EdgeInsets.only(left:40.0),
+                                                     width: MediaQuery .of(context).size.width * 0.50,
+
+                                                     child: new OutlineButton(
+                                                        onPressed: () {
+                                                          if(_isButtonDisabled)
+                                                            return null;
+                                                          setState(() {
+                                                            _isButtonDisabled=true;
+                                                            checkProcessing = index;
+                                                          });
+                                                          confirmWithdrawl(snapshot.data[index].LeaveId.toString());
+                                                        },
+                                                         child:new Icon(
+                                                           Icons.replay,
+                                                           size: 18.0,
+                                                           color:appcolor,
+                                                     //      textDirection: TextDirection.rtl,
+                                                         ),
+                                                         borderSide: BorderSide(color:appcolor),
+                                                         shape: new CircleBorder(),
+                                              //         padding:EdgeInsets.all(5.0),
+                                                      )
+                                                        /*
+                                                     child: RaisedButton(
+                                                       elevation: 2.0,
+                                                       highlightElevation: 5.0,
+                                                       highlightColor: Colors.transparent,
+                                                       disabledElevation: 0.0,
+                                                       focusColor: Colors.transparent,
+                                                       shape: RoundedRectangleBorder(
+                                                         borderRadius: BorderRadius.circular(5),
+                                                       ),
+                                                       child: _isButtonDisabled?Text(
+                                                         'Processing..',
+                                                         style: TextStyle(
+                                                             color: Colors.white),
+                                                       )
+                                                           :Text(
+                                                         'Withdraw',
+                                                         style: TextStyle(
+                                                             color: Colors.white),),
+                                                       color: buttoncolor,
+                                                       onPressed: (){
+                                                         if(_isButtonDisabled)
+                                                           return null;
+                                                         setState(() {
+                                                           _isButtonDisabled=true;
+                                                           checkProcessing = index;
+                                                         });
+                                                         confirmWithdrawl(snapshot.data[index].LeaveId.toString());
+
+                                                       },
+                                                     ),
+                                    */
+                                                    ),
+                                                  ),
+                                                ):Center(),
+                                            ],
                                           ),
-                                        ):Center(
-                                          // child:Text(snapshot.data[index].withdrawlsts.toString()),
-                                        ),
-                                        snapshot.data[index].Remarks.toString() != '' ? Container(
-                                          width: MediaQuery .of(context).size .width * .90,
-                                          //padding: EdgeInsets.only( top: 0.0, bottom: 0.5),
-                                          margin: EdgeInsets.only(top: 4.0),
-                                          child: Text('Remarks: ' +  snapshot.data[index].Remarks.toString(),style: TextStyle(color: Colors.black54),),
-                                        ): Center(),
+                                          new SizedBox(width: 5.0,),
+                                          Container(
+                                            width: MediaQuery.of(context).size.width*.90,
+                                            //padding: EdgeInsets.only(top:1.5,bottom: .5),
+                                            //margin: EdgeInsets.only(top: 4.0),
+                                            child: Text('Duration: '+snapshot.data[index].FromDate.toString()+' to '+snapshot.data[index].ToDate.toString() +"  ",style: TextStyle(color: Colors.grey[600])),
+                                          ),
 
 
-                                        Divider(),
+                                          snapshot.data[index].Reason.toString()!='-'?Container(
+                                            width: MediaQuery.of(context).size.width*.90,
+                                            //padding: EdgeInsets.only(top:1.5,bottom: .5),
+                                            margin: EdgeInsets.only(top: 4.0),
+                                            child: Text('Reason: '+snapshot.data[index].Reason.toString(), style: TextStyle(color: Colors.black54),),
+                                          ):Center(),
+
+                                          Container(
+                                            width: MediaQuery.of(context).size.width*.90,
+                                            //padding: EdgeInsets.only(top:1.5,bottom: .5),
+                                            margin: EdgeInsets.only(top: 4.0),
+                                            child: Text('No of Leave: '+snapshot.data[index].NoofLeaves.toString(), style: TextStyle(color: Colors.black54),),
+                                          ),
 
 
-                                      ]);
+
+                                          snapshot.data[index].ApprovalStatus.toString()!='-'?Container(
+                                            width: MediaQuery.of(context).size.width*.90,
+                                            //padding: EdgeInsets.only(top:.5,bottom: 1.5),
+                                            margin: EdgeInsets.only(top: 4.0),
+                                            child: RichText(
+                                              text: new TextSpan(
+                                                // Note: Styles for TextSpans must be explicitly defined.
+                                                // Child text spans will inherit styles from parent
+                                                style: new TextStyle(
+                                                  fontSize: 14.0,
+                                                  color: Colors.black,
+                                                ),
+                                                children: <TextSpan>[
+                                                  new TextSpan(text: 'Status: ',style:TextStyle(color: Colors.black54,), ),
+                                                  new TextSpan(text: snapshot.data[index].ApprovalStatus.toString(), style: TextStyle(color: snapshot.data[index].ApprovalStatus.toString()=='Approved'?appcolor :snapshot.data[index].ApprovalStatus.toString()=='Rejected' || snapshot.data[index].ApprovalStatus.toString()=='Cancel' ?Colors.red:snapshot.data[index].ApprovalStatus.toString().startsWith('Pending')?Colors.orange[800]:Colors.blue[600], fontSize: 14.0),),
+                                                ],
+                                              ),
+                                            ),
+                                          ):Center(
+                                            // child:Text(snapshot.data[index].withdrawlsts.toString()),
+                                          ),
+                                          snapshot.data[index].Remarks.toString() != '' ? Container(
+                                            width: MediaQuery .of(context).size .width * .90,
+                                            //padding: EdgeInsets.only( top: 0.0, bottom: 0.5),
+                                            margin: EdgeInsets.only(top: 4.0),
+                                            child: Text('Remarks: ' +  snapshot.data[index].Remarks.toString(),style: TextStyle(color: Colors.black54),),
+                                          ): Center(),
+
+
+                                          Divider(),
+
+
+                                        ]),
+                                  );
                                 }
                             );
                           }else

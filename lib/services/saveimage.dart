@@ -1917,6 +1917,13 @@ class SaveImage {
       }else if(MarkAttMap["status"].toString() == 'false4')
       {
         return 'false4';
+      }else if(MarkAttMap["status"].toString() == 'false5')
+      {
+        return 'false5';
+      }
+      else if(MarkAttMap["status"].toString() == 'false6')
+      {
+        return 'false6';
       }
       else
         return 'false';

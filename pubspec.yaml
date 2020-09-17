@@ -139,6 +139,7 @@ flutter:
       - assets/icons8-camera-50.png
       - assets/face-recognition-gif.gif
       - assets/leave_icon.png
+      - assets/leave-icon.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

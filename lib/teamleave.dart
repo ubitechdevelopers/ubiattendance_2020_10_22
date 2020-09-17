@@ -269,9 +269,12 @@ class _MyTeamLeaveState extends State<MyTeamLeave> {
                       SizedBox(height: 10.0,),
                       // SizedBox(width: MediaQuery.of(context).size.width*0.0),
                       new Expanded(
-                        child: Container(
-                          width: MediaQuery.of(context).size.width*0.50,
-                          child:Text('Name',style: TextStyle(color: appcolor,fontWeight:FontWeight.bold,fontSize: 16.0),),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left:8.0),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width*0.50,
+                            child:Text('Name',style: TextStyle(color: appcolor,fontWeight:FontWeight.bold,fontSize: 16.0),),
+                          ),
                         ),),
                       //SizedBox(height: 50.0,),
                       new Expanded(
@@ -302,172 +305,175 @@ class _MyTeamLeaveState extends State<MyTeamLeave> {
                                   scrollDirection: Axis.vertical,
                                   itemCount: snapshot.data.length,
                                   itemBuilder: (BuildContext context, int index) {
-                                    return GestureDetector(
-                                      onTap: () {
-                                        /*
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(builder: (context) => EmployeeLeave(leaveid:snapshot.data[index].LeaveId,employeeid:snapshot.data[index].EmployeeId,employeename:snapshot.data[index].name,NoofLeaves:snapshot.data[index].NoofLeaves)),
-                                        );
-                                        */
-                                        // profile navigation
-                                        /* Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage()));*/
-                                      },
-                                      child: new Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          new Row(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            children: <Widget>[
-                                             //SizedBox(height: 40.0,),
-                                              new Expanded(
-                                                child: Container(
-                                                  width: MediaQuery.of(context) .size.width * 0.60,
-                                                  child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment .start,
-                                                    children: <Widget>[
-                                                      new Text(snapshot.data[index].name.toString(), style: TextStyle(
-                                                        color: Colors.black87,
-                                                        fontWeight: FontWeight.bold,
-                                                        fontSize: 16.0),),
-                                                    ],
+                                    return Padding(
+                                      padding: const EdgeInsets.only(left:8.0),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          /*
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(builder: (context) => EmployeeLeave(leaveid:snapshot.data[index].LeaveId,employeeid:snapshot.data[index].EmployeeId,employeename:snapshot.data[index].name,NoofLeaves:snapshot.data[index].NoofLeaves)),
+                                          );
+                                          */
+                                          // profile navigation
+                                          /* Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage()));*/
+                                        },
+                                        child: new Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            new Row(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              children: <Widget>[
+                                               //SizedBox(height: 40.0,),
+                                                new Expanded(
+                                                  child: Container(
+                                                    width: MediaQuery.of(context) .size.width * 0.60,
+                                                    child: Column(
+                                                      crossAxisAlignment: CrossAxisAlignment .start,
+                                                      children: <Widget>[
+                                                        new Text(snapshot.data[index].name.toString(), style: TextStyle(
+                                                          color: Colors.black87,
+                                                          fontWeight: FontWeight.bold,
+                                                          fontSize: 16.0),),
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
 
-                                              new Expanded(
-                                                child:Padding(
-                                                  padding: const EdgeInsets.only(left:80.0),
+                                                new Expanded(
+                                                  child:Padding(
+                                                    padding: const EdgeInsets.only(left:80.0),
+                                                    child: Container(
+                                                      width: MediaQuery.of(context).size.width * 0.40,
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment .center,
+                                                        children: <Widget>[
+                                                          Text(snapshot.data[index].applydate.toString()),
+                                                        ],
+                                                      )
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+
+                                            ),
+
+                                            new Row(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              children: <Widget>[
+                                                new Expanded(
                                                   child: Container(
-                                                    width: MediaQuery.of(context).size.width * 0.40,
+                                                    //color:Colors.red,
+                                                    //height: MediaQuery .of(context).size.height * 0.06,
+                                                    width: MediaQuery .of(context).size.width * 0.70,
+                                                    margin: EdgeInsets.only(top: 4.0),
                                                     child: Column(
-                                                      crossAxisAlignment: CrossAxisAlignment .center,
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: <Widget>[
-                                                        Text(snapshot.data[index].applydate.toString()),
+                                                        //     new SizedBox(width: 5.0,),
+                                                        new Text("Duration: "+snapshot.data[index].Fdate.toString()+' to '+snapshot.data[index].Tdate.toString(),style: TextStyle(color: Colors.grey[600]),)
                                                       ],
                                                     )
                                                   ),
                                                 ),
-                                              ),
-                                            ],
 
-                                          ),
+                                               (snapshot.data[index].ApprovalStatus.toString() == 'Pending')?
+                                                new Expanded(
+                                                  child: Container (
+                                                     //color:Colors.yellow,
+                                                    height: MediaQuery .of(context).size.height * 0.04,
+                                                    margin: EdgeInsets.only(left:32.0),
+                                                    padding: EdgeInsets.only(left:32.0),
+                                                    width: MediaQuery.of(context).size.width * 0.30,
+                                                    child: new OutlineButton(
+                                                      onPressed: () {
 
-                                          new Row(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            children: <Widget>[
-                                              new Expanded(
-                                                child: Container(
-                                                  //color:Colors.red,
-                                                  //height: MediaQuery .of(context).size.height * 0.06,
-                                                  width: MediaQuery .of(context).size.width * 0.70,
-                                                  margin: EdgeInsets.only(top: 4.0),
-                                                  child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: <Widget>[
-                                                      //     new SizedBox(width: 5.0,),
-                                                      new Text("Duration: "+snapshot.data[index].Fdate.toString()+' To '+snapshot.data[index].Tdate.toString(),style: TextStyle(color: Colors.grey[600]),)
-                                                    ],
-                                                  )
-                                                ),
-                                              ),
-
-                                             (snapshot.data[index].ApprovalStatus.toString() == 'Pending')?
-                                              new Expanded(
-                                                child: Container (
-                                                   //color:Colors.yellow,
-                                                  height: MediaQuery .of(context).size.height * 0.04,
-                                                  margin: EdgeInsets.only(left:32.0),
-                                                  padding: EdgeInsets.only(left:32.0),
-                                                  width: MediaQuery.of(context).size.width * 0.30,
-                                                  child: new OutlineButton(
-                                                    onPressed: () {
-
-                                                      _modalBottomSheet(
-                                                            context, snapshot.data[index].LeaveId.toString());
+                                                        _modalBottomSheet(
+                                                              context, snapshot.data[index].LeaveId.toString());
 
 
-                                                    },
-                                                    child:new Icon(
-                                                      Icons.thumb_up,
-                                                      size: 16.0,
-                                                      color:appcolor,
-                                                      //      textDirection: TextDirection.rtl,
-                                                    ),
-                                                    borderSide: BorderSide(color:appcolor),
-                                                    shape: new CircleBorder(),
-                                                    //         padding:EdgeInsets.all(5.0),
-                                                  )
-                                                ),
-                                              ):Center(),
-                                      ],
-                                          ),
-
-
-
-
-                                          snapshot.data[index].Reason.toString()!='-'?Container(
-                                            width: MediaQuery.of(context).size.width*.90,
-                                            //padding: EdgeInsets.only(top:1.5,bottom: .5),
-                                            margin: EdgeInsets.only(top: 4.0),
-                                            child: Text('Reason: '+snapshot.data[index].Reason.toString(), style: TextStyle(color: Colors.black54),),
-                                          ):Center(),
-
-                                          Container(
-                                            width: MediaQuery.of(context).size.width*.90,
-                                            //padding: EdgeInsets.only(top:1.5,bottom: .5),
-                                            margin: EdgeInsets.only(top: 4.0),
-                                            child: Text('No of Leaves: '+snapshot.data[index].NoofLeaves.toString(), style: TextStyle(color: Colors.black54),),
-                                          ),
-
-                                          (snapshot.data[index].ApprovalStatus.toString()!='Pending' ) ?Container(
-                                            width: MediaQuery.of(context).size.width*.90,
-                                            //padding: EdgeInsets.only(top:.5,bottom: 1.5),
-                                            margin: EdgeInsets.only(top: 4.0),
-                                            child: RichText(
-                                              text: new TextSpan(
-                                                // Note: Styles for TextSpans must be explicitly defined.
-                                                // Child text spans will inherit styles from parent
-                                                style: new TextStyle(
-                                                  fontSize: 14.0,
-                                                  color: Colors.black,
-                                                ),
-                                                children: <TextSpan>[
-                                                  new TextSpan(text: 'Status: ',style:TextStyle(color: Colors.black54,), ),
-                                                  new TextSpan(text: snapshot.data[index].ApprovalStatus.toString(), style: TextStyle(color: snapshot.data[index].ApprovalStatus.toString()=='Approved'?appcolor :snapshot.data[index].ApprovalStatus.toString()=='Rejected' || snapshot.data[index].ApprovalStatus.toString()=='Withdrawn' ?Colors.red:Colors.blue[600], fontSize: 14.0),),
-                                                ],
-                                              ),
+                                                      },
+                                                      child:new Icon(
+                                                        Icons.thumb_up,
+                                                        size: 16.0,
+                                                        color:appcolor,
+                                                        //      textDirection: TextDirection.rtl,
+                                                      ),
+                                                      borderSide: BorderSide(color:appcolor),
+                                                      shape: new CircleBorder(),
+                                                      //         padding:EdgeInsets.all(5.0),
+                                                    )
+                                                  ),
+                                                ):Center(),
+                                        ],
                                             ),
-                                          ):Center(
-                                            // child:Text(snapshot.data[index].withdrawlsts.toString()),
-                                          ),
 
-                                          (snapshot.data[index].ApprovalStatus.toString()=='Pending') ?Container(
-                                            width: MediaQuery.of(context).size.width*.90,
-                                            //padding: EdgeInsets.only(top:.5,bottom: 1.5),
-                                            margin: EdgeInsets.only(top: 4.0),
-                                            child: RichText(
-                                              text: new TextSpan(
-                                                // Note: Styles for TextSpans must be explicitly defined.
-                                                // Child text spans will inherit styles from parent
-                                                style: new TextStyle(
-                                                  fontSize: 14.0,
-                                                  color: Colors.black,
-                                                ),
-                                                children: <TextSpan>[
-                                                  new TextSpan(text: 'Status: ',style:TextStyle(color: Colors.black54,), ),
-                                                  new TextSpan(text: snapshot.data[index].ApprovalStatus.toString(), style: TextStyle(color: Colors.orange[800], fontSize: 14.0),),
-                                                ],
-                                              ),
+
+
+
+                                            snapshot.data[index].Reason.toString()!='-'?Container(
+                                              width: MediaQuery.of(context).size.width*.90,
+                                              //padding: EdgeInsets.only(top:1.5,bottom: .5),
+                                              margin: EdgeInsets.only(top: 4.0),
+                                              child: Text('Reason: '+snapshot.data[index].Reason.toString(), style: TextStyle(color: Colors.black54),),
+                                            ):Center(),
+
+                                            Container(
+                                              width: MediaQuery.of(context).size.width*.90,
+                                              //padding: EdgeInsets.only(top:1.5,bottom: .5),
+                                              margin: EdgeInsets.only(top: 4.0),
+                                              child: Text('No of Leave: '+snapshot.data[index].NoofLeaves.toString(), style: TextStyle(color: Colors.black54),),
                                             ),
-                                          ):Center(
-                                            // child:Text(snapshot.data[index].withdrawlsts.toString()),
-                                          ),
 
-                                         Divider(),
-                                        ]
+                                            (snapshot.data[index].ApprovalStatus.toString()!='Pending' ) ?Container(
+                                              width: MediaQuery.of(context).size.width*.90,
+                                              //padding: EdgeInsets.only(top:.5,bottom: 1.5),
+                                              margin: EdgeInsets.only(top: 4.0),
+                                              child: RichText(
+                                                text: new TextSpan(
+                                                  // Note: Styles for TextSpans must be explicitly defined.
+                                                  // Child text spans will inherit styles from parent
+                                                  style: new TextStyle(
+                                                    fontSize: 14.0,
+                                                    color: Colors.black,
+                                                  ),
+                                                  children: <TextSpan>[
+                                                    new TextSpan(text: 'Status: ',style:TextStyle(color: Colors.black54,), ),
+                                                    new TextSpan(text: snapshot.data[index].ApprovalStatus.toString(), style: TextStyle(color: snapshot.data[index].ApprovalStatus.toString()=='Approved'?appcolor :snapshot.data[index].ApprovalStatus.toString()=='Rejected' || snapshot.data[index].ApprovalStatus.toString()=='Withdrawn' ?Colors.red:Colors.blue[600], fontSize: 14.0),),
+                                                  ],
+                                                ),
+                                              ),
+                                            ):Center(
+                                              // child:Text(snapshot.data[index].withdrawlsts.toString()),
+                                            ),
+
+                                            (snapshot.data[index].ApprovalStatus.toString()=='Pending') ?Container(
+                                              width: MediaQuery.of(context).size.width*.90,
+                                              //padding: EdgeInsets.only(top:.5,bottom: 1.5),
+                                              margin: EdgeInsets.only(top: 4.0),
+                                              child: RichText(
+                                                text: new TextSpan(
+                                                  // Note: Styles for TextSpans must be explicitly defined.
+                                                  // Child text spans will inherit styles from parent
+                                                  style: new TextStyle(
+                                                    fontSize: 14.0,
+                                                    color: Colors.black,
+                                                  ),
+                                                  children: <TextSpan>[
+                                                    new TextSpan(text: 'Status: ',style:TextStyle(color: Colors.black54,), ),
+                                                    new TextSpan(text: snapshot.data[index].ApprovalStatus.toString(), style: TextStyle(color: Colors.orange[800], fontSize: 14.0),),
+                                                  ],
+                                                ),
+                                              ),
+                                            ):Center(
+                                              // child:Text(snapshot.data[index].withdrawlsts.toString()),
+                                            ),
+
+                                           Divider(),
+                                          ]
+                                        ),
                                       ),
                                     );
                                   }

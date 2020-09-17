@@ -412,7 +412,7 @@ List<LeaveList> createLeaveList(List data){
     else  if(data[i]["ApprovalStatus"].toString()=='3')
       ApprovalStatus='Rejected';
     else  if(data[i]["ApprovalStatus"].toString()=='4')
-      ApprovalStatus='Withdraw';
+      ApprovalStatus='Withdrawn';
     //print(LeaveDate);
     LeaveList leave = new LeaveList(Id: Id,Name: Name,AppliedDate: AppliedDate,FromDate :FromDate,ToDate: ToDate, Reason: Reason, ApprovalStatus: ApprovalStatus, Remarks: Remarks, LeaveId: LeaveId,NoofLeaves: NoofLeaves);
     list.add(leave);
@@ -518,7 +518,7 @@ List<LeaveListAll> createTeamleaveapporval(List data) {
     else  if(data[i]["ApprovalStatus"].toString()=='3')
        ApprovalStatus='Rejected';
     else  if(data[i]["ApprovalStatus"].toString()=='4')
-       ApprovalStatus='Withdraw';
+       ApprovalStatus='Withdrawn';
 
 
     LeaveListAll tos = new LeaveListAll(
@@ -718,7 +718,7 @@ List<LeaveH> createleavehistory(List data) {
     else  if(data[i]["ApprovalStatus"].toString()=='3')
       ApprovalStatus='Rejected';
     else  if(data[i]["ApprovalStatus"].toString()=='4')
-      ApprovalStatus='Withdraw';
+      ApprovalStatus='Withdrawn';
 
 
     //  print("********************"+Left+"***"+Used+"***"+Entitle);

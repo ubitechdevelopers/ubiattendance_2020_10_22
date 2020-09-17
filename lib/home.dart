@@ -90,6 +90,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   bool FeedbackDialogShown=false;
   bool FiveStarRating=false;
   String datetoShowFeedbackDialog='';
+  String dateShowedFeedbackDialog='';
   bool _checkLoaded = true;
   int _currentIndex = 1;
   String userpwd = "new";
@@ -141,6 +142,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   String dateShowedCovidSurvey='';
   String datetoShowCovidSurvey='';
   var currDate = DateTime.now();
+  var now = new DateTime.now();
+  var formatter = new DateFormat('yyyy-MM-dd');
   var ReferrerNotificationList = new List(5);
   var ReferrerenceMessagesList = new List(7);
   var token = "";
@@ -1769,6 +1772,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       FeedbackDialogShown =
           prefs.getBool("FeedbackDialogShown") ?? false;
       Rating= prefs.getDouble('Rating') ?? 0.0;
+      DateTime date = new DateTime(currDate.year, currDate.month, currDate.day);
+       datetoShowFeedbackDialog=prefs.getString("datetoShowFeedbackDialog") ?? date.toString();
+       dateShowedFeedbackDialog=prefs.getString("dateShowedFeedbackDialog") ?? '';
     });
 
     Future.delayed(const Duration(milliseconds: 3000), () {
@@ -1902,16 +1908,30 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     RateusDialogShown = prefs.getBool('RateusDialogShown')?? false;
     FeedbackDialogShown = prefs.getBool("FeedbackDialogShown") ?? false;
     Rating= prefs.getDouble('Rating') ?? 0.0;
+    String date = formatter.format(now);
+    datetoShowFeedbackDialog=prefs.getString("datetoShowFeedbackDialog") ?? date.toString();
+    //datetoShowFeedbackDialog='2020-09-16';
+
+    dateShowedFeedbackDialog=prefs.getString("dateShowedFeedbackDialog") ?? '';
+    //dateShowedFeedbackDialog='2020-09-15';
     print('Over here--------------->>>>>>>>>>>>>>');
     print(FirstAttendance.toString()+'------------>>>>one');
     print(FiveStarRating.toString()+'-------->>>second');
     print((FirstAttendance && !FiveStarRating).toString()+'------->>>third');
     print((FirstAttendance&& RateusDialogShown && !FiveStarRating).toString()+'--------->>>>>fourth');
     print(RateusDialogShown.toString()+'five---------->>>>>>');
+    print(datetoShowFeedbackDialog.toString()+'six---------->>>>>>');
+    print(dateShowedFeedbackDialog.toString()+'seven---------->>>>>>');
+    print(FirstAttendance&& RateusDialogShown && !FiveStarRating && dateShowedFeedbackDialog!=date.toString()+'------->>>>>eight');
+    print(datetoShowFeedbackDialog.toString()==date.toString()+'--------->>>Nine');
+    print(date.toString()+'Ten');
+
     if(FirstAttendance && !FiveStarRating && !RateusDialogShown) {
       showRateUsDialog();
-    }else if(FirstAttendance&& RateusDialogShown && !FiveStarRating){
-      showfeedbackDialog();
+    }else if(FirstAttendance&& RateusDialogShown && !FiveStarRating && dateShowedFeedbackDialog!=date.toString()){
+      if(datetoShowFeedbackDialog.toString()==date.toString()) {
+        showfeedbackDialog();
+      }
     }
   }
 
@@ -2644,7 +2664,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             child: Column(
               children: [
               Image.asset(
-              'assets/leave_icon.png', height: 30.0, width: 35.0,color: Colors.black45,),
+              'assets/leave-icon.png', height: 30.0, width: 30.0,color: Colors.black45,),
                 Text('Leave',
                     textAlign: TextAlign.center,
                     style: new TextStyle(fontSize: 12.0, color: iconcolor)),
@@ -4216,6 +4236,13 @@ var FakeLocationStatus=0;
 
   showfeedbackDialog()async {
     var prefs= await SharedPreferences.getInstance();
+    String date = formatter.format(now);
+    var twoDaysFromNow = currDate.add(new Duration(days: 2));
+    String date1 = formatter.format(twoDaysFromNow);
+    dateShowedFeedbackDialog = date.toString();
+    datetoShowFeedbackDialog = date1.toString();
+    prefs.setString('dateShowedFeedbackDialog', dateShowedFeedbackDialog);
+    prefs.setString('datetoShowFeedbackDialog', datetoShowFeedbackDialog);
     final FocusNode myFocusNodeFeedback = FocusNode();
     TextEditingController feedbackController = new TextEditingController();
     return showDialog(context: context, builder:(context) {
@@ -4251,6 +4278,13 @@ var FakeLocationStatus=0;
                     ),
                     onRatingUpdate: (rating) async{
                       print(rating);
+//                      String date = formatter.format(now);
+//                      var twoDaysFromNow = currDate.add(new Duration(days: 2));
+//                      String date1 = formatter.format(twoDaysFromNow);
+//                      dateShowedFeedbackDialog = date.toString();
+//                      datetoShowFeedbackDialog = date1.toString();
+//                      prefs.setString('dateShowedFeedbackDialog', dateShowedFeedbackDialog);
+//                      prefs.setString('datetoShowFeedbackDialog', datetoShowFeedbackDialog);
                       if(rating>3.0){
                         print("you are good");
                         prefs.setBool("FiveStarRating", true);
@@ -4278,6 +4312,7 @@ var FakeLocationStatus=0;
                         setState(() {
                           Rating=rating;
                           prefs.setDouble('Rating',Rating);
+                          prefs.remove("FirstAttendance");
                         });
                         print(Rating);
                         //Navigator.pop(context);

@@ -231,10 +231,10 @@ getWidgets(context){
                                         InkWell(
                                           child: Text(snapshot.data[index].fName
                                               .toString()+" "+snapshot.data[index].lName.toString(), style: TextStyle(
-                                              color: Colors.blue,
-                                              fontWeight: FontWeight.bold,
+                                              color: globals.appcolor,
+                                              fontWeight: FontWeight.normal,
                                               fontSize: 16.0,
-                                              decoration: TextDecoration.underline
+                                             // decoration: TextDecoration.underline
                                           ),),
                                           onTap: (){
                                             Navigator.push(
