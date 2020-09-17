@@ -2029,11 +2029,12 @@ Future<int> editEmployee(fname, lname, email, countryCode, countryId, contact,
 //////////////////////////////////////////////////////////////////////
 //********************************************************************************************//
 
+
 Future<List<Shift>> getShifts() async {
   // print('shifts called');
   final prefs = await SharedPreferences.getInstance();
   String orgid = prefs.getString('orgdir') ?? '';
-  // print(globals.path + 'shiftMaster?orgid=10');
+  print(globals.path + 'shiftMaster?orgid=10');
   final response = await http.get(globals.path + 'shiftMaster?orgid=$orgid');
   List responseJson = json.decode(response.body.toString());
   List<Shift> shiftList = createShiftList(responseJson);
@@ -2049,16 +2050,21 @@ List<Shift> createShiftList(List data) {
     String timeout = data[i]["TimeOut"];
     String id = data[i]["Id"];
     String status = data[i]["archive"] == '0' ? 'Inactive' : 'Active';
-    String type =
-    data[i]["shifttype"] == '1' ? 'Single Date' : 'Multi Date';
+    String type = data[i]["shifttype"] == '1' ? 'Single Date' : 'Multi Date';
+    String HoursPerDay = data[i]["HoursPerDay"];
+    String shifttype = data[i]["shifttype"];
+
 
     Shift shift = new Shift(
-        Id: id,
-        Name: name,
-        TimeIn: timein,
-        TimeOut: timeout,
-        Status: status,
-        Type: type);
+      Id: id,
+      Name: name,
+      TimeIn: timein,
+      TimeOut: timeout,
+      Status: status,
+      Type: type,
+      HoursPerDay:HoursPerDay,
+      shifttype:shifttype,
+    );
     list.add(shift);
   }
   return list;
@@ -2071,9 +2077,11 @@ class Shift {
   String TimeOut;
   String Status;
   String Type;
+  String HoursPerDay;
+  String shifttype;
 
   Shift(
-      {this.Id, this.Name, this.TimeIn, this.TimeOut, this.Status, this.Type});
+      {this.Id, this.Name, this.TimeIn, this.TimeOut, this.Status, this.Type,this.HoursPerDay,this.shifttype});
 }
 
 Future<int> createShift(name, type, from, to, from_b, to_b) async {
@@ -4367,3 +4375,181 @@ Future<int> createHoliday(name, from, to, description) async {
 /************************************************************************
  ****************************End Holiday functions*********************
  ************************************************************************/
+
+
+/////////////////////for shift planner//////////////////////////////////////
+
+
+///////////////////////////////////////////////////////release1.0///////////////////////////////////////////////////
+
+Future<int> saveMultishifts(List fetchList1 , String Id) async {
+  final prefs = await SharedPreferences.getInstance();
+  String orgid = prefs.getString('orgdir') ?? '';
+  //String empid = prefs.getString('empid') ?? '';
+  var date = fetchList1[4];
+  print(date);
+
+  String status = fetchList1[2];
+  print(status);
+  String WeekoffStatus = fetchList1[5];
+  print(status);
+  var shiftid = fetchList1[3];
+  print(shiftid);
+  print("89899898989898989");
+
+  print( globals.path + 'saveMultiShifts?refno=$orgid&date=$date&status=$status&shiftid=$shiftid&empid=$Id&WeekoffStatus=$WeekoffStatus');
+  final response = await http.get(globals.path + 'saveMultiShifts?refno=$orgid&date=$date&status=$status&shiftid=$shiftid&empid=$Id&WeekoffStatus=$WeekoffStatus');
+
+  //print('response recieved: '+response.body.toString());
+  // return int.parse(response.body);
+}
+
+
+Future<List<multishift>> getMultiShiftsList(String id) async {
+
+  final prefs = await SharedPreferences.getInstance();
+  String orgid = prefs.getString('orgdir') ?? '';
+  //String empid = prefs.getString('empid') ?? '';
+  print(globals.path + 'getMultiShiftsList?refno=$orgid&empid=$id');
+  final response = await http.get(globals.path + 'getMultiShiftsList?refno=$orgid&empid=$id');
+  List responseJson = json.decode(response.body.toString());
+  print(responseJson);
+  print("response json");
+  List<multishift> list = createMultiShiftsList(responseJson);
+  print(list);
+  return list;
+}
+
+List<multishift> createMultiShiftsList(List data) {
+  List<multishift> list = new List();
+
+  for (int i = 0; i < data.length ; i++) {
+    DateTime shiftdate = DateTime.parse(data[i]["shiftdate"]);
+    // DateTime shiftdate = data[i]["shiftdate"];
+    // print("name is"  +  shiftdate);
+    int shiftid = data[i]["shiftid"];
+    print(shiftid);
+    String id = data[i]["Id"].toString();
+    String shiftTiming = data[i]["shiftTiming"].toString();
+    String weekoffStatus = data[i]["weekoffStatus"].toString();
+    String shifttype = data[i]["shifttype"].toString();
+    String HoursPerDay = data[i]["HoursPerDay"].toString();
+    print(id);
+
+
+    multishift row = new multishift(
+        shiftdate: shiftdate, shiftid: shiftid, id:id, shiftTiming:shiftTiming,weekoffStatus:weekoffStatus,shifttype:shifttype,HoursPerDay:HoursPerDay);
+    list.add(row);
+
+  }
+  return list;
+
+}
+
+class multishift {
+  DateTime shiftdate;
+  int shiftid;
+  String id;
+  String shiftTiming;
+  String weekoffStatus;
+  String shifttype;
+  String HoursPerDay;
+
+  multishift({this.shiftdate, this.shiftid, this.id, this.shiftTiming,this.weekoffStatus,this.shifttype ,this.HoursPerDay });
+
+}
+
+//------------------------------------------------------------------------------------------------------------------------------
+
+Future<List<shiftplanner1>> shiftplanner(String Id, String shiftId) async {
+
+  final prefs = await SharedPreferences.getInstance();
+  String orgid = prefs.getString('orgdir') ?? '';
+  //print("geooooolalala   " +   globals.path + 'getGeolocation?refno=$orgid');
+  print(globals.path + 'shiftplanner?refno=$orgid&empid=$Id&shiftid=$shiftId');
+  final response = await http.get(globals.path + 'shiftplanner?refno=$orgid&empid=$Id&shiftid=$shiftId');
+  List responseJson = json.decode(response.body.toString());
+  print(responseJson);
+  print("response json");
+  List<shiftplanner1> list = shiftplannerlist(responseJson);
+  print(list);
+  print("list is");
+  return list;
+}
+
+
+List<shiftplanner1> shiftplannerlist(List data) {
+  List<shiftplanner1> list = new List();
+
+  for (int i = 0; i < data.length ; i++) {
+    var ShiftTimeIn = data[i]["ShiftTimeIn"].toString();
+    var shifttype = data[i]["shifttype"];
+    var HoursPerDay = data[i]["HoursPerDay"];
+    var ShiftTimeOut = data[i]["ShiftTimeOut"];
+    List<Shiftdetails> weekofflist = new List();
+    List Week = data[i]["week"];
+    print(Week);
+    print("week list is");
+
+    shiftplanner1 row = new shiftplanner1(
+      ShiftTimeIn: ShiftTimeIn,
+      ShiftTimeOut: ShiftTimeOut,
+      weekofflist: weekofflist,
+      shifttype: shifttype,
+      HoursPerDay:HoursPerDay,
+
+    );
+    list.add(row);
+
+    if(Week!=null){
+      for (int j = 0; j < Week.length; j++) {
+        String WeekOff = Week[j][0]["WeekOff"];
+        String Day = Week[j][0]["Day"];
+        print(Day);
+
+        Shiftdetails detail = new Shiftdetails(
+          WeekOff: WeekOff,
+          Day: Day,
+        );
+        weekofflist.add(detail);
+        print(weekofflist);
+        print("weekofflist");
+      }
+    }
+  }
+  return list;
+}
+
+class shiftplanner1 {
+  dynamic ShiftTimeIn;
+  String ShiftTimeOut;
+  List<Shiftdetails> weekofflist;
+  String shifttype;
+  String HoursPerDay;
+
+  shiftplanner1({this.ShiftTimeIn, this.ShiftTimeOut,this.weekofflist, this.shifttype,this.HoursPerDay});
+
+}
+class Shiftdetails {
+  String WeekOff;
+  String Day;
+
+  Shiftdetails({this.WeekOff, this.Day,});
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////release1.0///////////////////////////////////////////////

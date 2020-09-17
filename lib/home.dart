@@ -43,6 +43,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:store_redirect/store_redirect.dart';
 
 import 'Bottomnavigationbar.dart';
+import 'ShiftPlannerList.dart';
 import 'askregister.dart';
 import 'attendance_summary.dart';
 import 'bulkatt.dart';
@@ -152,6 +153,110 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   final _newPass = TextEditingController();
   FocusNode __oldPass = new FocusNode();
   FocusNode __newPass = new FocusNode();
+
+
+  showInSnackBarforTimeInOut(var val1,var val2,var val3) {
+
+    showModalBottomSheet(
+        context: context,
+        backgroundColor:const Color(0xFF0E3311).withOpacity(0.0) ,
+        builder: (builder) {
+          return Container(
+            //color:const Color(0xFF0E3311).withOpacity(0.5),
+            height:200,
+            padding: new EdgeInsets.fromLTRB(10.0, 20.0, 5.0, 16.0),
+            child: new Stack(
+              children: <Widget>[
+                new Container(
+                  child: Container(
+                    padding: new EdgeInsets.fromLTRB(70.0, 20.0, 16.0, 10.0),
+                    //constraints: new BoxConstraints.expand(),
+                    child: new Column(
+                      // mainAxisAlignment: MainAxisAlignment.spaceEvenly,   //to align from start
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        new Container(height: 3.0),
+                        new Text("Time: "+val1, style: TextStyle(fontSize: 22,color: Colors.white,fontWeight: FontWeight.bold),textAlign: TextAlign.center,),
+                        new Container(height: 6.0),
+                        Container(
+                          //margin: new EdgeInsets.fromLTRB(32.0, 1.0, 16.0, 16.0),
+                          child: val3.toString().length >=170 ? new Text(val3.toString().substring(0,170),style: TextStyle(fontSize: 14,color: Colors.white),):new Text(val3.toString(),style: TextStyle(fontSize: 14,color: Colors.white),),
+
+
+                        ),
+
+
+                        /* new Container(
+                          margin: new EdgeInsets.symmetric(vertical: 8.0),
+                          height: 2.0,
+                          width: 18.0,
+                          color: new Color(0xff00c6ff)
+                      ),*/
+                        /* new Row(
+                        children: <Widget>[
+                          new Image.asset("'assets/avatar.png'", height: 12.0),
+                          new Container(width: 8.0),
+                          new Text("planet.distance",
+                            style: regularTextStyle,
+                          ),
+                          new Container(width: 24.0),
+                          new Image.asset("'assets/avatar.png'", height: 12.0),
+                          new Container(width: 8.0),
+                          new Text("planet.gravity",
+                            style: regularTextStyle,
+                          ),
+                        ],
+                      ),*/
+                      ],
+                    ),
+                  ),
+                  height: 150.0,
+                  width: 350,
+                  margin: new EdgeInsets.only(left: 46.0),
+                  decoration: new BoxDecoration(
+                    //color: Color.fromRGBO(0, 0, 0, 0.5),
+                    //color: Color.fromRGBO(199, 130, 10, 0.6),
+                    //  color: Color.fromRGBO(2, 112, 85, 0.6),
+                    // color: Colors.orangeAccent[200],
+                    color: Colors.teal[500],
+                    shape: BoxShape.rectangle,
+                    borderRadius: new BorderRadius.circular(8.0),
+                    /*boxShadow: <BoxShadow>[
+                    new BoxShadow(
+                      color: Colors.black54,
+                      blurRadius: 5.0,
+                      offset: new Offset(0.0, 10.0),
+                    ),
+                  ],*/
+                  ),
+                ),
+                Container(
+                  margin: new EdgeInsets.symmetric(vertical: 13.0),
+                  alignment: FractionalOffset.centerLeft,
+                  child: Container(
+                    //   foregroundDecoration: BoxDecoration(color:Colors.yellow ),
+                      width: MediaQuery.of(context).size.height * .13,
+                      height: MediaQuery.of(context).size.height * .13,
+                      decoration: new BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: new DecorationImage(
+                            fit: BoxFit.fill,
+                            image: val2!=null?new NetworkImage(val2):AssetImage('assets/avatar.png'),
+                            //image: AssetImage('assets/avatar.png')
+                          ))),
+                ),
+              ],
+            ),
+          );
+        });
+    Future.delayed(const Duration(seconds: 4), () {
+      Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage())
+      );
+    });
+  }
+
 
 
   var tooltiptimein = SuperTooltip(
@@ -2549,7 +2654,38 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             )),
       ));
     }
-    widList.add(Container(
+
+    if((admin_sts == '1' || admin_sts == '2')) {
+      widList.add(Container(
+        padding: EdgeInsets.only(top: 5.0),
+        constraints: BoxConstraints(
+          maxHeight: 50.0,
+          minHeight: 20.0,
+        ),
+        child: new GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => shiftPlannerList()),
+              );
+            },
+            child: Column(
+              children: [
+                Icon(
+                  const IconData(0xe80e, fontFamily: "CustomIcon"),
+                  size: 29.0,
+                  color: iconcolor,
+                ),
+                Text('Shift Planner',
+                    textAlign: TextAlign.center,
+                    style: new TextStyle(fontSize: 12.0, color: iconcolor)),
+              ],
+            )),
+      ));
+    }
+
+
+    /*widList.add(Container(
       padding: EdgeInsets.only(top: 5.0),
       constraints: BoxConstraints(
         maxHeight: 50.0,
@@ -2574,7 +2710,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                   style: new TextStyle(fontSize: 12.0, color: iconcolor)),
             ],
           )),
-    ));
+    ));*/
 
     if (visitpunch.toString() == '1') {
       widList.add(Container(
@@ -3106,6 +3242,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   }
 
+
+
+
+
+
   saveImage() async {
     timeWhenButtonPressed = DateTime.now();
     //  sl.startStreaming(5);
@@ -3213,7 +3354,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         MaterialPageRoute(builder: (context) => CameraExampleHome()),
       );*/
       SaveImage saveImage = new SaveImage();
-      bool issave = false;
+      Map issave;
      var prefs = await SharedPreferences.getInstance();
       globals.showAppInbuiltCamera =
           prefs.getBool("showAppInbuiltCamera") ?? true;
@@ -3237,7 +3378,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         );
       }
 
-      if (issave) {
+      if (issave['status'] == 1 || issave['status']==2)  {
         // Sync image
         saveImage.SendTempimage(context , true);
         if(act1=='TimeIn'){
@@ -3319,7 +3460,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         prefs.setBool("FirstAttendance", true);
 
         //prefs.setBool("companyFreshlyRegistered",false );
-
+        showInSnackBarforTimeInOut(issave['TimeInOut'],issave['EntryExitImage'],issave['checkInOutLoc'],);
+        /*
         showDialog(
             context: context,
             // ignore: deprecated_member_use
@@ -3329,7 +3471,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => MyApp()),
-        );
+        );*/
         if (mounted) {
           setState(() {
             act1 = act;
