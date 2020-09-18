@@ -115,6 +115,7 @@ class SaveImage {
 
 
   Future<Map> saveTimeInOutImagePickerAppCamera(MarkTime mk,context) async {
+
     var MarkAttMap;
     try{
       File imagei = null;
@@ -150,7 +151,7 @@ class SaveImage {
           int timeDifference=currentTime.difference(globals.timeWhenButtonPressed).inSeconds;
           print("--------------------------Time difference------>"+timeDifference.toString());
           if(timeDifference>120){
-            return null;
+            return {'status':3};
           }
 
           List<int> imageBytes = await imagei.readAsBytes();
@@ -199,7 +200,8 @@ class SaveImage {
             "appVersion": globals.appVersion,
             "geofence": globals.geofence,
             "globalOrgTopic": globals.globalOrgTopic,
-            "name": eName
+            "name": eName,
+            "ShiftType": globals.shiftType
           });
           print(formData);
           Response<String> response1;
@@ -217,7 +219,7 @@ class SaveImage {
           imageCache.clear();
           // globals.cameraChannel.invokeMethod("cameraClosed");
           /*getTempImageDirectory();*/
-          Map MarkAttMap = json.decode(response1.data);
+          MarkAttMap = json.decode(response1.data);
           print(MarkAttMap["status"].toString());
           if (MarkAttMap["status"] == 1 || MarkAttMap["status"] == 2) {
             if(globals.facerecognition!=1){
@@ -229,12 +231,12 @@ class SaveImage {
             return MarkAttMap;
           }
           else
-            return MarkAttMap;
+            return {'status': 4};
         }
         else {
           globals.globalCameraOpenedStatus=false;
           print("6");
-          return MarkAttMap;
+          return {'status': 4}; // 4 for selfie not captured
         }
       }else{
 
@@ -242,7 +244,7 @@ class SaveImage {
         int timeDifference=currentTime.difference(globals.timeWhenButtonPressed).inSeconds;
         print("--------------------------Time difference------>"+timeDifference.toString());
         if(timeDifference>120){
-          return null;
+          return {'status': 3};   //3 for taking much time
         }
 
         Dio dio = new Dio();
@@ -276,7 +278,8 @@ class SaveImage {
           "appVersion": globals.appVersion,
           "geofence": globals.geofence,
           "globalOrgTopic": globals.globalOrgTopic,
-          "name": eName
+          "name": eName,
+          "ShiftType": globals.shiftType
           // "file": new UploadFileInfo(imagei, "image.png"),
         });
         print("5");
@@ -294,12 +297,12 @@ class SaveImage {
         if (MarkAttMap["status"] == 1 || MarkAttMap["status"] == 2)
           return MarkAttMap;
         else
-          return MarkAttMap;
+          return {'status': 4};
       }
     } catch (e) {
       print(e.toString());
       globals.globalCameraOpenedStatus=false;
-      return MarkAttMap;
+      return {'status': 4};
     }
   }
 
@@ -645,7 +648,7 @@ class SaveImage {
           int timeDifference=currentTime.difference(globals.timeWhenButtonPressed).inSeconds;
           print("--------------------------Time difference------>"+timeDifference.toString());
            if(timeDifference>120){
-                return null;
+                return {'status':3};
           }
 
 
@@ -686,7 +689,8 @@ class SaveImage {
             "appVersion": globals.appVersion,
             "geofence": globals.geofence,
             "globalOrgTopic": globals.globalOrgTopic,
-            "name": eName
+            "name": eName,
+            "ShiftType": globals.shiftType
           });
 
           print(formData);
@@ -734,12 +738,12 @@ class SaveImage {
             return MarkAttMap;
           }
           else
-            return MarkAttMap;
+            return {'status':4};
         }
         else {
           globals.globalCameraOpenedStatus=false;
           print("6");
-          return MarkAttMap;
+          return {'status':4};
         }
       }else{
 
@@ -747,7 +751,7 @@ class SaveImage {
         int timeDifference=currentTime.difference(globals.timeWhenButtonPressed).inSeconds;
         print("--------------------------Time difference------>"+timeDifference.toString());
         if(timeDifference>120){
-          return null;
+          return {'status':3};
         }
 
         Dio dio = new Dio();
@@ -781,7 +785,8 @@ class SaveImage {
           "appVersion": globals.appVersion,
           "geofence": globals.geofence,
           "globalOrgTopic": globals.globalOrgTopic,
-          "name": eName
+          "name": eName,
+          "ShiftType": globals.shiftType
          // "file": new UploadFileInfo(imagei, "image.png"),
         });
         print("5");
@@ -800,12 +805,12 @@ class SaveImage {
         if (MarkAttMap["status"] == 1 || MarkAttMap["status"] == 2)
           return MarkAttMap;
         else
-          return MarkAttMap;
+          return {'status':4};
       }
     } catch (e) {
       print(e.toString());
       globals.globalCameraOpenedStatus=false;
-      return MarkAttMap;
+      return {'status':4};
     }
   }
 

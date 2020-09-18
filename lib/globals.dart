@@ -137,8 +137,9 @@ var attendanceMarked=true;
 String locationTrackingAddon="0";
 String trackLocationForCurrentUser="0";
 String shiftId='';
+String shiftType='';
 var timeoffRunning=false;
-
+var ShiftPlanner=0;
 
 String appVersion='5.3.9';
 

@@ -1,6 +1,8 @@
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
+import 'dart:convert';
+
 import 'package:Shrine/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -11,6 +13,8 @@ import 'Image_view.dart';
 import 'drawer.dart';
 import 'generatepdf.dart';
 import 'globals.dart';
+import 'globals.dart' as globals;
+import 'package:http/http.dart' as http;
 
 // This app is a stateful, it tracks the user's current choice.
 class Department_att extends StatefulWidget {
@@ -492,8 +496,14 @@ class _Department_att extends State<Department_att>
                                                               },
                                                             ),
                                                             SizedBox(
-                                                              height: 15.0,
+                                                              height: 5.0,
                                                             ),
+                                                            if(snapshot.data[index].ShiftType.toString()=='3')
+                                                              Text("Logged Hours: "+snapshot.data[index].DayLoggedHours
+                                                                  .toString(), style: TextStyle(
+                                                                  color: Colors.black87,
+                                                                  fontWeight: FontWeight.bold,
+                                                                  fontSize: 14.0),),
                                                           ],
                                                         ),
                                                       ),
@@ -543,52 +553,71 @@ class _Department_att extends State<Department_att>
                                                               ),
                                                             ],
                                                           )),
-                                                      Container(
-                                                          width: MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .width *
-                                                              0.22,
-                                                          child: Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .center,
-                                                            children: <Widget>[
-                                                              Text(
-                                                                snapshot
-                                                                    .data[index]
-                                                                    .TimeOut
-                                                                    .toString(),
-                                                                style: TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
+                                                      Stack(
+                                                        children: <Widget>[
+                                                          Container(
+                                                              width: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width *
+                                                                  0.22,
+                                                              child: Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .center,
+                                                                children: <Widget>[
+                                                                  Text(
+                                                                    snapshot
+                                                                        .data[index]
+                                                                        .TimeOut
+                                                                        .toString(),
+                                                                    style: TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .bold),
+                                                                  ),
+                                                                  Container(
+                                                                    width: 62.0,
+                                                                    height: 62.0,
+                                                                    child: InkWell(
+                                                                      child: Container(
+                                                                          decoration: new BoxDecoration(
+                                                                              shape: BoxShape
+                                                                                  .circle,
+                                                                              image: new DecorationImage(
+                                                                                  fit: BoxFit.fill,
+                                                                                  image: new NetworkImage(snapshot.data[index].ExitImage)))),
+                                                                      onTap: () {
+                                                                        Navigator
+                                                                            .push(
+                                                                          context,
+                                                                          MaterialPageRoute(
+                                                                              builder: (context) => ImageView(
+                                                                                  myimage: snapshot.data[index].ExitImage,
+                                                                                  org_name: _orgName)),
+                                                                        );
+                                                                      },
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              )),
+                                                          if(snapshot.data[index].ShiftType.toString()=='3')
+                                                            new Positioned(
+                                                              right:0.0,
+                                                              top: 40,
+                                                              child: Container(
+                                                                  padding: EdgeInsets.only(top:1,right: 3,bottom: 1,left: 3),
+                                                                  color: buttoncolor,
+                                                                  child: InkWell(
+                                                                    child: Icon(Icons.more_horiz,color: Colors.white,),
+                                                                    onTap: (){
+                                                                      showInterimAttendanceDialog(snapshot.data[index].AttendanceMasterId);
+                                                                    },
+                                                                  )
                                                               ),
-                                                              Container(
-                                                                width: 62.0,
-                                                                height: 62.0,
-                                                                child: InkWell(
-                                                                  child: Container(
-                                                                      decoration: new BoxDecoration(
-                                                                          shape: BoxShape
-                                                                              .circle,
-                                                                          image: new DecorationImage(
-                                                                              fit: BoxFit.fill,
-                                                                              image: new NetworkImage(snapshot.data[index].ExitImage)))),
-                                                                  onTap: () {
-                                                                    Navigator
-                                                                        .push(
-                                                                      context,
-                                                                      MaterialPageRoute(
-                                                                          builder: (context) => ImageView(
-                                                                              myimage: snapshot.data[index].ExitImage,
-                                                                              org_name: _orgName)),
-                                                                    );
-                                                                  },
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          )),
+                                                            ),
+                                                        ],
+                                                      ),
                                                     ],
                                                   ),
                                                   Divider(
@@ -1663,8 +1692,285 @@ class _Department_att extends State<Department_att>
               ],
             ),
     );
+
+  }
+  List<User> createInterimAttendanceList(List data){
+    List<User> list = new List();
+    for (int i = 0; i < data.length; i++) {
+      //String title = Formatdate(data[i]["AttendanceDate"]);
+      String TimeOut=data[i]["TimeOut"]=="00:00:00"||data[i]["TimeOut"]==data[i]["TimeIn"]?'-':data[i]["TimeOut"].toString().substring(0,5);
+      String TimeIn=data[i]["TimeIn"]=="00:00:00"?'-':data[i]["TimeIn"].toString().substring(0,5);
+      //String thours=data[i]["thours"]=="00:00:00"?'-':data[i]["thours"].toString().substring(0,5);
+      //String bhour=data[i]["bhour"]==null?'':'Time Off: '+data[i]["bhour"].substring(0,5);
+      String EntryImage=data[i]["TimeInImage"]!=''?data[i]["TimeInImage"]:'http://ubiattendance.ubihrm.com/assets/img/avatar.png';
+      String ExitImage=data[i]["TimeOutImage"]!=''?data[i]["TimeOutImage"]:'http://ubiattendance.ubihrm.com/assets/img/avatar.png';
+      String checkInLoc=data[i]["TimeInLocation"];
+      checkInLoc=(checkInLoc.length <= 50)
+          ? checkInLoc
+          :'${checkInLoc.substring(0, 50)}...';
+      String CheckOutLoc=data[i]["TimeOutLocation"];
+      CheckOutLoc=(CheckOutLoc.length <= 50)
+          ? CheckOutLoc
+          :'${CheckOutLoc.substring(0, 50)}...';
+      String Latit_in=data[i]["LatitudeIn"];
+      String Longi_in=data[i]["LongitudeIn"];
+      String Latit_out=data[i]["LatitudeOut"];
+      String Longi_out=data[i]["LongitudeOut"];
+      String totalLoggedHours=data[i]["LoggedHours"]=="00:00:00"?'-':data[i]["LoggedHours"].toString().substring(0,5);
+
+      //String timeindate=data[i]["timeindate"];
+      //String attendanceMasterId=data[i]["Id"];
+      //if(timeindate =='0000-00-00')
+      //  timeindate = data[i]["AttendanceDate"];
+
+      //String timeoutdate=data[i]["timeoutdate"];
+      // if(timeoutdate =='0000-00-00')
+      //  timeoutdate=data[i]["AttendanceDate"];
+      //int id = 0;
+      User user = new User(
+          TimeOut:TimeOut,TimeIn:TimeIn,EntryImage:EntryImage,checkInLoc:checkInLoc,ExitImage:ExitImage,CheckOutLoc:CheckOutLoc,latit_in: Latit_in,longi_in: Longi_in,latit_out: Latit_out,longi_out: Longi_out,totalLoggedHours: totalLoggedHours);
+      list.add(user);
+    }
+    return list;
   }
 
+  Future<List<User>> getInterimAttendanceSummary(attendanceMasterId) async {
+
+    final response = await http.get(globals.path+'getInterimAttendances?attendanceMasterId=$attendanceMasterId');
+    print(response.body);
+    List responseJson = json.decode(response.body.toString());
+    List<User> userList = createInterimAttendanceList(responseJson);
+    return userList;
+  }
+  void showInterimAttendanceDialog(String attendanceMasterId) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Interim Attendance",textAlign: TextAlign.center,),
+          content:FutureBuilder<List<User>>(
+            future: getInterimAttendanceSummary(attendanceMasterId),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height*.7,
+                  child: new ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      physics: ClampingScrollPhysics(),
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (context, index) {
+                        //   double h_width = MediaQuery.of(context).size.width*0.5; // screen's 50%
+                        //   double f_width = MediaQuery.of(context).size.width*1; // screen's 100%
+                        return new Column(
+                            children: <Widget>[
+                              Text("Logged Hours: "+snapshot.data[index].totalLoggedHours
+                                  .toString(), style: TextStyle(
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 13.0),),
+                              SizedBox(height:2.0),
+                              Divider(color: Colors.black45,height: 2,),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: <Widget>[
+                                  SizedBox(height: 10.0,),
+                                  /*
+                                  Container(
+                                    width: MediaQuery.of(context).size.width * 0.16,
+                                    padding:new EdgeInsets.only(top:10.0),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment
+                                          .start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text("Logged Hours: "+snapshot.data[index].totalLoggedHours
+                                            .toString(), style: TextStyle(
+                                            color: Colors.black87,
+                                            //fontWeight: FontWeight.bold,
+                                            fontSize: 13.0),),
+
+
+                                        SizedBox(height:2.0),
+
+                                        /*
+                                                                snapshot.data[index].bhour.toString()!=''?Container(
+                                                                  //color:globals.buttoncolor,
+                                                                  child:Text(""+snapshot.data[index]
+                                                                      .bhour.toString()+" Hr(s)",style: TextStyle(),),
+                                                                ):SizedBox(height: 10.0,),
+*/
+
+                                      ],
+                                    ),
+                                  ),
+                                  */
+                                  Container(
+                                      width: MediaQuery.of(context).size.width * 0.3,
+                                      padding:EdgeInsets.only(top: 5),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          Text(snapshot.data[index].TimeIn.toString(),style: TextStyle(fontWeight: FontWeight.bold , fontSize: 16.0),),
+
+                                          (index == 0 && snapshot.data[index].TimeIn.toString().trim() != '-' && snapshot.data[index].TimeOut.toString().trim() == '-'  &&  globals.PictureBase64Att != "")?
+                                          Container(
+                                            width: 62.0,
+                                            height: 62.0,
+                                            child:InkWell(
+                                              child: Container(
+                                                  child:  ClipOval(child:Image.memory(base64Decode(globals.PictureBase64Att),height: 100, width: 100, fit: BoxFit.cover,))
+                                              ),
+                                              onTap: (){
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(builder: (context) => ImageView.fromImage((globals.PictureBase64Att),'')),
+                                                );
+                                              },
+                                            ),
+                                          ): Container(
+                                            width: 62.0,
+                                            height: 62.0,
+                                            child:InkWell(
+                                              child: Container(
+                                                  decoration: new BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      image: new DecorationImage(
+                                                          fit: BoxFit.fill,
+                                                          image: new NetworkImage(snapshot.data[index].EntryImage)
+                                                      )
+                                                  )),
+                                              onTap: (){
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(builder: (context) => ImageView(myimage: snapshot.data[index].EntryImage,org_name: '')),
+                                                );
+                                              },
+                                            ),),
+                                          InkWell(
+                                            child: Text('Time In: ' +
+                                                snapshot.data[index]
+                                                    .checkInLoc.toString(),
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    color: Colors.blue,
+                                                    decoration: TextDecoration.underline,
+
+                                                    fontSize: 10.0)),
+                                            onTap: () {
+                                              goToMap(
+                                                  snapshot.data[index]
+                                                      .latit_in ,
+                                                  snapshot.data[index]
+                                                      .longi_in);
+                                            },
+                                          ),
+                                        ],
+                                      )
+                                  ),
+
+                                  Container(
+                                      padding:EdgeInsets.only(top: 5),
+                                      width: MediaQuery.of(context).size.width * 0.3,
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          Row(
+                                              crossAxisAlignment: CrossAxisAlignment.center,
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: <Widget>[
+                                                Text(snapshot.data[index].TimeOut.toString(),style: TextStyle(fontWeight: FontWeight.bold , fontSize: 16.0),),
+                                                if(snapshot.data[index].timeindate.toString() != snapshot.data[index].timeoutdate.toString())
+                                                  Text(" +1 \n Day",style: TextStyle(fontSize: 9.0,color: Colors.teal,fontWeight: FontWeight.bold),),
+                                              ]),
+                                          (index == 0 && snapshot.data[index].TimeOut.toString().trim() != '-'  &&  globals.PictureBase64Att != "")?
+                                          Container(
+                                            width: 62.0,
+                                            height: 62.0,
+                                            child:InkWell(
+                                              child: Container(
+                                                  child:  ClipOval(child:Image.memory(base64Decode(globals.PictureBase64Att),height: 100, width: 100, fit: BoxFit.cover,))
+                                              ),
+                                              onTap: (){
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(builder: (context) => ImageView.fromImage((globals.PictureBase64Att),'')),
+                                                );
+                                              },
+                                            ),
+                                          ):Container(
+                                            width: 62.0,
+                                            height: 62.0,
+                                            child:InkWell(
+                                              child: Container(
+                                                  decoration: new BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      image: new DecorationImage(
+                                                          fit: BoxFit.fill,
+                                                          image: new NetworkImage(snapshot.data[index].ExitImage)
+                                                      )
+                                                  )),
+                                              onTap: (){
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(builder: (context) => ImageView(myimage: snapshot.data[index].ExitImage,org_name: '')),
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                          InkWell(
+                                            child: Text('Time Out: ' +
+                                                snapshot.data[index].CheckOutLoc.toString(),
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  color: Colors.blue,
+                                                  decoration: TextDecoration.underline,
+
+                                                  fontSize: 10.0),),
+                                            onTap: () {
+                                              goToMap(
+                                                  snapshot.data[index].latit_out,
+                                                  snapshot.data[index].longi_out);
+                                            },
+                                          ),
+                                        ],
+                                      )
+
+                                  ),
+                                ],
+
+                              ),
+                              if(index!=snapshot.data.length-1)
+                                Divider(color: Colors.black26,),
+                            ]);
+                      }
+                  ),
+                );
+              } else if (snapshot.hasError) {
+                return new Text("Unable to connect server");
+              }
+
+              // By default, show a loading spinner
+              return new Center( child: CircularProgressIndicator());
+            },
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('OK'),
+              onPressed: () {
+
+                Navigator.of(context).pop();
+              },
+            ),
+
+          ],
+        );
+      },
+    );
+
+  }
 /*
   Widget getDepartments_DD() {
     String dc = "0";
@@ -1782,4 +2088,26 @@ class _Department_att extends State<Department_att>
           ],
         ));
   }
+}
+
+class User {
+  String AttendanceDate;
+  String thours;
+  String TimeOut;
+  String TimeIn;
+  String bhour;
+  String EntryImage;
+  String checkInLoc;
+  String ExitImage;
+  String CheckOutLoc;
+  String latit_in;
+  String longi_in;
+  String latit_out;
+  String longi_out;
+  String timeindate;
+  String timeoutdate;
+  String totalLoggedHours;
+  String attendanceMasterId;
+  int id=0;
+  User({this.AttendanceDate,this.thours,this.id,this.TimeOut,this.TimeIn,this.bhour,this.EntryImage,this.checkInLoc,this.ExitImage,this.CheckOutLoc,this.latit_in,this.longi_in,this.latit_out,this.longi_out,this.timeindate,this.timeoutdate,this.totalLoggedHours,this.attendanceMasterId});
 }

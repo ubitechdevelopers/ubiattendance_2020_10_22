@@ -2655,7 +2655,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       ));
     }
 
-    if((admin_sts == '1' || admin_sts == '2')) {
+    if((admin_sts == '1' || admin_sts == '2')&&globals.ShiftPlanner==1) {
       widList.add(Container(
         padding: EdgeInsets.only(top: 5.0),
         constraints: BoxConstraints(
@@ -3362,7 +3362,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           ? await saveImage.saveTimeInOutImagePickerAppCamera(mk, context)
           : await saveImage.saveTimeInOutImagePicker(mk, context);
       print(issave);
-      if (issave == null) {
+      if (issave['status'] == 3)  {
         globals.timeWhenButtonPressed = null;
         showDialog(
             context: context,
@@ -3478,7 +3478,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             act1 = act;
           });
         }
-      } else {
+      } else if(issave['status']==4){
         showDialog(
             context: context,
             // ignore: deprecated_member_use
@@ -3490,6 +3490,17 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             act1 = act;
           });
         }
+      }
+      else{      //
+
+        showDialog(
+            context: context,
+            // ignore: deprecated_member_use
+            child: new AlertDialog(
+              content: new Text("Selfie was not captured. Please change your Camera from Settings."),
+            ));
+
+
       }
     } else {
       SharedPreferences prefs = await SharedPreferences.getInstance();
