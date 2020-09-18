@@ -4363,6 +4363,7 @@ var FakeLocationStatus=0;
               setState(() {
                 Rating=rating;
                 prefs.setDouble('Rating',Rating);
+                prefs.remove("FirstAttendance");
               });
               print(Rating);
               Navigator.pop(context);
@@ -4519,12 +4520,51 @@ var FakeLocationStatus=0;
                                   context,
                                   MaterialPageRoute(builder: (context) => HomePage()),
                                 );
+                                /*
                                 showDialog(
                                     context: context,
                                     // ignore: deprecated_member_use
                                     child: new AlertDialog(
                                       content: new Text("Thanks for Rating us!"),
                                     ));
+
+                                 */
+                                if(Rating>3.0){
+                                await showDialog(
+                                    context: context,
+                                    // ignore: deprecated_member_use
+                                    child: new AlertDialog(
+                                      //title: new Text("Warning!"),
+                                      content: Container(
+                                        height: MediaQuery.of(context).size.height*0.11,
+                                        child: Column(
+                                            children: <Widget>[
+                                              new Text(
+                                                  "Rate us Play Store"),
+                                              Padding(
+                                                padding: const EdgeInsets.only(top:5.0),
+                                                child: RaisedButton(elevation: 2.0,
+                                                  highlightElevation: 5.0,
+                                                  highlightColor: Colors.transparent,
+                                                  disabledElevation: 0.0,
+                                                  focusColor: Colors.transparent,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(5),
+                                                  ),
+                                                  color: buttoncolor,
+                                                  child: Text('Go',style: TextStyle(color: Colors.white),),
+                                                  onPressed: (){
+
+                                                    globals.facebookChannel.invokeMethod("logRateEvent");
+                                                    LaunchReview.launch(
+                                                        androidAppId: "org.ubitech.attendance"
+                                                    );
+                                                  },
+                                                ),
+                                              )
+                                            ]),
+                                      ),
+                                    ));}
 
 
 

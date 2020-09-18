@@ -588,14 +588,15 @@ class _ApplyLeave extends State<ApplyLeave> with SingleTickerProviderStateMixin 
         MaterialPageRoute(builder: (context) => CameraExampleHome()),
       );*/
       SaveImage saveImage = new SaveImage();
-      String issave = 'false';
+      Map MarkAttMap;
       setState(() {
       });
-      issave =  await saveImage.applyLeave( empid , _reasonController.text.trim(),  _dateController.text, _dateController1.text,_radioValue, _radioValue1, orgid);
+      MarkAttMap =  await saveImage.applyLeave( empid , _reasonController.text.trim(),  _dateController.text, _dateController1.text,_radioValue, _radioValue1, orgid);
+
       print("issave");
-      print(issave);
+      print(MarkAttMap);
       //String tempstatus = timeoffstatus;
-      if (issave=='true') {
+      if (MarkAttMap["status"].toString()=='true') {
 
 
         /*checkTimeOff().then((EmpList) {
@@ -627,7 +628,21 @@ class _ApplyLeave extends State<ApplyLeave> with SingleTickerProviderStateMixin 
         )
         );
         //}
-      } else if(issave=='false1') {
+      }
+      else if(MarkAttMap["status"].toString()=='false') {
+
+        /*
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()),
+        );
+        */
+        showDialog(context: context, child:
+        new AlertDialog(
+          content: new Text("Leave could not be applied"),
+        )
+        );
+      } else if(MarkAttMap["status"].toString()=='false1') {
 
         /*
         Navigator.push(
@@ -640,7 +655,7 @@ class _ApplyLeave extends State<ApplyLeave> with SingleTickerProviderStateMixin 
           content: new Text("You have Already Applied for Leave for this day"),
         )
         );
-      } else if(issave=='false2') {
+      } else if(MarkAttMap["status"].toString()=='false2') {
         /*Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => HomePage()),
@@ -650,7 +665,7 @@ class _ApplyLeave extends State<ApplyLeave> with SingleTickerProviderStateMixin 
           content: new Text("You have insufficient Leave Balance"),
         )
         );
-      } else if(issave=='false3') {
+      } else if(MarkAttMap["status"].toString()=='false3') {
         /*Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => HomePage()),
@@ -660,7 +675,7 @@ class _ApplyLeave extends State<ApplyLeave> with SingleTickerProviderStateMixin 
           content: new Text("Leave can not be applied on Weekoffs/Holidays"),
         )
         );
-      }else if(issave=='false4') {
+      }else if(MarkAttMap["status"].toString()=='false4') {
         /*Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => HomePage()),
@@ -670,7 +685,7 @@ class _ApplyLeave extends State<ApplyLeave> with SingleTickerProviderStateMixin 
           content: new Text("Leave can not be applied after marking Time In"),
         )
         );
-      }else if(issave=='false5') {
+      }else if(MarkAttMap["status"].toString()=='false5') {
         /*Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => HomePage()),
@@ -681,7 +696,7 @@ class _ApplyLeave extends State<ApplyLeave> with SingleTickerProviderStateMixin 
         )
         );
       }
-      else if(issave=='false6') {
+      else if(MarkAttMap["status"].toString()=='false6') {
         /*Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => HomePage()),
@@ -689,6 +704,17 @@ class _ApplyLeave extends State<ApplyLeave> with SingleTickerProviderStateMixin 
         showDialog(context: context, child:
         new AlertDialog(
           content: new Text("Contact admin and get date of joining assigned to you"),
+        )
+        );
+      }
+      else if(MarkAttMap["status"].toString()=='false7') {
+        /*Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()),
+        );*/
+        showDialog(context: context, child:
+        new AlertDialog(
+          content: new Text("You can apply only "+MarkAttMap['days_allowed'].toString()+' days leave'),
         )
         );
       }else {

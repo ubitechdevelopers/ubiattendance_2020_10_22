@@ -1878,7 +1878,8 @@ class SaveImage {
       return 'false';
     }
   }
-  Future<String> applyLeave(empid, reason, fromdate, todate,halfdaysts,halfdaysts1,orgid) async {
+  Future<Map> applyLeave(empid, reason, fromdate, todate,halfdaysts,halfdaysts1,orgid) async {
+    Map MarkAttMap;
     try {
       globals.globalCameraOpenedStatus=false;
       print('------------**vvxxbb');
@@ -1899,10 +1900,12 @@ class SaveImage {
       }
 
       /*getTempImageDirectory();*/
-      Map MarkAttMap = json.decode(response1.toString());
+      MarkAttMap = json.decode(response1.toString());
       print('------------1*');
       print(MarkAttMap["res"].toString());
       print('------------2*');
+      return MarkAttMap;
+      /*
       if (MarkAttMap["status"].toString() == 'true')
         return 'true';
       else if(MarkAttMap["status"].toString() == 'false1')
@@ -1926,13 +1929,18 @@ class SaveImage {
       {
         return 'false6';
       }
+      else if(MarkAttMap["status"].toString() == 'false7')
+      {
+        return 'false7';
+      }
       else
         return 'false';
+      */
     } catch (e) {
       print('7--');
       globals.globalCameraOpenedStatus=false;
       print(e.toString());
-      return 'false';
+      return MarkAttMap;
     }
   }
 
