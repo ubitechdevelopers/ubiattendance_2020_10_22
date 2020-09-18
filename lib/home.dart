@@ -249,7 +249,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             ),
           );
         });
-    Future.delayed(const Duration(seconds: 4), () {
+    Future.delayed(const Duration(seconds: 3), () {
       Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => HomePage())

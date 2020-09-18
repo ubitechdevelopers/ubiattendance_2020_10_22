@@ -699,7 +699,7 @@ class _MyHomePageState extends State<userShiftCalendar> {
 
   Widget _daysGoneicon(String day, String string1) => Container(         /// icon for days gone(absent)
     decoration: BoxDecoration(
-      color: Colors.red[300],
+      color: Colors.red[100],
       border: Border.all(
           width: 1, color: Colors.red//                   <--- border width here
       ),
@@ -756,7 +756,7 @@ class _MyHomePageState extends State<userShiftCalendar> {
 
   Widget _daysGoneicon3(String day, String string1) => Container(   /// icon for assigned shifts
     decoration: BoxDecoration(
-      color: Colors.red[300],
+      color: Colors.red[100],
       border: Border.all(
           width: 1, color: Colors.red//                   <--- border width here
       ),
@@ -1117,7 +1117,7 @@ class _MyHomePageState extends State<userShiftCalendar> {
                     child: Row(
                         children: <Widget>[
                           CircleAvatar(
-                            backgroundColor: Colors.red[300],
+                            backgroundColor: Colors.red[100],
                             radius: cHeight * 0.011,
                           ),
                           Text("  Absent",

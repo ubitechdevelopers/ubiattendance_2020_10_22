@@ -124,6 +124,7 @@ class Home{
         globals.payroll=int.parse(timeinoutMap['Addon_Payroll']);
         globals.ShiftPlanner=int.parse(timeinoutMap['Addon_ShiftPlanner'])??0;
 
+        print("Testing line11111111111111111111111111111"+globals.shiftType);
         print("Testing line1");
         globals.visitpunch=int.parse(timeinoutMap['Addon_VisitPunch']);
         globals.timeOff=int.parse(timeinoutMap['Addon_TimeOff']);
