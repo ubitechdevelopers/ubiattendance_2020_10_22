@@ -59,6 +59,7 @@ class _MyHomePageState extends State<userShiftCalendar> {
   AnimationController _animationController;
   List<shiftplanner1> items = null;
   List<multishift> specialshift = null ;
+  List<AttendanceList> AttendanceLists = null ;
   var dateUtility = DateUtil();
   var daysinyear;
   bool leapyear;
@@ -70,6 +71,7 @@ class _MyHomePageState extends State<userShiftCalendar> {
   List<DateTime> defaultshifts = null;
   List<DateTime> specialshiftdate = null;
   List<DateTime> weekofflist = null;
+  List<dynamic> PresentAttendanceDate=[];
   List<String> values = null;
   var onTapListCall = null;
   var _shifts;
@@ -79,6 +81,7 @@ class _MyHomePageState extends State<userShiftCalendar> {
   bool shiftPressed = false;
   int shiftColor=0;
   String goneShift;
+
   final List<Color> circleColors =
   [Colors.orangeAccent[100], Colors.greenAccent[100], Colors.lightGreenAccent[100],
     Colors.lime[100], Colors.deepPurple[100], Colors.indigoAccent[100]];
@@ -109,6 +112,7 @@ class _MyHomePageState extends State<userShiftCalendar> {
   var daysgone2=0;
   DateTime daysgonecalculation;
   Map<DateTime, List> daysGoneList = {};
+  var lightColor = const Color(0xFFC8FFC7);
   // bool checkStatus = false;
   // final seen = Set<String>();
   // List unique =[];
@@ -143,9 +147,9 @@ class _MyHomePageState extends State<userShiftCalendar> {
     getOrgName();
     initPlatformState();
     now = new DateTime.now();
-    firstDayOfMonth = new DateTime(now.year , now.month -4 , 1);
-    firstDayOfMonth123 = new DateTime(now.year , now.month -4 , 1);
-    daysgonecalculation = new DateTime(now.year , now.month -4 , 1);
+    firstDayOfMonth = new DateTime(now.year , now.month -2 , 1);
+    firstDayOfMonth123 = new DateTime(now.year , now.month -2 , 1);
+    daysgonecalculation = new DateTime(now.year , now.month -2 , 1);
     daysinyear = dateUtility.daysPastInYear(now.month,0,now.year);
     leapyear = dateUtility.leapYear(now.year);
     daysgone();
@@ -188,7 +192,6 @@ class _MyHomePageState extends State<userShiftCalendar> {
 
     Future.delayed(const Duration(milliseconds: 3000), () {
       showInSnackBar("Press the date to get more details.");
-
     });
 
     final prefs = await SharedPreferences.getInstance();
@@ -198,7 +201,6 @@ class _MyHomePageState extends State<userShiftCalendar> {
       response = prefs.getInt('response') ?? 0;
       empid = prefs.getString('empid') ?? '';
       shiftId = prefs.getString('shiftId') ?? "";
-
     });
 
 
@@ -215,6 +217,28 @@ class _MyHomePageState extends State<userShiftCalendar> {
         _holiday = val;
       }));
 
+      /* getDefaultAttendanceList(empid).then((val){
+        setState(() {
+          AttendanceLists = val;
+
+        });
+
+        for(int i = 0; i<AttendanceLists.length;i++){
+
+          _markedDateMap.removeAll(AttendanceLists[i].AttendanceDate);
+          _markedDateMap.add(
+            AttendanceLists[i].AttendanceDate,
+            new Event(
+              date: AttendanceLists[i].AttendanceDate,
+              title: 'Event 5',
+              icon: _attendanceIcon(
+                  AttendanceLists[i].AttendanceDate.day.toString(),
+                  AttendanceLists[i].TimeIn,AttendanceLists[i].TimeOut),
+            ),
+          );
+        }
+      });*/
+
       getMultiShiftsList(empid).then((val) {
         setState(() {
           print(val);
@@ -229,6 +253,7 @@ class _MyHomePageState extends State<userShiftCalendar> {
             final unique = ids.where((str) => seen.add(str)).toList();
             distinctIds = unique;
             indexOfColor = distinctIds.indexOf(specialshift[i].shiftid.toString()) % 5;
+
           });
 
           if(specialshift[i].shifttype =='3'){
@@ -251,7 +276,7 @@ class _MyHomePageState extends State<userShiftCalendar> {
               new Event(
                 date: specialshift[i].shiftdate,
                 title: 'Event 5',
-                icon: _VerySpecialShift(
+                icon: _SpecialShiftIcon(
                     specialshift[i].shiftdate.day.toString(),
                     specialshift[i].shiftTiming, indexOfColor),
               ),
@@ -264,7 +289,7 @@ class _MyHomePageState extends State<userShiftCalendar> {
               new Event(
                 date:specialshift[i].shiftdate,
                 title: 'Event 5',
-                icon: _VerySpecialShift(specialshift[i].shiftdate.day.toString(),
+                icon: _SpecialShiftIcon(specialshift[i].shiftdate.day.toString(),
                     "Week off", indexOfColor),
               ),
             );
@@ -333,10 +358,66 @@ class _MyHomePageState extends State<userShiftCalendar> {
             firstDayOfMonth123 = firstDayOfMonth123.add(Duration(days: 1));
 
           }
+
+          if(i==0) {
+            getDefaultAttendanceList(empid).then((val) {
+              setState(() {
+                AttendanceLists = val;
+                print(AttendanceLists.length);
+                print("AttendanceLists.length");
+              });
+
+              for (int k = 0; k < AttendanceLists.length; k++) {
+                print(AttendanceLists[k].AttendanceDate);
+                print("AttendanceLists[k].AttendanceDate");
+                //  var AttendanceDate = AttendanceLists[k].AttendanceDate;
+                PresentAttendanceDate.add(AttendanceLists[k].AttendanceDate);
+                print(PresentAttendanceDate);
+                print("PresentAttend123anceDate");
+
+                _markedDateMap.removeAll(AttendanceLists[k].AttendanceDate);
+                _markedDateMap.add(
+                  AttendanceLists[k].AttendanceDate,
+                  new Event(
+                    date: AttendanceLists[k].AttendanceDate,
+                    title: 'Event 5',
+                    icon: _attendanceIcon(
+                        AttendanceLists[k].AttendanceDate.day.toString(),
+                        AttendanceLists[k].TimeIn, AttendanceLists[k].TimeOut),
+                  ),
+                );
+              }
+            });
+          }
         }
+
+        /* print(PresentAttendanceDate);
+        print("PresentAttendanceDate");*/
       });
 
+      /* getDefaultAttendanceList(empid).then((val){
+        setState(() {
+          AttendanceLists = val;
+        });
+
+        for(int i = 0; i<AttendanceLists.length;i++){
+
+          _markedDateMap.removeAll(AttendanceLists[i].AttendanceDate);
+          _markedDateMap.add(
+            AttendanceLists[i].AttendanceDate,
+            new Event(
+              date: AttendanceLists[i].AttendanceDate,
+              title: 'Event 5',
+              icon: _attendanceIcon(
+                  AttendanceLists[i].AttendanceDate.day.toString(),
+                  AttendanceLists[i].TimeIn,AttendanceLists[i].TimeOut),
+            ),
+          );
+        }
+      });*/
+
       for (int i = 0; i < weekoff.length; i++) {
+        //  _markedDateMap.removeAll(weekofflist[i]);
         _markedDateMap.add(
           weekofflist[i],
           new Event(
@@ -348,6 +429,7 @@ class _MyHomePageState extends State<userShiftCalendar> {
       }
 
       for (int i = 0; i < DefaultShiftList.length; i++) {
+        // _markedDateMap.removeAll(weekofflist[i]);
         _markedDateMap.add(
           defaultshifts[i],
           new Event(
@@ -357,9 +439,30 @@ class _MyHomePageState extends State<userShiftCalendar> {
           ),
         );
       }
-    });
 
+      /* getDefaultAttendanceList(empid).then((val){
+        setState(() {
+          AttendanceLists = val;
+        });
+
+        for(int i = 0; i<AttendanceLists.length;i++){
+          _markedDateMap.removeAll(AttendanceLists[i].AttendanceDate);
+          _markedDateMap.add(
+            AttendanceLists[i].AttendanceDate,
+            new Event(
+              date: AttendanceLists[i].AttendanceDate,
+              title: 'Event 5',
+              icon: _attendanceIcon(
+                  AttendanceLists[i].AttendanceDate.day.toString(),
+                  AttendanceLists[i].TimeIn,AttendanceLists[i].TimeOut),
+            ),
+          );
+        }
+      });*/
+    });
   }
+
+
 
   Color randomGenerator(int i) {
     return circleColors[i];
@@ -371,7 +474,7 @@ class _MyHomePageState extends State<userShiftCalendar> {
 
   Future<Map<DateTime, List>> getTask() async {
 
-    for(int i = 1 ; i<= 366 ; i++){
+    for(int i = 1 ; i<= 100 ; i++){
 
       if(items[0].shifttype.toString() == '3')
       {
@@ -379,7 +482,8 @@ class _MyHomePageState extends State<userShiftCalendar> {
       }
       else {
         DefaultShiftList.addAll({firstDayOfMonth: [items[0].ShiftTimeIn + items[0].ShiftTimeOut]});
-      }      firstDayOfMonth = firstDayOfMonth.add(Duration(days: 1));
+      }
+      firstDayOfMonth = firstDayOfMonth.add(Duration(days: 1));
 
     }
 
@@ -412,7 +516,7 @@ class _MyHomePageState extends State<userShiftCalendar> {
 
     for (int k = 0; k < items[0].weekofflist.length; k++) {
 
-      firstDayOfMonth1 = new DateTime(now.year , now.month -4 , 1);
+      firstDayOfMonth1 = new DateTime(now.year , now.month -2 , 1);
       int day1 = int.parse(items[0].weekofflist[k].Day);
       //int day1 = 2;  //day of week
 
@@ -431,7 +535,7 @@ class _MyHomePageState extends State<userShiftCalendar> {
       var arr = items[0].weekofflist[k].WeekOff.split(",");
       // var arr = ['1','0','0','0','1'];     //value of weekoff of one week
 
-      for (int i = 1; i <= 50; i++) {
+      for (int i = 1; i <= 10; i++) {
 
         while (firstDayOfMonth1.weekday != day1) {
           firstDayOfMonth1 = firstDayOfMonth1.add(Duration(days: 1));
@@ -454,57 +558,25 @@ class _MyHomePageState extends State<userShiftCalendar> {
     return weekoff;
   }
 
-  Widget _FlexiIcon(String day, String string1, int i) =>
+  /* Widget _FlexiIcon(String day, String string1, int i) =>
 
       Container(
         decoration: BoxDecoration(
-          color: randomGenerator(i),
+          //  color: Colors.grey[400],
+          color: Colors.white12,
           borderRadius: BorderRadius.all(
             Radius.circular(5),
           ),
         ),
-        child: Container(
-          child: new Column(
-            children: <Widget>[
-              new Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      day,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Colors.black, fontSize: 16
-                      ),
-                    ),
-                  ]
-              ),
-              SizedBox(height: 4,),
-              new Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      string1.substring(0, 5),
-                      style: TextStyle(
-                          color: Colors.black, fontSize: 9
-                      ),
-                    )
-                  ]
-              ), new Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      string1.substring(5, 10)+" "+string1.substring(13, 16),
-                      style: TextStyle(
-                          color: Colors.black, fontSize: 9
-                      ),
-                    ),
-                  ]
-              ),
-
-            ],
+        child:  Center(
+          child: Text(
+            day,
+            style: TextStyle(
+                color: Colors.black,fontSize: 16,fontWeight: FontWeight.bold
+            ),
           ),
         ),
-      );
+      );*/
 
 
   /*Future<Map<DateTime, List>> getWeekOff() async {
@@ -564,137 +636,81 @@ class _MyHomePageState extends State<userShiftCalendar> {
     else return time;
   }
 
+  Widget _FlexiIcon(String day, String string1, int i) =>
+      Container(
+        decoration: BoxDecoration(
+          //  color: Colors.grey[400],
+          color: Colors.white12,
+          borderRadius: BorderRadius.all(
+            Radius.circular(5),
+          ),
+        ),
+        child:  Center(
+          child: Text(
+            day,
+            style: TextStyle(
+              color: Colors.black,fontSize: 16,
+            ),
+          ),
+        ),
+      );
 
-  Widget _presentIcon(String day, String string1) => Container(
+  Widget _presentIcon(String day, String string1) => Container(  //icon for upcoming dates
 
     decoration: BoxDecoration(
-      color: Colors.grey[400],
+      color: Colors.white12,
+      /* border: Border.all(
+          width: 1, color: Colors.black87//                   <--- border width here
+      ),*/
       borderRadius: BorderRadius.all(
         Radius.circular(5),
       ),
     ),
-    child: Container(
-      child:new Column(
-        children: <Widget>[
-          new Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  day,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Colors.black,fontSize: 16
-                  ),
-                ),
-              ]
-          ),
-          SizedBox(height: 4,),
-          new Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                !string1.contains("Flexi")?Text(
-                  string1.substring(1, 6),
-                  style: TextStyle(
-                      color: Colors.black, fontSize: 9
-                  ),
-                ):Text(
-                  string1.substring(1, 6),
-                  style: TextStyle(
-                      color: Colors.black, fontSize: 9
-                  ),
-                ),
-              ]
-          ),new Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                !string1.contains("Flexi")?Text(
-                  string1.substring(9, 14),
-                  style: TextStyle(
-                      color: Colors.black, fontSize: 9
-                  ),
-                ):Text(
-                  string1.substring(7, 12)+" "+string1.substring(16, 19),
-                  style: TextStyle(
-                      color: Colors.black, fontSize: 9
-                  ),
-                ),
-              ]
-          ),
-
-        ],
+    child:  Center(
+      child: Text(
+        day,
+        style: TextStyle(
+          color: Colors.black,fontSize: 16,
+        ),
       ),
     ),
   );
 
-  Widget _daysGoneicon(String day, String string1) => Container(
+  Widget _attendanceIcon(String day, String timein, String timeout) => Container(    /// icon for days gone(present)
     decoration: BoxDecoration(
-      color: Colors.teal[100],
+      //color: Colors.teal[100],
+      color: Colors.green[100],
+      border: Border.all(
+          width: 1, color: Colors.green//                   <--- border width here
+      ),
       borderRadius: BorderRadius.all(
         Radius.circular(5),
       ),
     ),
-    child: Container(
-      child:new Column(
-        children: <Widget>[
-          new Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  day,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Colors.black,fontSize: 16
-                  ),
-                ),
-              ]
-          ),
-          SizedBox(height: 4,),
-          new Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                !string1.contains("Flexi")?Text(
-                  string1.substring(1, 6),
-                  style: TextStyle(
-                      color: Colors.black, fontSize: 9
-                  ),
-                ):Text(
-                  string1.substring(1, 6),
-                  style: TextStyle(
-                      color: Colors.black, fontSize: 9
-                  ),
-                ),
-              ]
-          ),new Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                !string1.contains("Flexi")?Text(
-                  string1.substring(9, 14),
-                  style: TextStyle(
-                      color: Colors.black, fontSize: 9
-                  ),
-                ):Text(
-                  string1.substring(7, 12)+" "+string1.substring(16, 19),
-                  style: TextStyle(
-                      color: Colors.black, fontSize: 9
-                  ),
-                ),
-              ]
-          ),
-
-        ],
+    child: Center(
+      child: Text(
+        day,
+        style: TextStyle(
+          color: Colors.black,fontSize: 16,
+        ),
       ),
     ),
   );
 
-  Widget _daysGoneicon3(String day, String string1) => Container(
+  Widget _daysGoneicon(String day, String string1) => Container(         /// icon for days gone(absent)
     decoration: BoxDecoration(
-      color: Colors.teal[100],
+      color: Colors.red[300],
+      border: Border.all(
+          width: 1, color: Colors.red//                   <--- border width here
+      ),
       borderRadius: BorderRadius.all(
         Radius.circular(5),
       ),
     ),
     child: Container(
       child:new Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+
         children: <Widget>[
           new Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -703,33 +719,91 @@ class _MyHomePageState extends State<userShiftCalendar> {
                   day,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      color: Colors.black,fontSize: 16
+                    color: Colors.black,fontSize: 16,
                   ),
                 ),
               ]
           ),
-          SizedBox(height: 4,),
+          /* SizedBox(height: 4,),
           new Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  string1.substring(0,5),
-                  style: TextStyle(
-                      color: Colors.black,fontSize: 9
-                  ),
-                ),
-              ]
-          ),new Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  string1.substring(8,13),
+                  "",
+                  //string1.substring(0,5),
                   style: TextStyle(
                       color: Colors.black,fontSize: 9
                   ),
                 ),
               ]
           ),
+          new Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  "",
+                  style: TextStyle(
+                      color: Colors.black,fontSize: 9
+                  ),
+                ),
+              ]
+          ),*/
+
+        ],
+      ),
+    ),
+  );
+
+  Widget _daysGoneicon3(String day, String string1) => Container(   /// icon for assigned shifts
+    decoration: BoxDecoration(
+      color: Colors.red[300],
+      border: Border.all(
+          width: 1, color: Colors.red//                   <--- border width here
+      ),
+      borderRadius: BorderRadius.all(
+        Radius.circular(5),
+      ),
+    ),
+    child: Container(
+      child:new Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          new Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  day,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.black,fontSize: 16,
+                  ),
+                ),
+              ]
+          ),
+          /*SizedBox(height: 4,),
+          new Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  "",
+                  //string1.substring(0,5),
+                  style: TextStyle(
+                      color: Colors.black,fontSize: 9
+                  ),
+                ),
+              ]
+          ),
+          new Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  "",
+                  style: TextStyle(
+                      color: Colors.black,fontSize: 9
+                  ),
+                ),
+              ]
+          ),*/
 
         ],
       ),
@@ -738,7 +812,12 @@ class _MyHomePageState extends State<userShiftCalendar> {
 
   Widget _absentIcon(String day) => Container(
     decoration: BoxDecoration(
-      color: Colors.grey[400],
+      //color: Colors.grey[400],
+      color: Colors.white12,
+
+      /* border: Border.all(
+          width: 1, color: Colors.black87//                   <--- border width here
+      ),*/
       borderRadius: BorderRadius.all(
         Radius.circular(5),
       ),
@@ -747,15 +826,19 @@ class _MyHomePageState extends State<userShiftCalendar> {
       child: Text(
         day,
         style: TextStyle(
-            color: Colors.black,fontSize: 16
+          color: Colors.black,fontSize: 16,
         ),
       ),
     ),
   );
 
-  Widget _daysGoneIcon2(String day) => Container(
+  Widget _daysGoneIcon2(String day) => Container(        //icon for days gone weekoff tiles
     decoration: BoxDecoration(
-      color: Colors.red[300],
+      color: Colors.black12,
+      // color: Colors.blue[200],
+      border: Border.all(
+          width: 1, color: Colors.black45//                   <--- border width here
+      ),
       borderRadius: BorderRadius.all(
         Radius.circular(5),
       ),
@@ -764,7 +847,7 @@ class _MyHomePageState extends State<userShiftCalendar> {
       child: Text(
         day,
         style: TextStyle(
-            color: Colors.black,fontSize: 16
+          color: Colors.black54,fontSize: 16,
         ),
       ),
     ),
@@ -790,7 +873,7 @@ class _MyHomePageState extends State<userShiftCalendar> {
                   day,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      color: Colors.black, fontSize: 16
+                    color: Colors.black, fontSize: 16,
                   ),
                 ),
               ]
@@ -822,65 +905,23 @@ class _MyHomePageState extends State<userShiftCalendar> {
       ),
     ),
   );
-  Widget _VerySpecialShift(String day, String string1, int i) =>
-      //print(day);
+  Widget _SpecialShiftIcon(String day, String string1, int i) =>               //when special shift is assigned
+  //print(day);
   //print("day111");
   Container(
     decoration: BoxDecoration(
-      color:randomGenerator1(i),
+      //  color:Colors.grey[400],
+      color: Colors.white12,
       borderRadius: BorderRadius.all(
         Radius.circular(5),
       ),
     ),
-    child: Container(
-      child: new Column(
-        children: <Widget>[
-          new Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  day,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Colors.black, fontSize: 16
-                  ),
-                ),
-              ]
-          ),
-          SizedBox(height: 4,),
-          new Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                string1 != "Week off"?Text(
-                  string1.substring(0, 5),
-                  style: TextStyle(
-                      color: Colors.black, fontSize: 9
-                  ),
-                ):Text(
-                  "Week off",
-                  style: TextStyle(
-                      color: Colors.black, fontSize: 9
-                  ),
-                ),
-              ]
-          ), new Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                string1 != "Week off"?Text(
-                  string1.substring(8,13),
-                  style: TextStyle(
-                      color: Colors.black, fontSize: 9
-                  ),
-                ):Text(
-                  "",
-                  style: TextStyle(
-                      color: Colors.black, fontSize: 9
-                  ),
-                ),
-              ]
-          ),
-
-        ],
+    child:  Center(
+      child: Text(
+        day,
+        style: TextStyle(
+          color: Colors.black,fontSize: 16,
+        ),
       ),
     ),
   );
@@ -958,20 +999,35 @@ class _MyHomePageState extends State<userShiftCalendar> {
     cHeight = MediaQuery.of(context).size.height ;
 
     _calendarCarouselNoHeader = CalendarCarousel<Event>(
-      height: cHeight * 0.75,
+      height: cHeight * 0.54,
+
+     // todayButtonColor: Colors.teal[400],
+    //  todayBorderColor:Colors.teal,
       todayButtonColor: Colors.transparent,
-      inactiveDaysTextStyle: TextStyle(
-        color: Colors.orange,
-        fontSize: 17,
+
+
+      inactiveDaysTextStyle:  TextStyle(
+        color: Colors.black, fontSize: 16,
       ),
-      inactiveWeekendTextStyle: TextStyle(
-        color: Colors.orange,
-        fontSize: 17,
+      weekendTextStyle:  TextStyle(
+        color: Colors.black, fontSize: 16,
+      ),
+      daysTextStyle:  TextStyle(
+        color: Colors.black, fontSize: 16,
+      ),
+      prevDaysTextStyle: TextStyle(
+        color: Colors.black, fontSize: 16,
+      ),
+      nextDaysTextStyle: TextStyle(
+        color: Colors.black, fontSize: 16,
+      ),
+      inactiveWeekendTextStyle:  TextStyle(
+        color: Colors.black, fontSize: 16,
       ),
       isScrollable: false,
       //todayBorderColor: Colors.black,
       todayTextStyle: TextStyle(
-        color: Colors.blue,
+        color: Colors.black, fontSize: 16,
       ),
       markedDatesMap: _markedDateMap,
       headerTextStyle: TextStyle(
@@ -983,15 +1039,15 @@ class _MyHomePageState extends State<userShiftCalendar> {
       markedDateShowIcon: true,
       onDayPressed: (date, events) {
         // _onDaySelected(date, events);
-       // print("date.isBefore(now)");
-        if(daysGoneList.containsKey(date) || date.isBefore(now))
+        // print("date.isBefore(now)");
+        if((daysGoneList.containsKey(date) || date.isBefore(now)) && (PresentAttendanceDate.contains(date)))
           _onAlertWithCustomContentPressed(date);
       },
       showOnlyCurrentMonthDate: true,
       markedDateIconMargin: 0,
       //targetDateTime: DateTime.now(),
-      minSelectedDate: DateTime(now.year , now.month -4 , 1),
-      maxSelectedDate:  DateTime(now.year , now.month +6  , now.day),
+      minSelectedDate: DateTime(now.year , now.month - 2 , 1),
+      maxSelectedDate:  DateTime(now.year , now.month  , now.day),
       markedDateIconMaxShown: 1,
       markedDateMoreShowTotal: null,
       iconColor: globals.appcolor,
@@ -1039,10 +1095,76 @@ class _MyHomePageState extends State<userShiftCalendar> {
                 style: new TextStyle(fontSize: 25.0, color: appcolor,),),
             ),
             SizedBox(height: 8.0,),
-             Divider(color: Colors.black54,height: 1.5,),
+            Divider(color: Colors.black54,height: 1.5,),
+            SizedBox(height: 8.0,),
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Container(
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          CircleAvatar(
+                            backgroundColor: Colors.green[100],
+                            radius: cHeight * 0.011,
+                          ),
+                          Text("  Present",
+                            style: new TextStyle(fontSize: 15.0, color: Colors.black,),),
+                        ]
+                    ),
+                  ), Container(
+                    child: Row(
+                        children: <Widget>[
+                          CircleAvatar(
+                            backgroundColor: Colors.red[300],
+                            radius: cHeight * 0.011,
+                          ),
+                          Text("  Absent",
+                            style: new TextStyle(fontSize: 15.0, color: Colors.black,),),
+                        ]
+                    ),
+                  ), Container(
+                    child: Row(
+                        children: <Widget>[
+                          CircleAvatar(
+                            backgroundColor: Colors.black12,
+                            radius: cHeight * 0.011,
+                          ),
+                          Text("  Week off",
+                            style: new TextStyle(fontSize: 15.0, color: Colors.black,),),
+                        ]
+                    ),
+                  ),
+
+                ],
+              ),
+            ),
+            SizedBox(height: 8.0,),
+            Divider(color: Colors.black54,height: 1.5,),
+
+            /* SizedBox(height: 100.0,
+              child: Container(
+                color: Colors.teal[100],
+                child: Row(
+                  children: <Widget>[
+                 ListTile(
+                  leading: new CircleAvatar(
+                  backgroundColor: Colors.red,
+                  radius: cHeight * 0.011,
+                ),
+                   title: new Text("Prsent",style: TextStyle(color: Colors.black),),
+              ),
+
+
+                  ],
+                ),
+
+              ),
+            ),*/
 
             //Divider(height: 1.5,),
-           /* Container(
+            /* Container(
                 height: globals.currentOrgStatus=="TrialOrg"?MediaQuery.of(context).size.height*0.15:MediaQuery.of(context).size.height*0.15,
                 child:
                 FutureBuilder<List<User>>(
@@ -1262,14 +1384,50 @@ class _MyHomePageState extends State<userShiftCalendar> {
                 ],
               ),
             ),*/
-            Expanded(
+            /* SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+               *//*   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      markerRepresent(Colors.green[100], "Present"),
+                      markerRepresent(Colors.red[300], "Absent"),
+                      markerRepresent(Colors.black12, "Week off"),
+                    ],
+
+              *//**//*      markerRepresent(Colors.green[100], "Present"),
+                    markerRepresent(Colors.red[300], "Absent"),
+                    markerRepresent(Colors.black12, "Week off"),*//**//*
+                  ),*//*
+                  _calendarCarouselNoHeader,
+
+                ],
+              ),
+            ),*/
+            Expanded(child: _calendarCarouselNoHeader),
+            /*Expanded(
               child:Column(
                 children: <Widget>[
                   //_calendarCarousel,
                    _calendarCarouselNoHeader,
+                  markerRepresent(Colors.red, "Absent"),
+                  markerRepresent(Colors.green, "Present"),
+                 *//* Column(
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+
+
+                        ],
+                      )
+                    ],
+                  )*//*
+
+
                 ]
               ),
-            ),
+            ),*/
 
             //markerRepresent(),
             //Expanded(child: userlist.isEmpty?Container(): _buildEventList()),
@@ -1280,7 +1438,19 @@ class _MyHomePageState extends State<userShiftCalendar> {
     );
   }
 
-  Widget markerRepresent() {
+  Widget markerRepresent(Color color, String data) {
+    return new ListTile(
+      leading: new CircleAvatar(
+        backgroundColor: Colors.red,
+        radius: cHeight * 0.011,
+      ),
+      title: new Text(
+        data,
+      ),
+    );
+  }
+
+  /* Widget markerRepresent() {
     return new ButtonTheme(
       minWidth: MediaQuery.of(context).size.width*0.8,
       //height: 2.0,
@@ -1292,7 +1462,7 @@ class _MyHomePageState extends State<userShiftCalendar> {
         },
       ),
     );
-  }
+  }*/
 
 /*  void _onDaySelected(DateTime day, List events) {
     print('CALLBACK: _onDaySelected');
@@ -1979,8 +2149,8 @@ class _MyHomePageState extends State<userShiftCalendar> {
                             children: [
                               TableCell(
                                 child: Row(
-                                   crossAxisAlignment: CrossAxisAlignment.end,
-                                   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                                   children: <Widget>[
                                     Expanded(
                                       flex: 40,
@@ -2028,7 +2198,7 @@ class _MyHomePageState extends State<userShiftCalendar> {
                                                 goToMap(userlist.isEmpty?"-": userlist[0].latit_out,userlist.isEmpty?"-": userlist[0].longi_out);
                                               },
                                             ),
-                                             /*Container(
+                                            /*Container(
                                               padding: EdgeInsets.all(2.0),
                                               color: snapshot.data[index].incolor.toString()=='0'?Colors.red:Colors.green,
 
@@ -2107,7 +2277,7 @@ class _MyHomePageState extends State<userShiftCalendar> {
                         ),*/
                       ],
                     ),
-                   /* Expanded(
+                    /* Expanded(
                       flex: 37,
                       child:  new Container(
                         //width: MediaQuery.of(context).size.width * 0.37,
@@ -2225,7 +2395,7 @@ class _MyHomePageState extends State<userShiftCalendar> {
                               .height * .01),
                           Row(
                             children: <Widget>[
-                              Icon(Icons.wb_incandescent, size: 20.0,
+                              Icon(Icons.timer, size: 20.0,
                                 color: Colors.black54,), SizedBox(width: 5.0),
 
                               userlist.isEmpty ?new Text("Undertime: ", style: new TextStyle(
@@ -2273,13 +2443,13 @@ class _MyHomePageState extends State<userShiftCalendar> {
               width: MediaQuery
                   .of(context)
                   .size
-                  .width * 0.27,
+                  .width * 0.22,
               color: Colors.orangeAccent,
               onPressed: () {
                 Navigator.of(context, rootNavigator: true).pop();
               },
               child: Text(
-                "CANCEL",
+                "OK",
                 style: TextStyle(color: Colors.white, fontSize: 20),
               ),
             )

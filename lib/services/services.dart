@@ -2297,23 +2297,29 @@ List<Attn> createTodayEmpList(List data) {
     String Total = data[i]["total"].toString();
     String Present = data[i]["present"].toString();
     String Absent = data[i]["absent"].toString();
+    String ShiftType = data[i]["shiftType"].toString()??"0";
+    String AttendanceMasterId = data[i]["Id"].toString()??"0";
+    String DayLoggedHours = !data[i]["TotalLoggedHours"].toString().contains(":")?"00:00":data[i]["TotalLoggedHours"].toString().split(":")[0]+":"+data[i]["TotalLoggedHours"].toString().split(":")[1];
 
     Attn tos = new Attn(
-      Id: Id,
-      Name: Name,
-      TimeIn: TimeIn,
-      TimeOut: TimeOut,
-      EntryImage: EntryImage,
-      ExitImage: ExitImage,
-      CheckInLoc: CheckInLoc,
-      CheckOutLoc: CheckOutLoc,
-      LatitIn: LatitIn,
-      LatitOut: LatitOut,
-      LongiIn: LongiIn,
-      LongiOut: LongiOut,
-      Total: Total,
-      Present: Present,
-      Absent: Absent,
+        Id: Id,
+        Name: Name,
+        TimeIn: TimeIn,
+        TimeOut: TimeOut,
+        EntryImage: EntryImage,
+        ExitImage: ExitImage,
+        CheckInLoc: CheckInLoc,
+        CheckOutLoc: CheckOutLoc,
+        LatitIn: LatitIn,
+        LatitOut: LatitOut,
+        LongiIn: LongiIn,
+        LongiOut: LongiOut,
+        Total: Total,
+        Present: Present,
+        Absent: Absent,
+        AttendanceMasterId: AttendanceMasterId,
+        ShiftType: ShiftType,
+        DayLoggedHours: DayLoggedHours
     );
 
     list.add(tos);
@@ -2337,6 +2343,9 @@ class Attn {
   String Total;
   String Present;
   String Absent;
+  String AttendanceMasterId;
+  String ShiftType;
+  String DayLoggedHours;
 
   Attn({
     this.Id,
@@ -2354,6 +2363,9 @@ class Attn {
     this.Total,
     this.Present,
     this.Absent,
+    this.AttendanceMasterId,
+    this.ShiftType,
+    this.DayLoggedHours
   });
 }
 List<FaceIdLists> createFaceEmpList(var data) {
@@ -4382,7 +4394,7 @@ Future<int> createHoliday(name, from, to, description) async {
 
 ///////////////////////////////////////////////////////release1.0///////////////////////////////////////////////////
 
-Future<int> saveMultishifts(List fetchList1 , String Id) async {
+Future<Map<String,dynamic>> saveMultishifts(List fetchList1 , String Id) async {  //15 sept
   final prefs = await SharedPreferences.getInstance();
   String orgid = prefs.getString('orgdir') ?? '';
   //String empid = prefs.getString('empid') ?? '';
@@ -4399,9 +4411,10 @@ Future<int> saveMultishifts(List fetchList1 , String Id) async {
 
   print( globals.path + 'saveMultiShifts?refno=$orgid&date=$date&status=$status&shiftid=$shiftid&empid=$Id&WeekoffStatus=$WeekoffStatus');
   final response = await http.get(globals.path + 'saveMultiShifts?refno=$orgid&date=$date&status=$status&shiftid=$shiftid&empid=$Id&WeekoffStatus=$WeekoffStatus');
-
-  //print('response recieved: '+response.body.toString());
-  // return int.parse(response.body);
+  print('response recieved: '+response.body.toString());   //15 sept
+  Map result = json.decode(response.body);
+  print(result);
+  return result;
 }
 
 
@@ -4537,6 +4550,46 @@ class Shiftdetails {
   Shiftdetails({this.WeekOff, this.Day,});
 }
 
+
+Future<List<AttendanceList>> getDefaultAttendanceList(String id) async {
+  final prefs = await SharedPreferences.getInstance();
+  String orgid = prefs.getString('orgdir') ?? '';
+  //String empid = prefs.getString('empid') ?? '';
+  print(globals.path + 'getDefaultAttendanceList?uid=$orgid&empid=$id');
+  final response = await http.get(globals.path + 'getDefaultAttendanceList?uid=$orgid&empid=$id');
+  List responseJson = json.decode(response.body.toString());
+  print(responseJson);
+  print("response json");
+  List<AttendanceList> list = createAttendanceList(responseJson);
+  print(list);
+  return list;
+}
+
+List<AttendanceList> createAttendanceList(List data) {
+  List<AttendanceList> list = new List();
+
+  for (int i = 0; i < data.length ; i++) {
+    DateTime AttendanceDate = DateTime.parse(data[i]["AttendanceDate"]);
+    String TimeIn = data[i]["TimeIn"].toString();
+    String TimeOut = data[i]["TimeOut"].toString();
+    String AttendanceStatus = data[i]["AttendanceStatus"].toString();
+
+    AttendanceList row = new AttendanceList(
+        AttendanceDate: AttendanceDate, TimeIn: TimeIn, TimeOut:TimeOut, AttendanceStatus:AttendanceStatus);
+    list.add(row);
+  }
+  return list;
+}
+
+class AttendanceList {
+  DateTime AttendanceDate;
+  String TimeIn;
+  String TimeOut;
+  String AttendanceStatus;
+
+  AttendanceList({this.AttendanceDate, this.TimeIn, this.TimeOut, this.AttendanceStatus,});
+
+}
 
 
 

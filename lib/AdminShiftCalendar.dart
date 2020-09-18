@@ -101,19 +101,20 @@ class _MyHomePageState extends State<MyHomePage1> {
   bool shiftPressed = false;
   int shiftColor=0;
   String goneShift;
+  var statusOfShift;
   final List<Color> circleColors =
   [ Colors.orangeAccent[100],
-    Colors.greenAccent[100], Colors.red[100],
+    Colors.blue[200], Colors.red[100],
     Colors.lime[100], Colors.deepPurple[100],
-    Colors.green[200],Colors.yellow[200],
-    Colors.lightBlueAccent[100],Colors.lightGreen[100],
+    Colors.teal[200],Colors.yellow[200],
+    Colors.lightBlueAccent[100],Colors.lightBlue[400],
     Colors.cyan[100],Colors.yellow[100],Colors.greenAccent[200],
     Colors.blue[100], Colors.blue[200], Colors.lightBlueAccent[100] ];
 
 
   final List<Color> specialshiftColor =
-  [Colors.greenAccent[100], Colors.red[100], Colors.orange[200],
-    Colors.blue[100], Colors.blue[200], Colors.lightBlueAccent[100]];
+  [Colors.blue[200], Colors.red[100], Colors.orange[200],
+    Colors.orange[400], Colors.purple[100], Colors.yellow[200]];
 
   int _selectedIndex;
   List distinctIds=[];
@@ -130,30 +131,30 @@ class _MyHomePageState extends State<MyHomePage1> {
   // final seen = Set<String>();
   // List unique =[];
 
-daysgone() async{
+  daysgone() async{
 
-while(daysgonecalculation.month != now.month) {
-  daysgone1 = dateUtility.daysInMonth(
-      daysgonecalculation.month, daysgonecalculation.year);
-  daysgonecalculation =
-      DateTime(daysgonecalculation.year, daysgonecalculation.month + 1, 1);
-  daysgone2= daysgone2+daysgone1;
-  print(daysgonecalculation);
-  print(daysgone1);
-  print(daysgone2);
-  print(now);
-  print("daysgonecalculation");
-}
-daysgone2 = daysgone2 + now.day;
-print(daysgone2);
-print("daysgone2l,l,");
+    while(daysgonecalculation.month != now.month) {
+      daysgone1 = dateUtility.daysInMonth(
+          daysgonecalculation.month, daysgonecalculation.year);
+      daysgonecalculation =
+          DateTime(daysgonecalculation.year, daysgonecalculation.month + 1, 1);
+      daysgone2= daysgone2+daysgone1;
+      print(daysgonecalculation);
+      print(daysgone1);
+      print(daysgone2);
+      print(now);
+      print("daysgonecalculation");
+    }
+    daysgone2 = daysgone2 + now.day;
+    print(daysgone2);
+    print("daysgone2l,l,");
 
-}
+  }
 
 
   @override
   void initState() {
-  getOrgName();
+    getOrgName();
     now = new DateTime.now();
     firstDayOfMonth = new DateTime(now.year , now.month -4 , 1);
     firstDayOfMonth123 = new DateTime(now.year , now.month -4 , 1);
@@ -416,11 +417,11 @@ print("daysgone2l,l,");
   Future<Map<DateTime, List>> getTask() async {
 
     for(int i = 1 ; i<= 366 ; i++){
-        /// key is current day of iteration and value is the label shown for default sift
+      /// key is current day of iteration and value is the label shown for default sift
       if(items[0].shifttype.toString() == '3')
-        {
-          DefaultShiftList.addAll({firstDayOfMonth : ['Flexi('+items[0].HoursPerDay+' Hrs)' ]});
-        }
+      {
+        DefaultShiftList.addAll({firstDayOfMonth : ['Flexi('+items[0].HoursPerDay+' Hrs)' ]});
+      }
       else {
         DefaultShiftList.addAll({firstDayOfMonth: [items[0].ShiftTimeIn + items[0].ShiftTimeOut]});
       }
@@ -475,14 +476,14 @@ print("daysgone2l,l,");
         }
       }
       var arr = items[0].weekofflist[k].WeekOff.split(",");
-     // var arr = ['1','0','0','0','1'];     //value of weekoffs of one week
+      // var arr = ['1','0','0','0','1'];     //value of weekoffs of one week
 
       for (int i = 1; i <= 50; i++) {
 
         while (firstDayOfMonth1.weekday != day1) {
           firstDayOfMonth1 = firstDayOfMonth1.add(Duration(days: 1));
         }
-       // firstDayOfMonth1 = firstDayOfMonth1.subtract(Duration(days: 1));
+        // firstDayOfMonth1 = firstDayOfMonth1.subtract(Duration(days: 1));
 
         for (int i = 0; i < 5; i++) {
           if (arr[i] == '1') {
@@ -524,14 +525,14 @@ print("daysgone2l,l,");
         }
       }
       var arr = items1[0].weekofflist[k].WeekOff.split(",");
-     // var arr = ['1','0','0','0','1'];     //value of weekoff of one week
+      // var arr = ['1','0','0','0','1'];     //value of weekoff of one week
 
       for (int i = 1; i <= 5; i++) {
 
         while (selectedShiftfirstDayOfMonth1.weekday != day1) {
           selectedShiftfirstDayOfMonth1 = selectedShiftfirstDayOfMonth1.add(Duration(days: 1));
         }
-       // firstDayOfMonth1 = firstDayOfMonth1.subtract(Duration(days: 1));
+        // firstDayOfMonth1 = firstDayOfMonth1.subtract(Duration(days: 1));
 
         for (int i = 0; i < 5; i++) {
           if (arr[i] == '1') {
@@ -610,67 +611,66 @@ print("daysgone2l,l,");
   }
 
 
-  Widget _presentIcon(String day, String string1) =>
-
-    Container(
-      decoration: BoxDecoration(
-        color: Colors.teal[100],
-        borderRadius: BorderRadius.all(
-          Radius.circular(5),
-        ),
+  Widget _presentIcon(String day, String string1) =>    //container for upcoming dates(present)
+  Container(
+    decoration: BoxDecoration(
+      color: Colors.green[100],
+      borderRadius: BorderRadius.all(
+        Radius.circular(5),
       ),
-      child: Container(
-        child: new Column(
-          children: <Widget>[
-            new Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    day,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.black, fontSize: 12,fontWeight: FontWeight.bold
-                    ),
+    ),
+    child: Container(
+      child: new Column(
+        children: <Widget>[
+          new Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  day,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Colors.black, fontSize: 12,fontWeight: FontWeight.bold
                   ),
-                ]
-            ),
-            SizedBox(height: 1,),
-            new Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  !string1.contains("Flexi")?Text(
-                    string1.substring(1, 6),
-                    style: TextStyle(
-                        color: Colors.black, fontSize: 9
-                    ),
-                  ):Text(
-                    string1.substring(1, 6),
-                    style: TextStyle(
-                        color: Colors.black, fontSize: 9
-                    ),
+                ),
+              ]
+          ),
+          SizedBox(height: 1,),
+          new Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                !string1.contains("Flexi")?Text(
+                  string1.substring(1, 6),
+                  style: TextStyle(
+                      color: Colors.black, fontSize: 9
                   ),
-                ]
-            ), new Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  !string1.contains("Flexi")?Text(
-                    string1.substring(9, 14),
-                    style: TextStyle(
-                        color: Colors.black, fontSize: 9
-                    ),
-                  ):Text(
-                    string1.substring(7, 12)+" "+string1.substring(16, 19),
-                    style: TextStyle(
-                        color: Colors.black, fontSize: 9
-                    ),
+                ):Text(
+                  string1.substring(1, 6),
+                  style: TextStyle(
+                      color: Colors.black, fontSize: 9
                   ),
-                ]
-            ),
+                ),
+              ]
+          ), new Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                !string1.contains("Flexi")?Text(
+                  string1.substring(9, 14),
+                  style: TextStyle(
+                      color: Colors.black, fontSize: 9
+                  ),
+                ):Text(
+                  string1.substring(7, 12)+" "+string1.substring(16, 19),
+                  style: TextStyle(
+                      color: Colors.black, fontSize: 9
+                  ),
+                ),
+              ]
+          ),
 
-          ],
-        ),
+        ],
       ),
-    );
+    ),
+  );
 
 
 
@@ -788,7 +788,7 @@ print("daysgone2l,l,");
 
   Widget _absentIcon(String day) => Container(
     decoration: BoxDecoration(
-      color: Colors.red[300],
+      color: Colors.black12,
       borderRadius: BorderRadius.all(
         Radius.circular(5),
       ),
@@ -884,56 +884,55 @@ print("daysgone2l,l,");
   );
 
   Widget _FlexiIcon(String day, String string1, int i) =>
-
-    Container(
-      decoration: BoxDecoration(
-        color: randomGenerator(i),
-        borderRadius: BorderRadius.all(
-          Radius.circular(5),
+      Container(
+        decoration: BoxDecoration(
+          color: randomGenerator(i),
+          borderRadius: BorderRadius.all(
+            Radius.circular(5),
+          ),
         ),
-      ),
-      child: Container(
-        child: new Column(
-          children: <Widget>[
-            new Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    day,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.black, fontSize: 12,fontWeight: FontWeight.bold
+        child: Container(
+          child: new Column(
+            children: <Widget>[
+              new Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      day,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Colors.black, fontSize: 12,fontWeight: FontWeight.bold
+                      ),
                     ),
-                  ),
-                ]
-            ),
-            SizedBox(height: 1,),
-            new Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    string1.substring(0, 5),
-                    style: TextStyle(
-                        color: Colors.black, fontSize: 9
+                  ]
+              ),
+              SizedBox(height: 1,),
+              new Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      string1.substring(0, 5),
+                      style: TextStyle(
+                          color: Colors.black, fontSize: 9
+                      ),
+                    )
+                  ]
+              ), new Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      string1.substring(5, 10)+" "+string1.substring(13, 16),
+                      style: TextStyle(
+                          color: Colors.black, fontSize: 9
+                      ),
                     ),
-                  )
-                ]
-            ), new Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    string1.substring(5, 10)+" "+string1.substring(13, 16),
-                    style: TextStyle(
-                        color: Colors.black, fontSize: 9
-                    ),
-                  ),
-                ]
-            ),
+                  ]
+              ),
 
-          ],
+            ],
+          ),
         ),
-      ),
-    );
+      );
 
 
   Widget _VerySpecialShift(String day, String string1, int i) =>
@@ -1078,18 +1077,28 @@ print("daysgone2l,l,");
       //  daysTextStyle:
 
       todayButtonColor: Colors.transparent,
-      inactiveDaysTextStyle: TextStyle(
-        color: Colors.orange,
-        fontSize: 17,
+      inactiveDaysTextStyle:  TextStyle(
+          color: Colors.black, fontSize: 12,fontWeight: FontWeight.bold
+      ),
+      weekendTextStyle:  TextStyle(
+          color: Colors.black, fontSize: 12,fontWeight: FontWeight.bold
+      ),
+      daysTextStyle:  TextStyle(
+          color: Colors.black, fontSize: 12,fontWeight: FontWeight.bold
       ),
       inactiveWeekendTextStyle: TextStyle(
-        color: Colors.orange,
-        fontSize: 17,
+          color: Colors.black, fontSize: 12,fontWeight: FontWeight.bold
+      ),
+      prevDaysTextStyle:  TextStyle(
+          color: Colors.black, fontSize: 12,fontWeight: FontWeight.bold
+      ),
+      nextDaysTextStyle:  TextStyle(
+          color: Colors.black, fontSize: 12,fontWeight: FontWeight.bold
       ),
       isScrollable: false,
       //todayBorderColor: Colors.black,
-      todayTextStyle: TextStyle(
-        color: Colors.blue,
+      todayTextStyle:  TextStyle(
+          color: Colors.black, fontSize: 12,fontWeight: FontWeight.bold
       ),
       markedDatesMap: _markedDateMap,
       headerTextStyle: TextStyle(
@@ -1160,7 +1169,7 @@ print("daysgone2l,l,");
                   child: Text("<", style: new TextStyle(fontSize: 30, color: globals.appcolor,
                   ),textAlign: TextAlign.center,),
                 ),*/
-                 /* Container(
+                  /* Container(
                     width: 30.0,
                     // height: 10.0,
                     *//*decoration: BoxDecoration(
@@ -1254,7 +1263,7 @@ print("daysgone2l,l,");
           print("specialShiftsList.values.elementAt(i)");
           print(i);
 
-         /* if(items[0].shifttype.toString() == '3')
+          /* if(items[0].shifttype.toString() == '3')
           {
             DefaultShiftList.addAll({firstDayOfMonth : ['Flexi('+items[0].HoursPerDay+' Hrs)' ]});
           }*/
@@ -1264,8 +1273,8 @@ print("daysgone2l,l,");
 
           //_markedDateMap.removeAll(day); // to remove icon from the calendar widget
 
-        //  print(specialShiftsList.values.elementAt(0).toString());
-        //  print("specialShiftsList.values.elementAt(0).toString()");
+          //  print(specialShiftsList.values.elementAt(0).toString());
+          //  print("specialShiftsList.values.elementAt(0).toString()");
 
           if(selectedShiftweekoff.containsKey(_selectedEvents) ) {
             _markedDateMap.removeAll(day);
@@ -1349,36 +1358,36 @@ print("daysgone2l,l,");
             }
 
             else{
-            specialShiftsList.update(k,(v) => [ selectedShiftTiming,selectedShiftName,'2',selectedShiftId,_selectedEvents.toString(),'0']);
+              specialShiftsList.update(k,(v) => [ selectedShiftTiming,selectedShiftName,'2',selectedShiftId,_selectedEvents.toString(),'0']);
 
-            if(shifttype=='3'){
-              print("hkhlkhlkjl");
-              _markedDateMap.removeAll(day);
-              _markedDateMap.add(
-                _selectedEvents,
-                new Event(
-                  date: _selectedEvents,
-                  title: 'Event 5',
-                  icon: _FlexiIcon(_selectedEvents.day.toString(),
-                      "Flexi"+HoursPerDay+"Hrs",
-                      shiftColor),
-                ),
-              );
+              if(shifttype=='3'){
+                print("hkhlkhlkjl");
+                _markedDateMap.removeAll(day);
+                _markedDateMap.add(
+                  _selectedEvents,
+                  new Event(
+                    date: _selectedEvents,
+                    title: 'Event 5',
+                    icon: _FlexiIcon(_selectedEvents.day.toString(),
+                        "Flexi"+HoursPerDay+"Hrs",
+                        shiftColor),
+                  ),
+                );
+              }
+              else {
+                _markedDateMap.removeAll(
+                    day); // to remove icon from the calendar widget
+                _markedDateMap.add(
+                  _selectedEvents,
+                  new Event(
+                    date: _selectedEvents,
+                    title: 'Event 5',
+                    icon: _eventIcon(_selectedEvents.day.toString(),
+                        '[' + selectedShiftTiming + ']', shiftColor),
+                  ),
+                );
+              }
             }
-            else {
-              _markedDateMap.removeAll(
-                  day); // to remove icon from the calendar widget
-              _markedDateMap.add(
-                _selectedEvents,
-                new Event(
-                  date: _selectedEvents,
-                  title: 'Event 5',
-                  icon: _eventIcon(_selectedEvents.day.toString(),
-                      '[' + selectedShiftTiming + ']', shiftColor),
-                ),
-              );
-            }
-             }
 
             /*_markedDateMap.removeAll(day); // to remove icon from the calendar widget
             _markedDateMap.add(
@@ -1439,7 +1448,14 @@ print("daysgone2l,l,");
       if(specialShiftsList.containsKey(_selectedEvents) || removedShiftsList.containsKey(_selectedEvents)) {
         var fetchlist1 = specialShiftsList[_selectedEvents] == null?removedShiftsList[_selectedEvents]:specialShiftsList[_selectedEvents] ;
         print(fetchlist1);
-        saveMultishifts(fetchlist1,Id );
+        saveMultishifts(fetchlist1,Id ).then((val) => setState(() {
+          statusOfShift = val;
+          if(statusOfShift["status"] == "Shift is already assigned on this date")
+          {
+            showInSnackBar("Shift is already assigned on this date");
+          }
+          //print(_holiday.length);
+        }));
         //onTap service call work starts-->
       }
     }
@@ -1452,34 +1468,41 @@ print("daysgone2l,l,");
 
 
       else{
-      List fetchlist2 = ['','','0','', _selectedEvents,'0'];
-      saveMultishifts(fetchlist2,Id);
+        List fetchlist2 = ['','','0','', _selectedEvents,'0'];
+        saveMultishifts(fetchlist2,Id ).then((val) => setState(() {
+          statusOfShift = val;
+          if(statusOfShift["status"] == "Shift is already assigned on this date")
+          {
+            showInSnackBar("Shift is already assigned on this date");
+          }
+          //print(_holiday.length);
+        }));
 
-      if (weekoff.containsKey(_selectedEvents)) {
-        _markedDateMap.removeAll(day);
-        _markedDateMap.add(
-          _selectedEvents,
-          new Event(
-            date: _selectedEvents,
-            title: 'Event 5',
-            icon: _absentIcon(_selectedEvents.day.toString()),
-          ),
-        );
-      }
-      else{
-        _markedDateMap.removeAll(day);
-        _markedDateMap.add(
-          _selectedEvents,
-          new Event(
-            date: _selectedEvents,
-            title: 'Event 5',
-            icon: _presentIcon(_selectedEvents.day.toString(),
-                DefaultShiftList.values.elementAt(0).toString()),
-          ),
-        );
-      }
+        if (weekoff.containsKey(_selectedEvents)) {
+          _markedDateMap.removeAll(day);
+          _markedDateMap.add(
+            _selectedEvents,
+            new Event(
+              date: _selectedEvents,
+              title: 'Event 5',
+              icon: _absentIcon(_selectedEvents.day.toString()),
+            ),
+          );
+        }
+        else{
+          _markedDateMap.removeAll(day);
+          _markedDateMap.add(
+            _selectedEvents,
+            new Event(
+              date: _selectedEvents,
+              title: 'Event 5',
+              icon: _presentIcon(_selectedEvents.day.toString(),
+                  DefaultShiftList.values.elementAt(0).toString()),
+            ),
+          );
+        }
 
-      /* _markedDateMap.removeAll(day);
+        /* _markedDateMap.removeAll(day);
       _markedDateMap.add(
         _selectedEvents,
         new Event(
@@ -1583,22 +1606,24 @@ print("daysgone2l,l,");
     }*/
   }
 
-  _onAlertWithCustomContentPressed(date) {
+  _onAlertWithCustomContentPressed(date) async {
     //onpop
-    getPlannerWiseSummary(date,Id).then((values) {
+    /*  getPlannerWiseSummary(date,Id).then((values) {
       setState(() {
         userlist = values;
-      });
+      });*/
 
-     // if (userlist.isNotEmpty){
-        var alertStyle = AlertStyle(
-          animationType: AnimationType.fromTop,
-          isCloseButton: false,
-          isOverlayTapDismiss: true,
-          descStyle: TextStyle(fontWeight: FontWeight.bold),
-          animationDuration: Duration(milliseconds: 400),
+    var userlist = await getPlannerWiseSummary(date,Id);
 
-        );
+    if (userlist.isNotEmpty){
+      var alertStyle = AlertStyle(
+        animationType: AnimationType.fromTop,
+        isCloseButton: false,
+        isOverlayTapDismiss: true,
+        descStyle: TextStyle(fontWeight: FontWeight.bold),
+        animationDuration: Duration(milliseconds: 400),
+
+      );
       Alert(
           style: alertStyle,
           context: context,
@@ -2227,7 +2252,7 @@ print("daysgone2l,l,");
                               .height * .01),
                           Row(
                             children: <Widget>[
-                              Icon(Icons.wb_incandescent, size: 20.0,
+                              Icon(Icons.timer, size: 20.0,
                                 color: Colors.black54,), SizedBox(width: 5.0),
 
                               userlist.isEmpty ?new Text("Undertime: ", style: new TextStyle(
@@ -2246,10 +2271,11 @@ print("daysgone2l,l,");
                                   fontWeight: FontWeight.bold)),
 
 
-                              userlist.isEmpty ?new Text("-"):userlist[0].overtime.contains("-")?Text(userlist[0].overtime,style: new TextStyle(fontSize: 15.0,
+                              userlist.isEmpty || userlist[0].overtime=="-" ?new Text('-',style: new TextStyle(fontSize: 15.0,
+                                  fontWeight: FontWeight.w400)):userlist[0].overtime.contains("-")?Text(userlist[0].overtime,style: new TextStyle(fontSize: 15.0,
                                   fontWeight: FontWeight.bold,color: Colors.red)):Text(userlist[0].overtime,style: new TextStyle(fontSize: 15.0,
                                   fontWeight: FontWeight.bold,color: Colors.green)),
-                             /* new Text(
+                              /* new Text(
                                   userlist.isEmpty ? "-" : userlist[0].overtime.contains("-")?Text(userlist[0].overtime,style: new TextStyle(fontSize: 15.0,
                                   fontWeight: FontWeight.bold,color: Colors.red)):
                                  Text( userlist[0].overtime,style: new TextStyle(fontSize: 15.0,
@@ -2264,8 +2290,8 @@ print("daysgone2l,l,");
 
                       ),
                     )
-                  ],),
-
+                  ],
+                ),
               ),
             ],
           ),
@@ -2275,19 +2301,19 @@ print("daysgone2l,l,");
               width: MediaQuery
                   .of(context)
                   .size
-                  .width * 0.27,
+                  .width * 0.22,
               color: Colors.orangeAccent,
               onPressed: () {
                 Navigator.of(context, rootNavigator: true).pop();
               },
-              child: Text(
-                "CANCEL",
+              child:Text(
+                "OK",
                 style: TextStyle(color: Colors.white, fontSize: 20),
               ),
             )
           ]).show();
-   // }
-    });
+    }
+    // });
   }
 
   var loginWidth =0.0;
@@ -2404,25 +2430,25 @@ print("daysgone2l,l,");
                                       print("HoursPerDay123");
                                       print(shifttype);
 
-                               shiftplanner(Id,selectedShiftId).then((val) {
+                                      shiftplanner(Id,selectedShiftId).then((val) {
 
-                                     setState(() {
-                                       items1 = val;
-                                     _onSelected(index);
-                                     shiftPressed = true;
-                                     shiftColor++;
-                                     if(shiftColor == 13)
-                                       shiftColor=0;
-                                     });
+                                        setState(() {
+                                          items1 = val;
+                                          _onSelected(index);
+                                          shiftPressed = true;
+                                          shiftColor++;
+                                          if(shiftColor == 13)
+                                            shiftColor=0;
+                                        });
 
-                                     getSelectedShiftWekoff().then((val) => setState(() {
-                                       print(val);
-                                       print("ggjkgkjh");
-                                       _holiday = val;
-                                       //print(_holiday.length);
-                                     }));
-                               });
-                                     /* _onSelected(index);
+                                        getSelectedShiftWekoff().then((val) => setState(() {
+                                          print(val);
+                                          print("ggjkgkjh");
+                                          _holiday = val;
+                                          //print(_holiday.length);
+                                        }));
+                                      });
+                                      /* _onSelected(index);
                                       shiftPressed = true;
                                     *//*  selectedShiftTiming = snapshot.data[index].TimeIn+snapshot.data[index].TimeOut ;
                                       selectedShiftId = snapshot.data[index].Id;
@@ -2438,7 +2464,7 @@ print("daysgone2l,l,");
                               ),
                             ],
                           ),
-                         /* onPressed: () {
+                          /* onPressed: () {
                             setState(() {
 
                               shiftPressed = true;
@@ -2512,7 +2538,7 @@ List<User> createUserList(List data){
     String ShiftTimeOut=data[i]["shiftout"]=="00:00:00"?'-':formatTime(data[i]["shiftout"].toString());
     String thours=data[i]["thours"]=="00:00:00"?'00:00':formatTime(data[i]["thours"].toString());
     String bhour=data[i]["bhour"]==null?'':'Time Off: '+data[i]["bhour"].substring(0,5);
-   // String overtime=data[i]["overtime"]=="00:00:00"?'-':data[i]["overtime"];
+    // String overtime=data[i]["overtime"]=="00:00:00"?'-':data[i]["overtime"];
     String overtime=data[i]["overtime"]==null?'-': formatTime(data[i]["overtime"]);
 
 
@@ -2570,4 +2596,3 @@ formatTime(String time){
   }
   else return time;
 }
-

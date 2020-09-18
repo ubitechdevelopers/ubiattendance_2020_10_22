@@ -115,12 +115,15 @@ class Home{
         globals.timeoutdate = timeinoutMap['timeoutdate'].toString();
         globals.departmentid = int.parse(timeinoutMap['departmentid']);
         globals.shiftId = timeinoutMap['shiftId'];
+        globals.shiftType = timeinoutMap['ShiftType'];
         globals.designationid = int.parse(timeinoutMap['designationid']);
         print("Testing line");
         globals.bulkAttn=int.parse(timeinoutMap['Addon_BulkAttn']);
         globals.geoFence=int.parse(timeinoutMap['Addon_GeoFence']);
         globals.tracking=int.parse(timeinoutMap['Addon_Tracking']);
         globals.payroll=int.parse(timeinoutMap['Addon_Payroll']);
+        globals.ShiftPlanner=int.parse(timeinoutMap['Addon_ShiftPlanner'])??0;
+
         print("Testing line1");
         globals.visitpunch=int.parse(timeinoutMap['Addon_VisitPunch']);
         globals.timeOff=int.parse(timeinoutMap['Addon_TimeOff']);
