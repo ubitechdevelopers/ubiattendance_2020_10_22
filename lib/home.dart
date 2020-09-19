@@ -92,6 +92,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   bool FiveStarRating=false;
   String datetoShowFeedbackDialog='';
   String dateShowedFeedbackDialog='';
+  String datetoShowRatingDialog='';
+  String dateShowedRatingDialog='';
   bool _checkLoaded = true;
   int _currentIndex = 1;
   String userpwd = "new";
@@ -215,10 +217,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                   margin: new EdgeInsets.only(left: 46.0),
                   decoration: new BoxDecoration(
                     //color: Color.fromRGBO(0, 0, 0, 0.5),
-                    //color: Color.fromRGBO(199, 130, 10, 0.6),
-                    //  color: Color.fromRGBO(2, 112, 85, 0.6),
+                    color: Color.fromRGBO(255, 177, 33, 0.8),
+                      //color: Color.fromRGBO(2, 112, 85, 0.8),
                     // color: Colors.orangeAccent[200],
-                    color: Colors.teal[500],
+                    //color: Colors.teal[500],
                     shape: BoxShape.rectangle,
                     borderRadius: new BorderRadius.circular(8.0),
                     /*boxShadow: <BoxShadow>[
@@ -1880,6 +1882,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       DateTime date = new DateTime(currDate.year, currDate.month, currDate.day);
        datetoShowFeedbackDialog=prefs.getString("datetoShowFeedbackDialog") ?? date.toString();
        dateShowedFeedbackDialog=prefs.getString("dateShowedFeedbackDialog") ?? '';
+       datetoShowRatingDialog=prefs.getString("datetoShowRatingDialog") ?? date.toString();
+       dateShowedRatingDialog=prefs.getString("dateShowedRatingDialog") ?? '';
+
     });
 
     Future.delayed(const Duration(milliseconds: 3000), () {
@@ -2018,6 +2023,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     //datetoShowFeedbackDialog='2020-09-16';
 
     dateShowedFeedbackDialog=prefs.getString("dateShowedFeedbackDialog") ?? '';
+    datetoShowRatingDialog=prefs.getString("datetoShowRatingDialog") ?? date.toString();
+    dateShowedRatingDialog=prefs.getString("dateShowedRatingDialog") ?? '';
     //dateShowedFeedbackDialog='2020-09-15';
     print('Over here--------------->>>>>>>>>>>>>>');
     print(FirstAttendance.toString()+'------------>>>>one');
@@ -2028,11 +2035,15 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     print(datetoShowFeedbackDialog.toString()+'six---------->>>>>>');
     print(dateShowedFeedbackDialog.toString()+'seven---------->>>>>>');
     print(FirstAttendance&& RateusDialogShown && !FiveStarRating && dateShowedFeedbackDialog!=date.toString()+'------->>>>>eight');
-    print(datetoShowFeedbackDialog.toString()==date.toString()+'--------->>>Nine');
+    print((datetoShowFeedbackDialog.toString()==date.toString()).toString()+'--------->>>Nine');
     print(date.toString()+'Ten');
+    print(datetoShowRatingDialog.toString()+'Eleven<----------');
+    print(dateShowedRatingDialog.toString()+'Twelve<----------');
 
-    if(FirstAttendance && !FiveStarRating && !RateusDialogShown) {
-      showRateUsDialog();
+    if(FirstAttendance && !FiveStarRating && !RateusDialogShown && dateShowedRatingDialog!=date.toString()) {
+      if(datetoShowRatingDialog.toString()==date.toString()) {
+        showRateUsDialog();
+      }
     }else if(FirstAttendance&& RateusDialogShown && !FiveStarRating && dateShowedFeedbackDialog!=date.toString()){
       if(datetoShowFeedbackDialog.toString()==date.toString()) {
         showfeedbackDialog();
@@ -4303,6 +4314,15 @@ var FakeLocationStatus=0;
 
   showRateUsDialog()async{
     var prefs= await SharedPreferences.getInstance();
+    String date = formatter.format(now);
+    var twoDaysFromNow = currDate.add(new Duration(days: 2));
+    String date1 = formatter.format(twoDaysFromNow);
+    dateShowedRatingDialog = date.toString();
+    datetoShowRatingDialog = date1.toString();
+    prefs.setString('dateShowedRatingDialog', dateShowedRatingDialog);
+    prefs.setString('datetoShowRatingDialog', datetoShowRatingDialog);
+    prefs.remove("FirstAttendance");
+    //prefs.setBool('RateusDialogShown', true);
     return showDialog(context: context, builder:(context) {
 
       return new AlertDialog(
