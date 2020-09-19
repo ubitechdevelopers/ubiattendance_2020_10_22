@@ -4345,11 +4345,17 @@ List<Holiday> createHolidayList(List data) {
     String from = (data[i]["fromDate"]);
     String to =   (data[i]["DateTo"]);
     String days = data[i]["DiffDate"];
+    DateTime fromDateFormat = DateTime.parse(data[i]["fromDateFormat"]);
+    DateTime DateToFormat = DateTime.parse(data[i]["DateToFormat"]);
     Holiday holiday = new Holiday(
         Name: name,
         From: from,
         To: to,
-        Days: days
+        Days: days,
+      DateToFormat: DateToFormat,
+      fromDateFormat: fromDateFormat
+
+
     );
     list.add(holiday);
   }
@@ -4364,9 +4370,11 @@ class Holiday {
   String From;
   String To;
   String Days;
+  DateTime fromDateFormat;
+  DateTime DateToFormat;
 
   Holiday(
-      {this.Name, this.From, this.To, this.Days});
+      {this.Name, this.From, this.To, this.Days,this.fromDateFormat,this.DateToFormat});
 }
 
 

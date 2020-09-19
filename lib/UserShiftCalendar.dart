@@ -60,6 +60,9 @@ class _MyHomePageState extends State<userShiftCalendar> {
   List<shiftplanner1> items = null;
   List<multishift> specialshift = null ;
   List<AttendanceList> AttendanceLists = null ;
+  List<Holiday> holidayList = null ;
+  DateTime Holidaydate;
+  List<dynamic> holidayDateList = [];
   var dateUtility = DateUtil();
   var daysinyear;
   bool leapyear;
@@ -239,6 +242,29 @@ class _MyHomePageState extends State<userShiftCalendar> {
         }
       });*/
 
+
+      Widget _holidayIcon(String day) => Container(    /// icon for days gone(present)
+        decoration: BoxDecoration(
+          //color: Colors.teal[100],
+          color: Colors.purple[100],
+          border: Border.all(
+              width: 1, color: Colors.green//                   <--- border width here
+          ),
+          borderRadius: BorderRadius.all(
+            Radius.circular(5),
+          ),
+        ),
+        child: Center(
+          child: Text(
+            day,
+            style: TextStyle(
+              color: Colors.black,fontSize: 16,
+            ),
+          ),
+        ),
+      );
+
+
       getMultiShiftsList(empid).then((val) {
         setState(() {
           print(val);
@@ -360,34 +386,187 @@ class _MyHomePageState extends State<userShiftCalendar> {
           }
 
           if(i==0) {
-            getDefaultAttendanceList(empid).then((val) {
+
+
+            getHolidays().then((val) {
               setState(() {
-                AttendanceLists = val;
-                print(AttendanceLists.length);
-                print("AttendanceLists.length");
+                holidayList = val;
               });
 
-              for (int k = 0; k < AttendanceLists.length; k++) {
-                print(AttendanceLists[k].AttendanceDate);
-                print("AttendanceLists[k].AttendanceDate");
-                //  var AttendanceDate = AttendanceLists[k].AttendanceDate;
-                PresentAttendanceDate.add(AttendanceLists[k].AttendanceDate);
-                print(PresentAttendanceDate);
-                print("PresentAttend123anceDate");
+              for (int i = 0; i < holidayList.length; i++) {
+                print("holidaysss");
 
-                _markedDateMap.removeAll(AttendanceLists[k].AttendanceDate);
+                if (int.parse(holidayList[i].Days) > 1) {
+                  Holidaydate = holidayList[i].fromDateFormat;
+                  _markedDateMap.removeAll(Holidaydate);
+                  _markedDateMap.add(
+                    Holidaydate,
+                    new Event(
+                      date: Holidaydate,
+                      title: 'Event 5',
+                      icon: _holidayIcon(Holidaydate.day.toString()),
+                    ),
+                  );
+                  int days = 0;
+                  while (days != int.parse(holidayList[i].Days) - 1) {
+                    print("Event 5");
+                    print(Holidaydate);
+                    holidayDateList.add(Holidaydate);
+                    Holidaydate = Holidaydate.add(Duration(days: 1));
+                    _markedDateMap.removeAll(Holidaydate);
+                    _markedDateMap.add(
+                      Holidaydate,
+                      new Event(
+                        date: Holidaydate,
+                        title: 'Event 5',
+                        icon: _holidayIcon(Holidaydate.day.toString()),
+                      ),
+                    );
+                    days++;
+                  }
+                }
+                else {
+                  Holidaydate = holidayList[i].fromDateFormat;
+                  _markedDateMap.removeAll(Holidaydate);
+                  _markedDateMap.add(
+                    Holidaydate,
+                    new Event(
+                      date: Holidaydate,
+                      title: 'Event 5',
+                      icon: _holidayIcon(Holidaydate.day.toString()),
+                    ),
+                  );
+                  holidayDateList.add(Holidaydate);
+                }
+                print(holidayDateList);
+                print("holidayDateList");
+              }
+
+              getDefaultAttendanceList(empid).then((val) {
+                print("jhkutiutiukuhkjhkhoiiohj");
+                setState(() {
+                  AttendanceLists = val;
+                  print(AttendanceLists.length);
+                  //  print("AttendanceLists.length");
+                });
+
+
+
+                for (int k = 0; k < AttendanceLists.length; k++) {
+
+                  PresentAttendanceDate.add(AttendanceLists[k].AttendanceDate);
+                  print(PresentAttendanceDate);
+                  print("PresentAttend123anceDate");
+
+                  _markedDateMap.removeAll(AttendanceLists[k].AttendanceDate);
+                  _markedDateMap.add(
+                    AttendanceLists[k].AttendanceDate,
+                    new Event(
+                      date: AttendanceLists[k].AttendanceDate,
+                      title: 'Event 5',
+                      icon: _attendanceIcon(
+                          AttendanceLists[k].AttendanceDate.day.toString(),
+                          AttendanceLists[k].TimeIn, AttendanceLists[k].TimeOut),
+                    ),
+                  );
+                }
+              });
+
+            });
+
+            /*  var holidayList = await getHolidays();
+            if(holidayList.isNotEmpty) {
+              for (int i = 0; i < holidayList.length; i++) {
+                print("holidaysss");
+
+                if (int.parse(holidayList[i].Days) > 1) {
+                  Holidaydate = holidayList[i].fromDateFormat;
+                  _markedDateMap.removeAll(Holidaydate);
+                  _markedDateMap.add(
+                    Holidaydate,
+                    new Event(
+                      date: Holidaydate,
+                      title: 'Event 5',
+                      icon: _holidayIcon(Holidaydate.day.toString()),
+                    ),
+                  );
+                  int days = 0;
+                  while (days != int.parse(holidayList[i].Days) - 1) {
+                    print("Event 5");
+                    print(Holidaydate);
+                    holidayDateList.add(Holidaydate);
+                    Holidaydate = Holidaydate.add(Duration(days: 1));
+                    _markedDateMap.removeAll(Holidaydate);
+                    _markedDateMap.add(
+                      Holidaydate,
+                      new Event(
+                        date: Holidaydate,
+                        title: 'Event 5',
+                        icon: _holidayIcon(Holidaydate.day.toString()),
+                      ),
+                    );
+                    days++;
+                  }
+                }
+                else {
+                  Holidaydate = holidayList[i].fromDateFormat;
+                  _markedDateMap.removeAll(Holidaydate);
+                  _markedDateMap.add(
+                    Holidaydate,
+                    new Event(
+                      date: Holidaydate,
+                      title: 'Event 5',
+                      icon: _holidayIcon(Holidaydate.day.toString()),
+                    ),
+                  );
+                  holidayDateList.add(Holidaydate);
+                }
+                print(holidayDateList);
+                print("holidayDateList");
+              }
+            }*/
+            //  });
+
+            /*  getHolidays().then((val) {
+              setState(() {
+                holidayList = val;
+                *//*print(holidayList.length);
+                 print("holidayList.length");*//*
+              });
+
+              for(int i = 0 ;i<holidayList.length;i++){
+
+                if(int.parse(holidayList[i].Days)>1){
+                  Holidaydate =  holidayList[i].fromDateFormat;
+                  int days=0;
+                  while(days!=int.parse(holidayList[i].Days)){
+
+                    holidayDateList.add(Holidaydate);
+                    Holidaydate = Holidaydate.add(Duration(days: 1));
+                    days++;
+                  }
+                }
+                else{
+                  Holidaydate = holidayList[i].fromDateFormat;
+                  holidayDateList.add(Holidaydate);
+                }
+              }
+
+              for(int i = 0; i<holidayDateList.length;i++){
+                print("gkgkuguigiu");
+
+                _markedDateMap.removeAll(Holidaydate);
                 _markedDateMap.add(
-                  AttendanceLists[k].AttendanceDate,
+                  Holidaydate,
                   new Event(
-                    date: AttendanceLists[k].AttendanceDate,
+                    date:Holidaydate,
                     title: 'Event 5',
-                    icon: _attendanceIcon(
-                        AttendanceLists[k].AttendanceDate.day.toString(),
-                        AttendanceLists[k].TimeIn, AttendanceLists[k].TimeOut),
+                    icon:_holidayIcon(Holidaydate.day.toString()),
                   ),
                 );
               }
             });
+*/
           }
         }
 

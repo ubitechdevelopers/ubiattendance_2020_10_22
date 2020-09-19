@@ -218,7 +218,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                     //color: Color.fromRGBO(199, 130, 10, 0.6),
                     //  color: Color.fromRGBO(2, 112, 85, 0.6),
                     // color: Colors.orangeAccent[200],
-                    color: Colors.teal[500],
+                    //color: Colors.teal[500],
+                    color: Color.fromRGBO(255, 177, 33, 0.8),
                     shape: BoxShape.rectangle,
                     borderRadius: new BorderRadius.circular(8.0),
                     /*boxShadow: <BoxShadow>[
@@ -240,7 +241,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                       decoration: new BoxDecoration(
                           shape: BoxShape.circle,
                           image: new DecorationImage(
-                            fit: BoxFit.fill,
+                            fit: BoxFit.cover,
                             image: val2!=null?new NetworkImage(val2):AssetImage('assets/avatar.png'),
                             //image: AssetImage('assets/avatar.png')
                           ))),
