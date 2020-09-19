@@ -2052,6 +2052,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     }
   }
 
+  
   setaddress() async {
     globalstreamlocationaddr = await getAddressFromLati(
         globals.assign_lat.toString(), globals.assign_long.toString());
