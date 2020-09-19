@@ -28,7 +28,7 @@ String path_hrm_india="http://192.168.0.200/ubiattinterns/index.php/Att_services
 String path="https://sandbox.ubiattendance.com/index.php/Att_services/";
 
 String path_hrm_india="https://sandbox.ubiattendance.com/index.php/Att_services/";
-*/    
+*/
 
 String path="https://ubiattendance.ubihrm.com/index.php/Att_services/";
 String internetConnectivityURL="https://ubiattendance.ubihrm.com/index.php/Att_services/isInternetConnected";
