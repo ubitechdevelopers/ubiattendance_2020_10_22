@@ -6,6 +6,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../globals.dart';
+import '../globals.dart';
+import '../globals.dart';
 import '../login.dart';
 
 class Home{
@@ -129,7 +131,12 @@ class Home{
         globals.visitpunch=int.parse(timeinoutMap['Addon_VisitPunch']);
         globals.timeOff=int.parse(timeinoutMap['Addon_TimeOff']);
         globals.flexi_permission=int.parse(timeinoutMap['Addon_flexi_shif']);
-        globals.offline_permission=int.parse(timeinoutMap['Addon_offline_mode']);
+
+        if(shiftType.toString()=='3'){
+          globals.offline_permission=0;
+        }
+        else
+          globals.offline_permission=int.parse(timeinoutMap['Addon_offline_mode']);
         globals.deviceverification=int.parse(timeinoutMap['Addon_DeviceVerification']);
         globals.facerecognition=int.parse(timeinoutMap['Addon_FaceRecognition'])??0;
         globals.covidsurvey=int.parse(timeinoutMap['addon_COVID19']);
@@ -155,6 +162,10 @@ class Home{
         prefs.setString("nextWorkingDay", timeinoutMap['nextWorkingDay']);
         prefs.setString("ReferralValidFrom", ReferralValidFrom);
         prefs.setString("ReferralValidTo", ReferralValidTo);
+        if(shiftType.toString()=='3'){
+          prefs.setInt("OfflineModePermission", 0);
+        }
+        else
         prefs.setInt("OfflineModePermission", int.parse(timeinoutMap['Addon_offline_mode']));
         prefs.setInt("ImageRequired", int.parse(timeinoutMap['attImage']));
         prefs.setInt("VisitImageRequired", int.parse(timeinoutMap['visitImage']));
