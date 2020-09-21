@@ -56,6 +56,7 @@ class _MyHomePageState extends State<userShiftCalendar> {
   Map<DateTime, List> _events;
   Map<DateTime, List> DaysPass;
   Map<DateTime, List> _holiday ;
+  Map<DateTime, String> holidayNameList = {};
   AnimationController _animationController;
   List<shiftplanner1> items = null;
   List<multishift> specialshift = null ;
@@ -109,6 +110,7 @@ class _MyHomePageState extends State<userShiftCalendar> {
   String admin_sts='0';
   ScaffoldState scaffold;
   String empid ="";
+  var defaultShiftTimings ="";
   String fname ="";
   String shiftId ="";
   var daysgone1;
@@ -203,11 +205,11 @@ class _MyHomePageState extends State<userShiftCalendar> {
       fname = prefs.getString('fname') ?? '';
       response = prefs.getInt('response') ?? 0;
       empid = prefs.getString('empid') ?? '';
-      shiftId = prefs.getString('shiftId') ?? "";
+      defaultShiftTimings = globals.defaultShiftTimings;
     });
 
 
-    shiftplanner(empid,shiftId).then((EmpList) {
+    shiftplanner(empid,defaultShiftTimings).then((EmpList) {
       setState(() {
         print("emplis;lk;k;lt");
         items = EmpList;});
@@ -296,6 +298,7 @@ class _MyHomePageState extends State<userShiftCalendar> {
             );
           }
           else {
+            _markedDateMap.removeAll(specialshift[i].shiftdate);
             _markedDateMap.removeAll(specialshift[i].shiftdate);
             _markedDateMap.add(
               specialshift[i].shiftdate,
@@ -394,10 +397,13 @@ class _MyHomePageState extends State<userShiftCalendar> {
               });
 
               for (int i = 0; i < holidayList.length; i++) {
-                print("holidaysss");
-
+               // print("holidaysss");
                 if (int.parse(holidayList[i].Days) > 1) {
                   Holidaydate = holidayList[i].fromDateFormat;
+                  holidayNameList.addAll({Holidaydate:holidayList[i].Name});
+                  print(holidayNameList);
+                  print("_holidayName");
+                  holidayDateList.add(Holidaydate);
                   _markedDateMap.removeAll(Holidaydate);
                   _markedDateMap.add(
                     Holidaydate,
@@ -411,8 +417,10 @@ class _MyHomePageState extends State<userShiftCalendar> {
                   while (days != int.parse(holidayList[i].Days) - 1) {
                     print("Event 5");
                     print(Holidaydate);
-                    holidayDateList.add(Holidaydate);
                     Holidaydate = Holidaydate.add(Duration(days: 1));
+                    holidayNameList.addAll({Holidaydate:holidayList[i].Name});
+
+                    holidayDateList.add(Holidaydate);
                     _markedDateMap.removeAll(Holidaydate);
                     _markedDateMap.add(
                       Holidaydate,
@@ -437,6 +445,8 @@ class _MyHomePageState extends State<userShiftCalendar> {
                     ),
                   );
                   holidayDateList.add(Holidaydate);
+                  holidayNameList.addAll({Holidaydate:holidayList[i].Name});
+
                 }
                 print(holidayDateList);
                 print("holidayDateList");
@@ -1217,10 +1227,18 @@ class _MyHomePageState extends State<userShiftCalendar> {
       daysHaveCircularBorder: null,
       markedDateShowIcon: true,
       onDayPressed: (date, events) {
-        // _onDaySelected(date, events);
-        // print("date.isBefore(now)");
+
         if((daysGoneList.containsKey(date) || date.isBefore(now)) && (PresentAttendanceDate.contains(date)))
           _onAlertWithCustomContentPressed(date);
+        else if(holidayDateList.contains(date)){
+          _onAlertForHolidays(date);
+        }
+        else if(weekofflist.contains(date)){
+          _onAlertForWeekOff(date);
+        }
+        else{
+          _onAlertForAbsent(date);
+        }
       },
       showOnlyCurrentMonthDate: true,
       markedDateIconMargin: 0,
@@ -2063,11 +2081,8 @@ class _MyHomePageState extends State<userShiftCalendar> {
     setState(() => _selectedIndex = index);
   }
 
-
   _onAlertWithCustomContentPressed(date) {
 
-
-    //onpop
     getPlannerWiseSummary(date).then((values) {
       setState(() {
         userlist = values;
@@ -2092,7 +2107,7 @@ class _MyHomePageState extends State<userShiftCalendar> {
                 height: MediaQuery
                     .of(context)
                     .size
-                    .height * 0.41,
+                    .height * 0.45,
                 width: MediaQuery
                     .of(context)
                     .size
@@ -2572,7 +2587,7 @@ class _MyHomePageState extends State<userShiftCalendar> {
                               .of(context)
                               .size
                               .height * .01),
-                          Row(
+                          (date.toString().substring(0,10).compareTo(now.toString().substring(0,10))) != 0?Row(
                             children: <Widget>[
                               Icon(Icons.timer, size: 20.0,
                                 color: Colors.black54,), SizedBox(width: 5.0),
@@ -2596,13 +2611,9 @@ class _MyHomePageState extends State<userShiftCalendar> {
                               userlist.isEmpty ?new Text("-"):userlist[0].overtime.contains("-")?Text(userlist[0].overtime,style: new TextStyle(fontSize: 15.0,
                                   fontWeight: FontWeight.bold,color: Colors.red)):Text(userlist[0].overtime,style: new TextStyle(fontSize: 15.0,
                                   fontWeight: FontWeight.bold,color: Colors.green)),
-                              /* new Text(
-                                  userlist.isEmpty ? "-" : userlist[0].overtime.contains("-")?Text(userlist[0].overtime,style: new TextStyle(fontSize: 15.0,
-                                  fontWeight: FontWeight.bold,color: Colors.red)):
-                                 Text( userlist[0].overtime,style: new TextStyle(fontSize: 15.0,
-                                      fontWeight: FontWeight.bold,color: Colors.green))),*/
                             ],
-                          ),
+                          ):Container(),
+
                           SizedBox(height: MediaQuery
                               .of(context)
                               .size
@@ -2634,6 +2645,1714 @@ class _MyHomePageState extends State<userShiftCalendar> {
             )
           ]).show();
     });
+  }
+
+
+  _onAlertForHolidays(date) {
+
+   var nameOfHoliday="";
+   holidayNameList.forEach((k,v){
+
+     if(k == date ){
+       nameOfHoliday = v;
+     }
+
+     print(nameOfHoliday);
+     print("nameOfHoliday");
+
+   });
+
+
+
+
+
+    var alertStyle = AlertStyle(
+        animationType: AnimationType.fromBottom,
+        isCloseButton: false,
+        isOverlayTapDismiss: true,
+        descStyle: TextStyle(fontWeight: FontWeight.bold),
+        animationDuration: Duration(milliseconds: 400),
+
+      );
+      Alert(
+          style: alertStyle,
+          context: context,
+          title: ""+Formatdate(date.toString().substring(0, 10))+"\n\n"+nameOfHoliday,
+         /* content: Wrap(
+
+            children: <Widget>[
+              Container(
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height * 0.45,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width * 0.70,
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment
+                          .end,
+                      children: <Widget>[
+                      ],
+                    ),
+
+                    SizedBox(height: 10.0),
+                    *//* new Text(
+                    snapshot.data[index].Name.toString(),
+                    style: TextStyle(
+                        color: Colors.black87,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.w600
+                    ),
+                  ),*//*
+                    //SizedBox(height: 20,),
+                    Table(
+                      defaultVerticalAlignment: TableCellVerticalAlignment
+                          .top,
+                      columnWidths: {
+
+                        0: FlexColumnWidth(5),
+                        // 0: FlexColumnWidth(4.501), // - is ok
+                        // 0: FlexColumnWidth(4.499), //- ok as well
+                        1: FlexColumnWidth(5),
+                        //2: FlexColumnWidth(5),
+                      },
+                      children: [
+                        TableRow(
+                            children: [
+                              TableCell(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: <Widget>[
+                                    new Text(
+                                      "Time In",
+                                      style: TextStyle(
+                                          color: Colors
+                                              .black87,
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight
+                                              .bold
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              TableCell(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: <Widget>[
+                                    new Text(
+                                      "Time Out",
+                                      style: TextStyle(
+                                          color: Colors
+                                              .black87,
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight
+                                              .bold
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ]
+                        ) ,
+                        TableRow(
+                            children: [
+                              TableCell(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: <Widget>[
+                                    new Text(
+                                      userlist.isEmpty?"-": userlist[0].TimeIn,
+                                      style: TextStyle(
+                                          color: Colors
+                                              .black87,
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight
+                                              .w400
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              TableCell(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: <Widget>[
+                                    new Text(
+                                      userlist.isEmpty?"-": userlist[0].TimeOut,
+                                      style: TextStyle(
+                                          color: Colors
+                                              .black87,
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight
+                                              .w400
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ]
+                        ),
+                        TableRow(
+                            children: [
+                              TableCell(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: <Widget>[
+                                    InkWell(
+                                      child: Container(
+                                          width: 70.0,
+                                          height: 70.0,
+//                               child: FadeInImage.assetNetwork(
+//                                  placeholder: 'assets/user_profile.png',
+//                                  ),
+                                          decoration: new BoxDecoration(
+                                              border: Border.all(
+                                                  width: 2, color: Colors.teal//                   <--- border width here
+                                              ),
+                                              shape: BoxShape.circle,
+                                              image: new DecorationImage(
+                                                  fit: BoxFit.fill,
+                                                  image:
+//                                          AssetImage('assets/user_profile.png'),
+//                                            _checkLoaded
+//                                                ? AssetImage('assets/imgloader.gif')
+//                                                :
+                                                  userlist.isNotEmpty?NetworkImage(
+                                                      userlist[0].EntryImage):AssetImage('assets/avatar.png')
+
+                                                //_checkLoaded ? AssetImage('assets/avatar.png') : profileimage,
+                                              )
+                                          )
+                                      ),
+                                      onTap: () {
+
+                                        if( userlist.isNotEmpty) {
+                                          Navigator.of(
+                                              context, rootNavigator: true)
+                                              .pop();
+
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ImageView(
+                                                        myimage: userlist[0]
+                                                            .EntryImage,
+                                                        org_name: _orgName)),
+                                          );
+                                        }
+
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              TableCell(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: <Widget>[
+                                    InkWell(
+                                      child: Container(
+                                          width: 70.0,
+                                          height: 70.0,
+//                               child: FadeInImage.assetNetwork(
+//                                  placeholder: 'assets/user_profile.png',
+//                                  ),
+                                          decoration: new BoxDecoration(
+                                              border: Border.all(
+                                                  width: 2, color: Colors.teal//                   <--- border width here
+                                              ),
+                                              shape: BoxShape.circle,
+                                              image: new DecorationImage(
+                                                  fit: BoxFit.fill,
+                                                  image:
+//                                          AssetImage('assets/user_profile.png'),
+//                                            _checkLoaded
+//                                                ? AssetImage('assets/imgloader.gif')
+//                                                :
+                                                  userlist.isNotEmpty?NetworkImage(
+                                                      userlist[0].ExitImage):AssetImage('assets/avatar.png')
+
+                                                //_checkLoaded ? AssetImage('assets/avatar.png') : profileimage,
+                                              )
+                                          )
+                                      ),
+                                      onTap: () {
+                                        if( userlist.isNotEmpty) {
+                                          Navigator.of(
+                                              context, rootNavigator: true)
+                                              .pop();
+
+
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ImageView(
+                                                        myimage: userlist[0]
+                                                            .ExitImage,
+                                                        org_name: _orgName)),
+                                          );
+                                        }
+
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ]
+                        ),
+                        //TableRow(),
+
+                        TableRow(
+                            children: [
+                              TableCell(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: <Widget>[
+                                    Expanded(
+                                      flex: 40,
+                                      child:  new Container(
+                                        //color: Colors.red,
+                                        padding: new EdgeInsets.only(left: 10.0, right: 10.0,top: 10,bottom: 10),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            InkWell(
+                                              child:Center(
+                                                child: Text(
+                                                  userlist.isEmpty?"-": userlist[0].checkInLoc,style: TextStyle(color: Colors.black54,fontSize: 12.0),textAlign: TextAlign.center,),
+                                              ),
+                                              onTap: () {
+                                                goToMap(userlist.isEmpty?"-": userlist[0].latit_in,userlist.isEmpty?"-": userlist[0].longi_in);
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              TableCell(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: <Widget>[
+                                    Expanded(
+                                      flex: 40,
+                                      child:  new Container(
+                                        padding: new EdgeInsets.only(left: 10.0, right: 10.0,top: 10,bottom: 10),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: <Widget>[
+
+                                            InkWell(
+                                              child:Center(
+                                                child: Text(
+                                                  userlist.isEmpty?"-": userlist[0].CheckOutLoc,style: TextStyle(color: Colors.black54,fontSize: 12.0),textAlign: TextAlign.center,),
+                                              ),
+                                              onTap: () {
+                                                goToMap(userlist.isEmpty?"-": userlist[0].latit_out,userlist.isEmpty?"-": userlist[0].longi_out);
+                                              },
+                                            ),
+                                            *//*Container(
+                                              padding: EdgeInsets.all(2.0),
+                                              color: snapshot.data[index].incolor.toString()=='0'?Colors.red:Colors.green,
+
+                                              child: Text(snapshot.data[index].instatus,
+                                                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 12.0,color: Colors.white),
+                                              ),
+                                            ),*//*
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ]
+                        ),
+                        *//*TableRow(
+                            children: [
+                              TableCell(
+                                child: Row(
+                                  // crossAxisAlignment: CrossAxisAlignment.end,
+                                  // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: <Widget>[
+                                    Expanded(
+                                      flex: 37,
+                                      child:  new Container(
+                                        //width: MediaQuery.of(context).size.width * 0.37,
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            *//**//* new Text(
+                                    snapshot.data[index].client.toString(),style: TextStyle(fontWeight: FontWeight.bold),textAlign: TextAlign.left,
+                                  ),*//**//*
+                                            InkWell(
+                                              child:Text(
+                                                userlist.isEmpty?"-": userlist[0].checkInLoc,style: TextStyle(color: Colors.black54,fontSize: 12.0),),
+                                              onTap: () {
+                                               // goToMap(snapshot.data[index].latin,snapshot.data[index].lonin.toString());
+                                              },
+                                            ),
+                                           *//**//* Container(
+                                              padding: EdgeInsets.all(2.0),
+                                              color: snapshot.data[index].incolor.toString()=='0'?Colors.red:Colors.green,
+
+                                              child: Text(snapshot.data[index].instatus,
+                                                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 12.0,color: Colors.white),
+                                              ),
+                                            ),*//**//*
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              TableCell(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: <Widget>[
+                                    new Text(
+                                      '',
+                                      style: TextStyle(
+                                          color: Colors
+                                              .black87,
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight
+                                              .bold
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ]
+                        ),*//*
+                      ],
+                    ),
+                    *//* Expanded(
+                      flex: 37,
+                      child:  new Container(
+                        //width: MediaQuery.of(context).size.width * 0.37,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            *//**//* new Text(
+                                    snapshot.data[index].client.toString(),style: TextStyle(fontWeight: FontWeight.bold),textAlign: TextAlign.left,
+                                  ),*//**//*
+                            InkWell(
+                              child:Text(
+                                userlist.isEmpty?"-": userlist[0].checkInLoc,style: TextStyle(color: Colors.black54,fontSize: 12.0),),
+                              *//**//*onTap: () {
+                                goToMap(snapshot.data[index].latin,snapshot.data[index].lonin.toString());
+                              },*//**//*
+                            ),
+                           *//**//* Container(
+                              padding: EdgeInsets.all(2.0),
+                              color: snapshot.data[index].incolor.toString()=='0'?Colors.red:Colors.green,
+
+                              child: Text(snapshot.data[index].instatus,
+                                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 12.0,color: Colors.white),
+                              ),
+                            )*//**//*
+                          ],
+                        ),
+                      ),
+                    ),*//*
+                    //SizedBox(height: 10.0),
+                    Divider(color: Colors.black54,height: 1.5,),
+                    SizedBox(height: 19,),
+                    Container(
+                      padding: new EdgeInsets.only(left: 15.0, right: 10.0),
+                      decoration: new ShapeDecoration(
+                          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20.0)),
+                          color: Colors.white.withOpacity(0.1)
+                      ) ,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+
+                          Row(
+                            children: <Widget>[
+                              Icon(Icons.timelapse, size: 20.0,
+                                color: Colors.black54,), SizedBox(width: 5.0),
+                              new Text("Shift Timings: ", style: new TextStyle(
+                                  fontSize: 15.0,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.bold)),
+                              new Text(
+                                  userlist.isEmpty ? "-"
+                                      : userlist[0].ShiftTimeIn+" - "+userlist[0].ShiftTimeOut,
+                                  style: new TextStyle(fontSize: 15.0,
+                                      fontWeight: FontWeight.w400)),
+                            ],
+                          ),
+                          SizedBox(height: MediaQuery
+                              .of(context)
+                              .size
+                              .height * .01),
+                          Row(
+                            children: <Widget>[
+                              Icon(Icons.access_time, size: 20.0,
+                                color: Colors.black54,), SizedBox(width: 5.0),
+                              new Text("Logged Hours: ", style: new TextStyle(
+                                  fontSize: 15.0,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.bold)),
+                              new Text(
+                                  userlist.isEmpty ? "-" : userlist[0].thours,
+                                  style: new TextStyle(fontSize: 15.0,
+                                      fontWeight: FontWeight.w400)),
+                            ],
+                          ),
+                          *//*SizedBox(height: MediaQuery
+                              .of(context)
+                              .size
+                              .height * .01),*//*
+                          *//*Row(
+                            children: <Widget>[
+                              Icon(Icons.timer, size: 20.0,
+                                color: Colors.black54,), SizedBox(width: 5.0),
+                              new Text("Shift TimeIn: ", style: new TextStyle(
+                                  fontSize: 15.0,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.bold)),
+                              new Text(userlist.isEmpty ? "-"
+                                  : userlist[0].ShiftTimeIn,
+                                  style: new TextStyle(fontSize: 15.0,
+                                      fontWeight: FontWeight.w400)),
+                            ],
+                          ),
+                          SizedBox(height: MediaQuery
+                              .of(context)
+                              .size
+                              .height * .01),
+                          Row(
+                            children: <Widget>[
+                              Icon(Icons.timer, size: 20.0,
+                                color: Colors.black54,), SizedBox(width: 5.0),
+                              new Text("Shift TimeOut: ", style: new TextStyle(
+                                  fontSize: 15.0,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.bold)),
+                              new Text(userlist.isEmpty ? "-"
+                                  : userlist[0].ShiftTimeOut,
+                                  style: new TextStyle(fontSize: 15.0,
+                                      fontWeight: FontWeight.w400)),
+                            ],
+                          ),*//*
+                          SizedBox(height: MediaQuery
+                              .of(context)
+                              .size
+                              .height * .01),
+                          (date.toString().substring(0,10).compareTo(now.toString().substring(0,10))) != 0?Row(
+                            children: <Widget>[
+                              Icon(Icons.timer, size: 20.0,
+                                color: Colors.black54,), SizedBox(width: 5.0),
+
+                              userlist.isEmpty ?new Text("Undertime: ", style: new TextStyle(
+                                  fontSize: 15.0,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.bold))
+
+                                  :userlist[0].overtime.contains("-")?new Text("Undertime: ", style: new TextStyle(
+                                  fontSize: 15.0,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.bold))
+
+                                  :Text("Overtime: ", style: new TextStyle(
+                                  fontSize: 15.0,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.bold)),
+
+
+                              userlist.isEmpty ?new Text("-"):userlist[0].overtime.contains("-")?Text(userlist[0].overtime,style: new TextStyle(fontSize: 15.0,
+                                  fontWeight: FontWeight.bold,color: Colors.red)):Text(userlist[0].overtime,style: new TextStyle(fontSize: 15.0,
+                                  fontWeight: FontWeight.bold,color: Colors.green)),
+                            ],
+                          ):Container(),
+
+                          SizedBox(height: MediaQuery
+                              .of(context)
+                              .size
+                              .height * .01),
+                        ],
+
+                      ),
+                    )
+                  ],),
+
+              ),
+            ],
+          ),*/
+
+          buttons: [
+            DialogButton(
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width * 0.22,
+              color: Colors.orangeAccent,
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop();
+              },
+              child: Text(
+                "OK",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+            )
+          ]).show();
+    ///});
+  }
+
+  _onAlertForAbsent(date) {
+
+
+    var alertStyle = AlertStyle(
+      animationType: AnimationType.fromBottom,
+      isCloseButton: false,
+      isOverlayTapDismiss: true,
+      descStyle: TextStyle(fontWeight: FontWeight.bold),
+      animationDuration: Duration(milliseconds: 400),
+
+    );
+    Alert(
+        style: alertStyle,
+        context: context,
+        title: "Absent",
+        image: Image.asset('assets/AbsentIcon.png',
+          width: 50, height: 50,),
+
+        /* content: Wrap(
+
+            children: <Widget>[
+              Container(
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height * 0.45,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width * 0.70,
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment
+                          .end,
+                      children: <Widget>[
+                      ],
+                    ),
+
+                    SizedBox(height: 10.0),
+                    *//* new Text(
+                    snapshot.data[index].Name.toString(),
+                    style: TextStyle(
+                        color: Colors.black87,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.w600
+                    ),
+                  ),*//*
+                    //SizedBox(height: 20,),
+                    Table(
+                      defaultVerticalAlignment: TableCellVerticalAlignment
+                          .top,
+                      columnWidths: {
+
+                        0: FlexColumnWidth(5),
+                        // 0: FlexColumnWidth(4.501), // - is ok
+                        // 0: FlexColumnWidth(4.499), //- ok as well
+                        1: FlexColumnWidth(5),
+                        //2: FlexColumnWidth(5),
+                      },
+                      children: [
+                        TableRow(
+                            children: [
+                              TableCell(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: <Widget>[
+                                    new Text(
+                                      "Time In",
+                                      style: TextStyle(
+                                          color: Colors
+                                              .black87,
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight
+                                              .bold
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              TableCell(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: <Widget>[
+                                    new Text(
+                                      "Time Out",
+                                      style: TextStyle(
+                                          color: Colors
+                                              .black87,
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight
+                                              .bold
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ]
+                        ) ,
+                        TableRow(
+                            children: [
+                              TableCell(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: <Widget>[
+                                    new Text(
+                                      userlist.isEmpty?"-": userlist[0].TimeIn,
+                                      style: TextStyle(
+                                          color: Colors
+                                              .black87,
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight
+                                              .w400
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              TableCell(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: <Widget>[
+                                    new Text(
+                                      userlist.isEmpty?"-": userlist[0].TimeOut,
+                                      style: TextStyle(
+                                          color: Colors
+                                              .black87,
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight
+                                              .w400
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ]
+                        ),
+                        TableRow(
+                            children: [
+                              TableCell(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: <Widget>[
+                                    InkWell(
+                                      child: Container(
+                                          width: 70.0,
+                                          height: 70.0,
+//                               child: FadeInImage.assetNetwork(
+//                                  placeholder: 'assets/user_profile.png',
+//                                  ),
+                                          decoration: new BoxDecoration(
+                                              border: Border.all(
+                                                  width: 2, color: Colors.teal//                   <--- border width here
+                                              ),
+                                              shape: BoxShape.circle,
+                                              image: new DecorationImage(
+                                                  fit: BoxFit.fill,
+                                                  image:
+//                                          AssetImage('assets/user_profile.png'),
+//                                            _checkLoaded
+//                                                ? AssetImage('assets/imgloader.gif')
+//                                                :
+                                                  userlist.isNotEmpty?NetworkImage(
+                                                      userlist[0].EntryImage):AssetImage('assets/avatar.png')
+
+                                                //_checkLoaded ? AssetImage('assets/avatar.png') : profileimage,
+                                              )
+                                          )
+                                      ),
+                                      onTap: () {
+
+                                        if( userlist.isNotEmpty) {
+                                          Navigator.of(
+                                              context, rootNavigator: true)
+                                              .pop();
+
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ImageView(
+                                                        myimage: userlist[0]
+                                                            .EntryImage,
+                                                        org_name: _orgName)),
+                                          );
+                                        }
+
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              TableCell(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: <Widget>[
+                                    InkWell(
+                                      child: Container(
+                                          width: 70.0,
+                                          height: 70.0,
+//                               child: FadeInImage.assetNetwork(
+//                                  placeholder: 'assets/user_profile.png',
+//                                  ),
+                                          decoration: new BoxDecoration(
+                                              border: Border.all(
+                                                  width: 2, color: Colors.teal//                   <--- border width here
+                                              ),
+                                              shape: BoxShape.circle,
+                                              image: new DecorationImage(
+                                                  fit: BoxFit.fill,
+                                                  image:
+//                                          AssetImage('assets/user_profile.png'),
+//                                            _checkLoaded
+//                                                ? AssetImage('assets/imgloader.gif')
+//                                                :
+                                                  userlist.isNotEmpty?NetworkImage(
+                                                      userlist[0].ExitImage):AssetImage('assets/avatar.png')
+
+                                                //_checkLoaded ? AssetImage('assets/avatar.png') : profileimage,
+                                              )
+                                          )
+                                      ),
+                                      onTap: () {
+                                        if( userlist.isNotEmpty) {
+                                          Navigator.of(
+                                              context, rootNavigator: true)
+                                              .pop();
+
+
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ImageView(
+                                                        myimage: userlist[0]
+                                                            .ExitImage,
+                                                        org_name: _orgName)),
+                                          );
+                                        }
+
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ]
+                        ),
+                        //TableRow(),
+
+                        TableRow(
+                            children: [
+                              TableCell(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: <Widget>[
+                                    Expanded(
+                                      flex: 40,
+                                      child:  new Container(
+                                        //color: Colors.red,
+                                        padding: new EdgeInsets.only(left: 10.0, right: 10.0,top: 10,bottom: 10),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            InkWell(
+                                              child:Center(
+                                                child: Text(
+                                                  userlist.isEmpty?"-": userlist[0].checkInLoc,style: TextStyle(color: Colors.black54,fontSize: 12.0),textAlign: TextAlign.center,),
+                                              ),
+                                              onTap: () {
+                                                goToMap(userlist.isEmpty?"-": userlist[0].latit_in,userlist.isEmpty?"-": userlist[0].longi_in);
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              TableCell(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: <Widget>[
+                                    Expanded(
+                                      flex: 40,
+                                      child:  new Container(
+                                        padding: new EdgeInsets.only(left: 10.0, right: 10.0,top: 10,bottom: 10),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: <Widget>[
+
+                                            InkWell(
+                                              child:Center(
+                                                child: Text(
+                                                  userlist.isEmpty?"-": userlist[0].CheckOutLoc,style: TextStyle(color: Colors.black54,fontSize: 12.0),textAlign: TextAlign.center,),
+                                              ),
+                                              onTap: () {
+                                                goToMap(userlist.isEmpty?"-": userlist[0].latit_out,userlist.isEmpty?"-": userlist[0].longi_out);
+                                              },
+                                            ),
+                                            *//*Container(
+                                              padding: EdgeInsets.all(2.0),
+                                              color: snapshot.data[index].incolor.toString()=='0'?Colors.red:Colors.green,
+
+                                              child: Text(snapshot.data[index].instatus,
+                                                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 12.0,color: Colors.white),
+                                              ),
+                                            ),*//*
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ]
+                        ),
+                        *//*TableRow(
+                            children: [
+                              TableCell(
+                                child: Row(
+                                  // crossAxisAlignment: CrossAxisAlignment.end,
+                                  // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: <Widget>[
+                                    Expanded(
+                                      flex: 37,
+                                      child:  new Container(
+                                        //width: MediaQuery.of(context).size.width * 0.37,
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            *//**//* new Text(
+                                    snapshot.data[index].client.toString(),style: TextStyle(fontWeight: FontWeight.bold),textAlign: TextAlign.left,
+                                  ),*//**//*
+                                            InkWell(
+                                              child:Text(
+                                                userlist.isEmpty?"-": userlist[0].checkInLoc,style: TextStyle(color: Colors.black54,fontSize: 12.0),),
+                                              onTap: () {
+                                               // goToMap(snapshot.data[index].latin,snapshot.data[index].lonin.toString());
+                                              },
+                                            ),
+                                           *//**//* Container(
+                                              padding: EdgeInsets.all(2.0),
+                                              color: snapshot.data[index].incolor.toString()=='0'?Colors.red:Colors.green,
+
+                                              child: Text(snapshot.data[index].instatus,
+                                                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 12.0,color: Colors.white),
+                                              ),
+                                            ),*//**//*
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              TableCell(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: <Widget>[
+                                    new Text(
+                                      '',
+                                      style: TextStyle(
+                                          color: Colors
+                                              .black87,
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight
+                                              .bold
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ]
+                        ),*//*
+                      ],
+                    ),
+                    *//* Expanded(
+                      flex: 37,
+                      child:  new Container(
+                        //width: MediaQuery.of(context).size.width * 0.37,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            *//**//* new Text(
+                                    snapshot.data[index].client.toString(),style: TextStyle(fontWeight: FontWeight.bold),textAlign: TextAlign.left,
+                                  ),*//**//*
+                            InkWell(
+                              child:Text(
+                                userlist.isEmpty?"-": userlist[0].checkInLoc,style: TextStyle(color: Colors.black54,fontSize: 12.0),),
+                              *//**//*onTap: () {
+                                goToMap(snapshot.data[index].latin,snapshot.data[index].lonin.toString());
+                              },*//**//*
+                            ),
+                           *//**//* Container(
+                              padding: EdgeInsets.all(2.0),
+                              color: snapshot.data[index].incolor.toString()=='0'?Colors.red:Colors.green,
+
+                              child: Text(snapshot.data[index].instatus,
+                                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 12.0,color: Colors.white),
+                              ),
+                            )*//**//*
+                          ],
+                        ),
+                      ),
+                    ),*//*
+                    //SizedBox(height: 10.0),
+                    Divider(color: Colors.black54,height: 1.5,),
+                    SizedBox(height: 19,),
+                    Container(
+                      padding: new EdgeInsets.only(left: 15.0, right: 10.0),
+                      decoration: new ShapeDecoration(
+                          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20.0)),
+                          color: Colors.white.withOpacity(0.1)
+                      ) ,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+
+                          Row(
+                            children: <Widget>[
+                              Icon(Icons.timelapse, size: 20.0,
+                                color: Colors.black54,), SizedBox(width: 5.0),
+                              new Text("Shift Timings: ", style: new TextStyle(
+                                  fontSize: 15.0,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.bold)),
+                              new Text(
+                                  userlist.isEmpty ? "-"
+                                      : userlist[0].ShiftTimeIn+" - "+userlist[0].ShiftTimeOut,
+                                  style: new TextStyle(fontSize: 15.0,
+                                      fontWeight: FontWeight.w400)),
+                            ],
+                          ),
+                          SizedBox(height: MediaQuery
+                              .of(context)
+                              .size
+                              .height * .01),
+                          Row(
+                            children: <Widget>[
+                              Icon(Icons.access_time, size: 20.0,
+                                color: Colors.black54,), SizedBox(width: 5.0),
+                              new Text("Logged Hours: ", style: new TextStyle(
+                                  fontSize: 15.0,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.bold)),
+                              new Text(
+                                  userlist.isEmpty ? "-" : userlist[0].thours,
+                                  style: new TextStyle(fontSize: 15.0,
+                                      fontWeight: FontWeight.w400)),
+                            ],
+                          ),
+                          *//*SizedBox(height: MediaQuery
+                              .of(context)
+                              .size
+                              .height * .01),*//*
+                          *//*Row(
+                            children: <Widget>[
+                              Icon(Icons.timer, size: 20.0,
+                                color: Colors.black54,), SizedBox(width: 5.0),
+                              new Text("Shift TimeIn: ", style: new TextStyle(
+                                  fontSize: 15.0,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.bold)),
+                              new Text(userlist.isEmpty ? "-"
+                                  : userlist[0].ShiftTimeIn,
+                                  style: new TextStyle(fontSize: 15.0,
+                                      fontWeight: FontWeight.w400)),
+                            ],
+                          ),
+                          SizedBox(height: MediaQuery
+                              .of(context)
+                              .size
+                              .height * .01),
+                          Row(
+                            children: <Widget>[
+                              Icon(Icons.timer, size: 20.0,
+                                color: Colors.black54,), SizedBox(width: 5.0),
+                              new Text("Shift TimeOut: ", style: new TextStyle(
+                                  fontSize: 15.0,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.bold)),
+                              new Text(userlist.isEmpty ? "-"
+                                  : userlist[0].ShiftTimeOut,
+                                  style: new TextStyle(fontSize: 15.0,
+                                      fontWeight: FontWeight.w400)),
+                            ],
+                          ),*//*
+                          SizedBox(height: MediaQuery
+                              .of(context)
+                              .size
+                              .height * .01),
+                          (date.toString().substring(0,10).compareTo(now.toString().substring(0,10))) != 0?Row(
+                            children: <Widget>[
+                              Icon(Icons.timer, size: 20.0,
+                                color: Colors.black54,), SizedBox(width: 5.0),
+
+                              userlist.isEmpty ?new Text("Undertime: ", style: new TextStyle(
+                                  fontSize: 15.0,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.bold))
+
+                                  :userlist[0].overtime.contains("-")?new Text("Undertime: ", style: new TextStyle(
+                                  fontSize: 15.0,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.bold))
+
+                                  :Text("Overtime: ", style: new TextStyle(
+                                  fontSize: 15.0,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.bold)),
+
+
+                              userlist.isEmpty ?new Text("-"):userlist[0].overtime.contains("-")?Text(userlist[0].overtime,style: new TextStyle(fontSize: 15.0,
+                                  fontWeight: FontWeight.bold,color: Colors.red)):Text(userlist[0].overtime,style: new TextStyle(fontSize: 15.0,
+                                  fontWeight: FontWeight.bold,color: Colors.green)),
+                            ],
+                          ):Container(),
+
+                          SizedBox(height: MediaQuery
+                              .of(context)
+                              .size
+                              .height * .01),
+                        ],
+
+                      ),
+                    )
+                  ],),
+
+              ),
+            ],
+          ),*/
+
+        buttons: [
+          DialogButton(
+            width: MediaQuery
+                .of(context)
+                .size
+                .width * 0.22,
+            color: Colors.orangeAccent,
+            onPressed: () {
+              Navigator.of(context, rootNavigator: true).pop();
+            },
+            child: Text(
+              "OK",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          )
+        ]).show();
+    ///});
+  }
+
+  _onAlertForWeekOff(date) {
+
+
+    var alertStyle = AlertStyle(
+      animationType: AnimationType.fromBottom,
+      isCloseButton: false,
+      isOverlayTapDismiss: true,
+      descStyle: TextStyle(fontWeight: FontWeight.bold),
+      animationDuration: Duration(milliseconds: 400),
+
+    );
+    Alert(
+        style: alertStyle,
+        context: context,
+        title: "Week off",
+        image: Image.asset('assets/weekoff1.png',
+          width: 50, height: 50,/* color: Colors.red,*/),
+
+        /* content: Wrap(
+
+            children: <Widget>[
+              Container(
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height * 0.45,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width * 0.70,
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment
+                          .end,
+                      children: <Widget>[
+                      ],
+                    ),
+
+                    SizedBox(height: 10.0),
+                    *//* new Text(
+                    snapshot.data[index].Name.toString(),
+                    style: TextStyle(
+                        color: Colors.black87,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.w600
+                    ),
+                  ),*//*
+                    //SizedBox(height: 20,),
+                    Table(
+                      defaultVerticalAlignment: TableCellVerticalAlignment
+                          .top,
+                      columnWidths: {
+
+                        0: FlexColumnWidth(5),
+                        // 0: FlexColumnWidth(4.501), // - is ok
+                        // 0: FlexColumnWidth(4.499), //- ok as well
+                        1: FlexColumnWidth(5),
+                        //2: FlexColumnWidth(5),
+                      },
+                      children: [
+                        TableRow(
+                            children: [
+                              TableCell(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: <Widget>[
+                                    new Text(
+                                      "Time In",
+                                      style: TextStyle(
+                                          color: Colors
+                                              .black87,
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight
+                                              .bold
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              TableCell(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: <Widget>[
+                                    new Text(
+                                      "Time Out",
+                                      style: TextStyle(
+                                          color: Colors
+                                              .black87,
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight
+                                              .bold
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ]
+                        ) ,
+                        TableRow(
+                            children: [
+                              TableCell(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: <Widget>[
+                                    new Text(
+                                      userlist.isEmpty?"-": userlist[0].TimeIn,
+                                      style: TextStyle(
+                                          color: Colors
+                                              .black87,
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight
+                                              .w400
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              TableCell(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: <Widget>[
+                                    new Text(
+                                      userlist.isEmpty?"-": userlist[0].TimeOut,
+                                      style: TextStyle(
+                                          color: Colors
+                                              .black87,
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight
+                                              .w400
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ]
+                        ),
+                        TableRow(
+                            children: [
+                              TableCell(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: <Widget>[
+                                    InkWell(
+                                      child: Container(
+                                          width: 70.0,
+                                          height: 70.0,
+//                               child: FadeInImage.assetNetwork(
+//                                  placeholder: 'assets/user_profile.png',
+//                                  ),
+                                          decoration: new BoxDecoration(
+                                              border: Border.all(
+                                                  width: 2, color: Colors.teal//                   <--- border width here
+                                              ),
+                                              shape: BoxShape.circle,
+                                              image: new DecorationImage(
+                                                  fit: BoxFit.fill,
+                                                  image:
+//                                          AssetImage('assets/user_profile.png'),
+//                                            _checkLoaded
+//                                                ? AssetImage('assets/imgloader.gif')
+//                                                :
+                                                  userlist.isNotEmpty?NetworkImage(
+                                                      userlist[0].EntryImage):AssetImage('assets/avatar.png')
+
+                                                //_checkLoaded ? AssetImage('assets/avatar.png') : profileimage,
+                                              )
+                                          )
+                                      ),
+                                      onTap: () {
+
+                                        if( userlist.isNotEmpty) {
+                                          Navigator.of(
+                                              context, rootNavigator: true)
+                                              .pop();
+
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ImageView(
+                                                        myimage: userlist[0]
+                                                            .EntryImage,
+                                                        org_name: _orgName)),
+                                          );
+                                        }
+
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              TableCell(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: <Widget>[
+                                    InkWell(
+                                      child: Container(
+                                          width: 70.0,
+                                          height: 70.0,
+//                               child: FadeInImage.assetNetwork(
+//                                  placeholder: 'assets/user_profile.png',
+//                                  ),
+                                          decoration: new BoxDecoration(
+                                              border: Border.all(
+                                                  width: 2, color: Colors.teal//                   <--- border width here
+                                              ),
+                                              shape: BoxShape.circle,
+                                              image: new DecorationImage(
+                                                  fit: BoxFit.fill,
+                                                  image:
+//                                          AssetImage('assets/user_profile.png'),
+//                                            _checkLoaded
+//                                                ? AssetImage('assets/imgloader.gif')
+//                                                :
+                                                  userlist.isNotEmpty?NetworkImage(
+                                                      userlist[0].ExitImage):AssetImage('assets/avatar.png')
+
+                                                //_checkLoaded ? AssetImage('assets/avatar.png') : profileimage,
+                                              )
+                                          )
+                                      ),
+                                      onTap: () {
+                                        if( userlist.isNotEmpty) {
+                                          Navigator.of(
+                                              context, rootNavigator: true)
+                                              .pop();
+
+
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ImageView(
+                                                        myimage: userlist[0]
+                                                            .ExitImage,
+                                                        org_name: _orgName)),
+                                          );
+                                        }
+
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ]
+                        ),
+                        //TableRow(),
+
+                        TableRow(
+                            children: [
+                              TableCell(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: <Widget>[
+                                    Expanded(
+                                      flex: 40,
+                                      child:  new Container(
+                                        //color: Colors.red,
+                                        padding: new EdgeInsets.only(left: 10.0, right: 10.0,top: 10,bottom: 10),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            InkWell(
+                                              child:Center(
+                                                child: Text(
+                                                  userlist.isEmpty?"-": userlist[0].checkInLoc,style: TextStyle(color: Colors.black54,fontSize: 12.0),textAlign: TextAlign.center,),
+                                              ),
+                                              onTap: () {
+                                                goToMap(userlist.isEmpty?"-": userlist[0].latit_in,userlist.isEmpty?"-": userlist[0].longi_in);
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              TableCell(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: <Widget>[
+                                    Expanded(
+                                      flex: 40,
+                                      child:  new Container(
+                                        padding: new EdgeInsets.only(left: 10.0, right: 10.0,top: 10,bottom: 10),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: <Widget>[
+
+                                            InkWell(
+                                              child:Center(
+                                                child: Text(
+                                                  userlist.isEmpty?"-": userlist[0].CheckOutLoc,style: TextStyle(color: Colors.black54,fontSize: 12.0),textAlign: TextAlign.center,),
+                                              ),
+                                              onTap: () {
+                                                goToMap(userlist.isEmpty?"-": userlist[0].latit_out,userlist.isEmpty?"-": userlist[0].longi_out);
+                                              },
+                                            ),
+                                            *//*Container(
+                                              padding: EdgeInsets.all(2.0),
+                                              color: snapshot.data[index].incolor.toString()=='0'?Colors.red:Colors.green,
+
+                                              child: Text(snapshot.data[index].instatus,
+                                                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 12.0,color: Colors.white),
+                                              ),
+                                            ),*//*
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ]
+                        ),
+                        *//*TableRow(
+                            children: [
+                              TableCell(
+                                child: Row(
+                                  // crossAxisAlignment: CrossAxisAlignment.end,
+                                  // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: <Widget>[
+                                    Expanded(
+                                      flex: 37,
+                                      child:  new Container(
+                                        //width: MediaQuery.of(context).size.width * 0.37,
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            *//**//* new Text(
+                                    snapshot.data[index].client.toString(),style: TextStyle(fontWeight: FontWeight.bold),textAlign: TextAlign.left,
+                                  ),*//**//*
+                                            InkWell(
+                                              child:Text(
+                                                userlist.isEmpty?"-": userlist[0].checkInLoc,style: TextStyle(color: Colors.black54,fontSize: 12.0),),
+                                              onTap: () {
+                                               // goToMap(snapshot.data[index].latin,snapshot.data[index].lonin.toString());
+                                              },
+                                            ),
+                                           *//**//* Container(
+                                              padding: EdgeInsets.all(2.0),
+                                              color: snapshot.data[index].incolor.toString()=='0'?Colors.red:Colors.green,
+
+                                              child: Text(snapshot.data[index].instatus,
+                                                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 12.0,color: Colors.white),
+                                              ),
+                                            ),*//**//*
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              TableCell(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: <Widget>[
+                                    new Text(
+                                      '',
+                                      style: TextStyle(
+                                          color: Colors
+                                              .black87,
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight
+                                              .bold
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ]
+                        ),*//*
+                      ],
+                    ),
+                    *//* Expanded(
+                      flex: 37,
+                      child:  new Container(
+                        //width: MediaQuery.of(context).size.width * 0.37,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            *//**//* new Text(
+                                    snapshot.data[index].client.toString(),style: TextStyle(fontWeight: FontWeight.bold),textAlign: TextAlign.left,
+                                  ),*//**//*
+                            InkWell(
+                              child:Text(
+                                userlist.isEmpty?"-": userlist[0].checkInLoc,style: TextStyle(color: Colors.black54,fontSize: 12.0),),
+                              *//**//*onTap: () {
+                                goToMap(snapshot.data[index].latin,snapshot.data[index].lonin.toString());
+                              },*//**//*
+                            ),
+                           *//**//* Container(
+                              padding: EdgeInsets.all(2.0),
+                              color: snapshot.data[index].incolor.toString()=='0'?Colors.red:Colors.green,
+
+                              child: Text(snapshot.data[index].instatus,
+                                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 12.0,color: Colors.white),
+                              ),
+                            )*//**//*
+                          ],
+                        ),
+                      ),
+                    ),*//*
+                    //SizedBox(height: 10.0),
+                    Divider(color: Colors.black54,height: 1.5,),
+                    SizedBox(height: 19,),
+                    Container(
+                      padding: new EdgeInsets.only(left: 15.0, right: 10.0),
+                      decoration: new ShapeDecoration(
+                          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(20.0)),
+                          color: Colors.white.withOpacity(0.1)
+                      ) ,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+
+                          Row(
+                            children: <Widget>[
+                              Icon(Icons.timelapse, size: 20.0,
+                                color: Colors.black54,), SizedBox(width: 5.0),
+                              new Text("Shift Timings: ", style: new TextStyle(
+                                  fontSize: 15.0,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.bold)),
+                              new Text(
+                                  userlist.isEmpty ? "-"
+                                      : userlist[0].ShiftTimeIn+" - "+userlist[0].ShiftTimeOut,
+                                  style: new TextStyle(fontSize: 15.0,
+                                      fontWeight: FontWeight.w400)),
+                            ],
+                          ),
+                          SizedBox(height: MediaQuery
+                              .of(context)
+                              .size
+                              .height * .01),
+                          Row(
+                            children: <Widget>[
+                              Icon(Icons.access_time, size: 20.0,
+                                color: Colors.black54,), SizedBox(width: 5.0),
+                              new Text("Logged Hours: ", style: new TextStyle(
+                                  fontSize: 15.0,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.bold)),
+                              new Text(
+                                  userlist.isEmpty ? "-" : userlist[0].thours,
+                                  style: new TextStyle(fontSize: 15.0,
+                                      fontWeight: FontWeight.w400)),
+                            ],
+                          ),
+                          *//*SizedBox(height: MediaQuery
+                              .of(context)
+                              .size
+                              .height * .01),*//*
+                          *//*Row(
+                            children: <Widget>[
+                              Icon(Icons.timer, size: 20.0,
+                                color: Colors.black54,), SizedBox(width: 5.0),
+                              new Text("Shift TimeIn: ", style: new TextStyle(
+                                  fontSize: 15.0,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.bold)),
+                              new Text(userlist.isEmpty ? "-"
+                                  : userlist[0].ShiftTimeIn,
+                                  style: new TextStyle(fontSize: 15.0,
+                                      fontWeight: FontWeight.w400)),
+                            ],
+                          ),
+                          SizedBox(height: MediaQuery
+                              .of(context)
+                              .size
+                              .height * .01),
+                          Row(
+                            children: <Widget>[
+                              Icon(Icons.timer, size: 20.0,
+                                color: Colors.black54,), SizedBox(width: 5.0),
+                              new Text("Shift TimeOut: ", style: new TextStyle(
+                                  fontSize: 15.0,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.bold)),
+                              new Text(userlist.isEmpty ? "-"
+                                  : userlist[0].ShiftTimeOut,
+                                  style: new TextStyle(fontSize: 15.0,
+                                      fontWeight: FontWeight.w400)),
+                            ],
+                          ),*//*
+                          SizedBox(height: MediaQuery
+                              .of(context)
+                              .size
+                              .height * .01),
+                          (date.toString().substring(0,10).compareTo(now.toString().substring(0,10))) != 0?Row(
+                            children: <Widget>[
+                              Icon(Icons.timer, size: 20.0,
+                                color: Colors.black54,), SizedBox(width: 5.0),
+
+                              userlist.isEmpty ?new Text("Undertime: ", style: new TextStyle(
+                                  fontSize: 15.0,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.bold))
+
+                                  :userlist[0].overtime.contains("-")?new Text("Undertime: ", style: new TextStyle(
+                                  fontSize: 15.0,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.bold))
+
+                                  :Text("Overtime: ", style: new TextStyle(
+                                  fontSize: 15.0,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.bold)),
+
+
+                              userlist.isEmpty ?new Text("-"):userlist[0].overtime.contains("-")?Text(userlist[0].overtime,style: new TextStyle(fontSize: 15.0,
+                                  fontWeight: FontWeight.bold,color: Colors.red)):Text(userlist[0].overtime,style: new TextStyle(fontSize: 15.0,
+                                  fontWeight: FontWeight.bold,color: Colors.green)),
+                            ],
+                          ):Container(),
+
+                          SizedBox(height: MediaQuery
+                              .of(context)
+                              .size
+                              .height * .01),
+                        ],
+
+                      ),
+                    )
+                  ],),
+
+              ),
+            ],
+          ),*/
+
+        buttons: [
+          DialogButton(
+            width: MediaQuery
+                .of(context)
+                .size
+                .width * 0.22,
+            color: Colors.orangeAccent,
+            onPressed: () {
+              Navigator.of(context, rootNavigator: true).pop();
+            },
+            child: Text(
+              "OK",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          )
+        ]).show();
+    ///});
   }
 
 

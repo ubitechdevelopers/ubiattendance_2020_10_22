@@ -96,7 +96,7 @@ class _EmployeeList extends State<shiftPlannerList> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
 
-              new Text('Monthly Shift planner', style: new TextStyle(fontSize: 20.0)),
+              new Text('Employee List', style: new TextStyle(fontSize: 20.0)),
 
               /*  Image.asset(
                       'assets/logo.png', height: 40.0, width: 40.0),*/

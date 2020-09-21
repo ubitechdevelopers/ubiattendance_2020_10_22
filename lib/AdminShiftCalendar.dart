@@ -44,11 +44,13 @@ class _MyHomePageState extends State<MyHomePage1> {
   String Id;
   String Name;
   String ShiftId;
+
   _MyHomePageState(String id, String name, String shiftId){
     Id =id;
     Name = name;
     ShiftId = shiftId;
   }
+
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   DateTime _currentDate = DateTime(2020, 7, 3);
   DateTime _currentDate2 = DateTime(2020, 7, 3);
@@ -101,9 +103,36 @@ class _MyHomePageState extends State<MyHomePage1> {
   bool shiftPressed = false;
   int shiftColor=0;
   String goneShift;
+  String hoursPerDayForFlexi;
   var statusOfShift;
+  final _formKey = GlobalKey<FormState>();
+
   final List<Color> circleColors =
   [ Colors.orangeAccent[100],
+    Colors.blue[200], Colors.red[100],
+    Colors.lime[100], Colors.deepPurple[100],
+    Colors.teal[200],Colors.yellow[200],
+    Colors.lightBlueAccent[100],Colors.lightBlue[400],
+    Colors.cyan[100],Colors.yellow[100],Colors.greenAccent[200],
+    Colors.blue[100], Colors.blue[200], Colors.lightBlueAccent[100],Colors.orangeAccent[100],
+    Colors.blue[200], Colors.red[100],
+    Colors.lime[100], Colors.deepPurple[100],
+    Colors.teal[200],Colors.yellow[200],
+    Colors.lightBlueAccent[100],Colors.lightBlue[400],
+    Colors.cyan[100],Colors.yellow[100],Colors.greenAccent[200],
+    Colors.blue[100], Colors.blue[200], Colors.lightBlueAccent[100],Colors.orangeAccent[100],
+    Colors.blue[200], Colors.red[100],
+    Colors.lime[100], Colors.deepPurple[100],
+    Colors.teal[200],Colors.yellow[200],
+    Colors.lightBlueAccent[100],Colors.lightBlue[400],
+    Colors.cyan[100],Colors.yellow[100],Colors.greenAccent[200],
+    Colors.blue[100], Colors.blue[200], Colors.lightBlueAccent[100],Colors.orangeAccent[100],
+    Colors.blue[200], Colors.red[100],
+    Colors.lime[100], Colors.deepPurple[100],
+    Colors.teal[200],Colors.yellow[200],
+    Colors.lightBlueAccent[100],Colors.lightBlue[400],
+    Colors.cyan[100],Colors.yellow[100],Colors.greenAccent[200],
+    Colors.blue[100], Colors.blue[200], Colors.lightBlueAccent[100],Colors.orangeAccent[100],
     Colors.blue[200], Colors.red[100],
     Colors.lime[100], Colors.deepPurple[100],
     Colors.teal[200],Colors.yellow[200],
@@ -113,16 +142,21 @@ class _MyHomePageState extends State<MyHomePage1> {
 
 
   final List<Color> specialshiftColor =
-  [Colors.blue[200], Colors.red[100], Colors.orange[200],
-    Colors.orange[400], Colors.purple[100], Colors.yellow[200]];
+  [
+    Colors.blue[200], Colors.red[100], Colors.orange[200],
+    Colors.orange[400], Colors.purple[200], Colors.yellow[200],Colors.greenAccent[200],Colors.lightBlue[400], Colors.teal[200],
+    Colors.green[400],Colors.red[300],Colors.cyan[200],Colors.purple[200]
+  ];
 
   int _selectedIndex;
   List distinctIds=[];
   var ids = [];
   int indexOfColor;
+  int indexOfColorforShiftTile;
   int _currentIndex = 1;
   int response;
   String _orgName='';
+  String defaultShiftTimings='';
   String admin_sts='0';
   ScaffoldState scaffold;
   var daysgone1;
@@ -154,6 +188,8 @@ class _MyHomePageState extends State<MyHomePage1> {
 
   @override
   void initState() {
+
+  //  _onAlertShiftPlannerPopup(context);
     getOrgName();
     now = new DateTime.now();
     firstDayOfMonth = new DateTime(now.year , now.month -4 , 1);
@@ -184,6 +220,7 @@ class _MyHomePageState extends State<MyHomePage1> {
 
   void showInSnackBar(String value) {
     final snackBar = SnackBar(
+        duration: Duration(seconds: 5, milliseconds: 500),
         content: Text(value, textAlign: TextAlign.center,));
     _scaffoldKey.currentState.showSnackBar(snackBar);
   }
@@ -209,7 +246,7 @@ class _MyHomePageState extends State<MyHomePage1> {
     setState(() {
       _orgName= prefs.getString('org_name') ?? '';
       admin_sts= prefs.getString('sstatus') ?? '0';
-
+      defaultShiftTimings = globals.defaultShiftTimings;
     });
   }
 
@@ -219,7 +256,13 @@ class _MyHomePageState extends State<MyHomePage1> {
   // Platform messages are asynchronous, so we initialize in an async method.
   initPlatformState() async {
 
-    shiftplanner(Id,ShiftId).then((EmpList) {
+    Future.delayed(const Duration(milliseconds: 1000), () {
+    _onAlertShiftPlannerPopup(context);
+    });
+
+
+
+    shiftplanner(Id,defaultShiftTimings).then((EmpList) {
       setState(() {
         print("emplis;lk;k;lt");
         items = EmpList;
@@ -250,11 +293,17 @@ class _MyHomePageState extends State<MyHomePage1> {
         for (int i = 0; i < specialshift.length; i++) {
 
           setState(() {
+
             ids.add(specialshift[i].shiftid.toString());
             final seen = Set<String>();
             final unique = ids.where((str) => seen.add(str)).toList();
-            distinctIds = unique;
-            indexOfColor = distinctIds.indexOf(specialshift[i].shiftid.toString()) % 5;
+            distinctIds = unique;                   //list of unique shift ids
+            indexOfColor = distinctIds.indexOf(specialshift[i].shiftid.toString()) % 12;
+            print(indexOfColor);
+            print(specialshift[i].shiftid.toString());
+            print(distinctIds);
+            print("indexOfColorhmfjhfjfj");
+
           });
 
           if(specialshift[i].shifttype =='3'){
@@ -301,10 +350,15 @@ class _MyHomePageState extends State<MyHomePage1> {
 
         for (int i = 0; i < daysgone2-1; i++) {
           bool checkStatus = false;
+          bool flexiShift = false;
 
           for (var j = 0; j < specialshift.length; j++) {
             if(specialshift[j].shiftdate == firstDayOfMonth123) {
-              checkStatus = true;
+              checkStatus = true;                                   //shift was assigned on this date
+              if(specialshift[j].shifttype =='3'){
+                flexiShift = true;
+                hoursPerDayForFlexi =specialshift[j].HoursPerDay;
+              }
               print(specialshift[j].shiftdate);
               goneShift = specialshift[j].shiftTiming;
               print(goneShift);
@@ -313,18 +367,36 @@ class _MyHomePageState extends State<MyHomePage1> {
           }
 
           if(checkStatus){
-            print("checkstatus");
-            daysGoneList.addAll({firstDayOfMonth123: ["Days Gone"]});
-            _markedDateMap.removeAll(firstDayOfMonth123);
-            _markedDateMap.add(
-              firstDayOfMonth123,
-              new Event(
-                date: firstDayOfMonth123,
-                title: 'Event 5',
-                icon: _daysGoneicon3(firstDayOfMonth123.day.toString(),
-                    goneShift),
-              ),
-            );
+
+            if(flexiShift){
+
+              print("khkhhikhkhiioh");
+              daysGoneList.addAll({firstDayOfMonth123: ["Days Gone"]});
+              _markedDateMap.removeAll(firstDayOfMonth123);
+              _markedDateMap.add(
+                firstDayOfMonth123,
+                new Event(
+                  date: firstDayOfMonth123,
+                  title: 'Event 5',
+                  icon: _DaysgoneFlexiIcon(firstDayOfMonth123.day.toString(),
+                      "Flexi"+hoursPerDayForFlexi+"Hrs",
+                      ),
+                ),
+              );
+            }
+            else {
+              daysGoneList.addAll({firstDayOfMonth123: ["Days Gone"]});
+              _markedDateMap.removeAll(firstDayOfMonth123);
+              _markedDateMap.add(
+                firstDayOfMonth123,
+                new Event(
+                  date: firstDayOfMonth123,
+                  title: 'Event 5',
+                  icon: _daysGoneicon3(firstDayOfMonth123.day.toString(),
+                      goneShift),
+                ),
+              );
+            }
             firstDayOfMonth123 = firstDayOfMonth123.add(Duration(days: 1));
 
           }
@@ -332,8 +404,6 @@ class _MyHomePageState extends State<MyHomePage1> {
 
           else if (weekoff.containsKey(firstDayOfMonth123)) {
             daysGoneList.addAll({firstDayOfMonth123: ["Days Gone"]});
-
-            //firstDayOfMonth123 = firstDayOfMonth123.add(Duration(days: 1));
             _markedDateMap.removeAll(firstDayOfMonth123);
             _markedDateMap.add(
               firstDayOfMonth123,
@@ -396,15 +466,64 @@ class _MyHomePageState extends State<MyHomePage1> {
       }
     });
 
-    Future.delayed(const Duration(milliseconds: 3000), () {
+    /*Future.delayed(const Duration(milliseconds: 3000), () {
       showInSnackBar("Tap on the shift from top and \nthen tap on dates to assign. ");
 
 
-    });
+    });*/
 
     final prefs = await SharedPreferences.getInstance();
     response = prefs.getInt('response') ?? 0;
   }
+
+  _onAlertShiftPlannerPopup(context) async {
+    final prefs = await SharedPreferences.getInstance();
+   bool shiftPlannerPop=prefs.getBool("shiftPlannerPop")??false;   //popup
+
+    if (!shiftPlannerPop) {
+      var alertStyle = AlertStyle(
+        animationType: AnimationType.fromTop,
+        isCloseButton: false,
+        isOverlayTapDismiss: false,
+        descStyle: TextStyle(fontWeight: FontWeight.bold),
+        animationDuration: Duration(milliseconds: 400),
+
+      );
+      Alert(
+          style: alertStyle,
+          context: context,
+          title: "Tap on the shift from top and \nthen tap on dates to assign.",
+          buttons: [
+            DialogButton(
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width * 0.27,
+              color: Colors.orangeAccent,
+              onPressed: () {
+                //final prefs = await SharedPreferences.getInstance();
+                // prefs.setBool("shiftPlannerPop",true);
+                Navigator.of(context, rootNavigator: true).pop();
+              },
+              child: Text(
+                "OK",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+            )
+          ]).show();
+
+      /*Future.delayed(const Duration(milliseconds: 8000), () {
+      showInSnackBar("Tap on the shift from top and \nthen tap on dates to assign. ");
+    });*/
+      prefs.setBool("shiftPlannerPop", true);
+   }
+    else{
+      Future.delayed(const Duration(milliseconds: 2000), () {
+      showInSnackBar("Tap on the shift from top and \nthen tap on dates to assign. ");
+    });
+    }
+  }
+
 
   Color randomGenerator(int i) {
     return circleColors[i];
@@ -917,7 +1036,60 @@ class _MyHomePageState extends State<MyHomePage1> {
                       ),
                     )
                   ]
-              ), new Row(
+              ),
+              new Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      string1.substring(5, 10)+" "+string1.substring(13, 16),
+                      style: TextStyle(
+                          color: Colors.black, fontSize: 9
+                      ),
+                    ),
+                  ]
+              ),
+
+            ],
+          ),
+        ),
+      );
+
+  Widget _DaysgoneFlexiIcon(String day, String string1) =>
+      Container(
+        decoration: BoxDecoration(
+          color: Colors.grey[400],
+          borderRadius: BorderRadius.all(
+            Radius.circular(5),
+          ),
+        ),
+        child: Container(
+          child: new Column(
+            children: <Widget>[
+              new Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      day,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Colors.black, fontSize: 12,fontWeight: FontWeight.bold
+                      ),
+                    ),
+                  ]
+              ),
+              SizedBox(height: 1,),
+              new Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      string1.substring(0, 5),
+                      style: TextStyle(
+                          color: Colors.black, fontSize: 9
+                      ),
+                    )
+                  ]
+              ),
+              new Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
@@ -1156,11 +1328,20 @@ class _MyHomePageState extends State<MyHomePage1> {
             SizedBox(height: 8.0,),
             ///SizedBox(height: 8.0),
             Center(
-              child: Text( Name,
+              child: Name.length >15?Text( "Shift Planner - "+Name.toString().substring(0,15)+"...",
+                style: new TextStyle(fontSize: 25.0, color: appcolor,),)
+
+                  :Text("Shift Planner - "+Name,
                 style: new TextStyle(fontSize: 25.0, color: appcolor,),),
             ),
             Divider(height: 10.0,color: Colors.black),
-            SizedBox(height: 8.0,),
+            SizedBox(height: 3.0,),
+            Center(
+              child: Text("Shifts",textAlign: TextAlign.start,
+                style: new TextStyle(fontSize: 20.0, color: appcolor,),)
+            ),
+            SizedBox(height: 5.0,),
+
             Container(
               height: 75,
               child: Row(
@@ -1637,7 +1818,7 @@ class _MyHomePageState extends State<MyHomePage1> {
                 height: MediaQuery
                     .of(context)
                     .size
-                    .height * 0.41,
+                    .height * 0.45,
                 width: MediaQuery
                     .of(context)
                     .size
@@ -2384,6 +2565,21 @@ class _MyHomePageState extends State<MyHomePage1> {
                 scrollDirection: Axis.horizontal,
                 itemCount: snapshot.data.length,
                 itemBuilder: (BuildContext context, int index) {
+                /*  bool cond = false;
+                  print(distinctIds);
+                  print("distinctIds123456");
+                  if(distinctIds.contains(snapshot.data[index].Id.toString())) {
+                    *//*print(distinctIds);
+                    print("distinctIds123456");*//*
+                    cond = true;
+                    indexOfColorforShiftTile = distinctIds.indexOf(snapshot.data[index].Id.toString()) % 12;
+                    print(snapshot.data[index].Name.toString());
+                    print(snapshot.data[index].Id.toString());
+                    print(indexOfColorforShiftTile);
+                    print("indexOfColorforShiftTile");
+                    //print(snapshot.data[index].Id.toString());
+                   // print(snapshot.data[index].Id.toString());
+                  }*/
 
                   return  new Column(
                       children: <Widget>[
@@ -2402,12 +2598,13 @@ class _MyHomePageState extends State<MyHomePage1> {
                                       width: 1, //                   <--- border width here
                                     ),
 
-                                    color:  _selectedIndex != null && _selectedIndex == index? circleColors[shiftColor]
+                                    //specialshiftColor[i]
+
+                                    color: _selectedIndex != null && _selectedIndex == index? circleColors[shiftColor]
                                         : Colors.grey[200],
                                     borderRadius:BorderRadius.all(
                                       Radius.circular(5),
                                     )
-
                                 ),
                                 width: MediaQuery.of(context).size.width*0.30,
                                 child: ListTile(
@@ -2475,7 +2672,8 @@ class _MyHomePageState extends State<MyHomePage1> {
                                 shiftColor=0;
 
                             });
-                          }*/),
+                          }*/
+                          ),
                         Divider(color: Colors.blueGrey.withOpacity(0.25),height: 0.2,),
                       ]
                   );

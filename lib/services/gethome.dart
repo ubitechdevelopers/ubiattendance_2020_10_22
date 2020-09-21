@@ -114,6 +114,7 @@ class Home{
         globals.departmentname = timeinoutMap['departmentname'].toString();
         globals.timeoutdate = timeinoutMap['timeoutdate'].toString();
         globals.departmentid = int.parse(timeinoutMap['departmentid']);
+        globals.defaultShiftTimings = timeinoutMap['defaultShiftTimings'];
         globals.shiftId = timeinoutMap['shiftId'];
         globals.shiftType = timeinoutMap['ShiftType'];
         globals.designationid = int.parse(timeinoutMap['designationid']);

@@ -1320,7 +1320,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     String deviceidmobile=prefs.getString("deviceid")??"";
     bool deviceVerifyPopupShown=prefs.getBool("deviceVerifyPopupShown")??false;
     print('thisisdeviceidmobile'+deviceidmobile);
-    if(deviceidmobile=='' && globals.deviceverification==1){
+    if(deviceidmobile=='' && globals.deviceverification==1) {
       const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
 
       String RandomString(int strlen) {
@@ -1332,13 +1332,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         return result;
       }
 
-
       print("RandomString:"+RandomString(60));
       deviceidmobile= RandomString(60);
       prefs.setString("deviceid",deviceidmobile);
-
-
-
     }
 
     if(deviceid=='' && globals.deviceverification==1){
