@@ -243,8 +243,26 @@ class _MyHomePageState extends State<userShiftCalendar> {
           );
         }
       });*/
+      Widget _holidayIcon(String day) => Container(    /// icon for days gone(present)
+        decoration: new BoxDecoration(
+          color: Colors.white,
+          image: new DecorationImage(
+            fit: BoxFit.cover,
+            colorFilter: new ColorFilter.mode(Colors.white.withOpacity(0.9), BlendMode.dstATop),
+            image: AssetImage("assets/weekofficon.png"),
+          ),
+        ),
+        child: Center(
+          child: Text(
+            day,
+            style: TextStyle(
+              color: Colors.black,fontSize: 16,
+            ),
+          ),
+        ),
+      );
 
-
+/*
       Widget _holidayIcon(String day) => Container(    /// icon for days gone(present)
         decoration: BoxDecoration(
           //color: Colors.teal[100],
@@ -265,7 +283,7 @@ class _MyHomePageState extends State<userShiftCalendar> {
           ),
         ),
       );
-
+*/
 
       getMultiShiftsList(empid).then((val) {
         setState(() {

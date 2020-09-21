@@ -211,7 +211,7 @@ class _CustomDateAttendance extends State<CustomDateAttendance> with SingleTicke
                   text: 'Present',
                 ),
                 new Tab(
-                  text: 'Absent',
+                  text: 'Absent \n/Leave',
                 ),
                 new Tab(
                   text: 'Late \nComers',
@@ -544,18 +544,50 @@ class _CustomDateAttendance extends State<CustomDateAttendance> with SingleTicke
                                                 width: MediaQuery
                                                     .of(context)
                                                     .size
-                                                    .width * 0.46,
+                                                    .width * 0.76,
                                                 child: Column(
                                                   crossAxisAlignment: CrossAxisAlignment
                                                       .start,
                                                   children: <Widget>[
                                                     Padding(
                                                       padding: const EdgeInsets.all(8.0),
-                                                      child: Text(snapshot.data[index].Name
-                                                          .toString(), style: TextStyle(
+                                                      child: snapshot.data[index].LeaveStatus.toString()=='2'? Row(
+                                                        children: <Widget>[
+                                                          Text(snapshot.data[index].Name
+                                                              .toString(), style: TextStyle(
+                                                              color: Colors.black87,
+                                                              fontWeight: FontWeight.bold,
+                                                              fontSize: 16.0),),
+                                                          Text(' is on Leave',style: (TextStyle(
+                                                            color: Colors.grey,
+                                                              fontSize: 14.0
+                                                          )),)
+
+                                                        ],
+                                                      ):Row(
+                                                        children: <Widget>[
+                                                          Text(snapshot.data[index].Name
+                                                              .toString(), style: TextStyle(
+                                                              color: Colors.black87,
+                                                              fontWeight: FontWeight.bold,
+                                                              fontSize: 16.0),),
+                                                          Text(' is Absent',style: (TextStyle(
+                                                              color: Colors.grey,
+                                                              fontSize: 14.0
+                                                          )),)
+
+                                                        ],
+                                                      )/* snapshot.data[index].LeaveStatus.toString()=='2'? Text(snapshot.data[index].Name
+                                                          .toString()+' is on Leave', style: TextStyle(
+                                                          color: Colors.black87,
+                                                          fontWeight: FontWeight.bold,
+                                                          fontSize: 16.0),):Text(snapshot.data[index].Name
+                                                          .toString()+' is Absent', style: TextStyle(
                                                           color: Colors.black87,
                                                           fontWeight: FontWeight.bold,
                                                           fontSize: 16.0),),
+                                                      */
+
                                                     ),
                                                   ],
                                                 ),
