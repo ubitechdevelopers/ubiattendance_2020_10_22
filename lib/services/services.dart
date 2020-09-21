@@ -2297,6 +2297,8 @@ List<Attn> createTodayEmpList(List data) {
     String Total = data[i]["total"].toString();
     String Present = data[i]["present"].toString();
     String Absent = data[i]["absent"].toString();
+    String LeaveStatus = data[i]["LeaveStatus"].toString()??'0';
+    print('LeaveStatus------>>>>'+LeaveStatus);
     String ShiftType = data[i]["shiftType"].toString()??"0";
     String AttendanceMasterId = data[i]["Id"].toString()??"0";
     String DayLoggedHours = !data[i]["TotalLoggedHours"].toString().contains(":")?"00:00":data[i]["TotalLoggedHours"].toString().split(":")[0]+":"+data[i]["TotalLoggedHours"].toString().split(":")[1];
@@ -2317,6 +2319,7 @@ List<Attn> createTodayEmpList(List data) {
         Total: Total,
         Present: Present,
         Absent: Absent,
+        LeaveStatus: LeaveStatus,
         AttendanceMasterId: AttendanceMasterId,
         ShiftType: ShiftType,
         DayLoggedHours: DayLoggedHours
@@ -2343,6 +2346,7 @@ class Attn {
   String Total;
   String Present;
   String Absent;
+  String LeaveStatus;
   String AttendanceMasterId;
   String ShiftType;
   String DayLoggedHours;
@@ -2363,6 +2367,7 @@ class Attn {
     this.Total,
     this.Present,
     this.Absent,
+    this.LeaveStatus,
     this.AttendanceMasterId,
     this.ShiftType,
     this.DayLoggedHours
