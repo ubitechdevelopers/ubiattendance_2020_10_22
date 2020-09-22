@@ -1491,6 +1491,7 @@ List<Attn> createListEmpHistoryOf30(List data){
     String LatitOut = data[i]["latit_out"].toString();
     String LongiIn = data[i]["longi_in"].toString();
     String LongiOut = data[i]["longi_out"].toString();
+    String LeaveStatus = data[i]["LeaveStatus"].toString()??"0";
     Attn tos = new Attn(
         Name: Name,
         TimeIn: TimeIn,
@@ -1502,7 +1503,8 @@ List<Attn> createListEmpHistoryOf30(List data){
         LatitIn: LatitIn,
         LatitOut: LatitOut,
         LongiIn: LongiIn,
-        LongiOut: LongiOut);
+        LongiOut: LongiOut,
+        LeaveStatus: LeaveStatus);
     list.add(tos);
   }
   return list;
