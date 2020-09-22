@@ -75,9 +75,9 @@ class _MyHomePageState extends State<MyHomePage1> {
   Map<DateTime, List> _holiday ;
   AnimationController _animationController;
   //List<Shiftplanner> items = null;
-  List<shiftplanner1> items = null;
-  List<shiftplanner1> items1 = null;
-  List<multishift> specialshift = null ;
+  List<shiftplanner1> items = [];
+  List<shiftplanner1> items1 = [];
+  List<multishift> specialshift = [] ;
   var dateUtility = DateUtil();
   var daysinyear;
   bool leapyear;
@@ -88,11 +88,11 @@ class _MyHomePageState extends State<MyHomePage1> {
   Map<DateTime, List> daysGoneList = {};
   Map<DateTime, List<String>> specialShiftsList = {};
   Map<DateTime, List<String>> removedShiftsList = {};
-  List<DateTime> defaultshifts = null;
-  List<DateTime> specialshiftdate = null;
-  List<DateTime> weekofflist = null;
-  List<DateTime> selectShiftweekofflist = null;
-  List<String> values = null;
+  List<DateTime> defaultshifts = [];
+  List<DateTime> specialshiftdate = [];
+  List<DateTime> weekofflist = [];
+  List<DateTime> selectShiftweekofflist = [];
+  List<String> values = [];
   var onTapListCall = null;
   var _shifts;
   String selectedShiftTiming;
@@ -156,7 +156,7 @@ class _MyHomePageState extends State<MyHomePage1> {
   int _currentIndex = 1;
   int response;
   String _orgName='';
-  String defaultShiftTimings='';
+  var defaultShiftTimings='';
   String admin_sts='0';
   ScaffoldState scaffold;
   var daysgone1;
@@ -246,7 +246,6 @@ class _MyHomePageState extends State<MyHomePage1> {
     setState(() {
       _orgName= prefs.getString('org_name') ?? '';
       admin_sts= prefs.getString('sstatus') ?? '0';
-      defaultShiftTimings = globals.defaultShiftTimings;
     });
   }
 
@@ -260,7 +259,7 @@ class _MyHomePageState extends State<MyHomePage1> {
     _onAlertShiftPlannerPopup(context);
     });
 
-
+    defaultShiftTimings = globals.defaultShiftTimings;                     //21 sept
 
     shiftplanner(Id,defaultShiftTimings).then((EmpList) {
       setState(() {
@@ -303,7 +302,6 @@ class _MyHomePageState extends State<MyHomePage1> {
             print(specialshift[i].shiftid.toString());
             print(distinctIds);
             print("indexOfColorhmfjhfjfj");
-
           });
 
           if(specialshift[i].shifttype =='3'){
@@ -474,6 +472,7 @@ class _MyHomePageState extends State<MyHomePage1> {
 
     final prefs = await SharedPreferences.getInstance();
     response = prefs.getInt('response') ?? 0;
+
   }
 
   _onAlertShiftPlannerPopup(context) async {
@@ -907,7 +906,7 @@ class _MyHomePageState extends State<MyHomePage1> {
 
   Widget _absentIcon(String day) => Container(
     decoration: BoxDecoration(
-      color: Colors.black12,
+      color: Colors.black12,                                             //21 sept
       borderRadius: BorderRadius.all(
         Radius.circular(5),
       ),
@@ -916,7 +915,7 @@ class _MyHomePageState extends State<MyHomePage1> {
       child: Text(
         day,
         style: TextStyle(
-            color: Colors.black,fontSize: 12,fontWeight: FontWeight.bold
+            color: Colors.black54,fontSize: 12,fontWeight: FontWeight.bold
         ),
       ),
     ),
@@ -2565,12 +2564,12 @@ class _MyHomePageState extends State<MyHomePage1> {
                 scrollDirection: Axis.horizontal,
                 itemCount: snapshot.data.length,
                 itemBuilder: (BuildContext context, int index) {
-                /*  bool cond = false;
+                 bool cond = false;
                   print(distinctIds);
                   print("distinctIds123456");
                   if(distinctIds.contains(snapshot.data[index].Id.toString())) {
-                    *//*print(distinctIds);
-                    print("distinctIds123456");*//*
+                   print(distinctIds);
+                    print("distinctIds123456");
                     cond = true;
                     indexOfColorforShiftTile = distinctIds.indexOf(snapshot.data[index].Id.toString()) % 12;
                     print(snapshot.data[index].Name.toString());
@@ -2579,7 +2578,7 @@ class _MyHomePageState extends State<MyHomePage1> {
                     print("indexOfColorforShiftTile");
                     //print(snapshot.data[index].Id.toString());
                    // print(snapshot.data[index].Id.toString());
-                  }*/
+                  }
 
                   return  new Column(
                       children: <Widget>[
@@ -2600,7 +2599,7 @@ class _MyHomePageState extends State<MyHomePage1> {
 
                                     //specialshiftColor[i]
 
-                                    color: _selectedIndex != null && _selectedIndex == index? circleColors[shiftColor]
+                                    color: cond?specialshiftColor[indexOfColorforShiftTile]:_selectedIndex != null && _selectedIndex == index? circleColors[shiftColor]
                                         : Colors.grey[200],
                                     borderRadius:BorderRadius.all(
                                       Radius.circular(5),

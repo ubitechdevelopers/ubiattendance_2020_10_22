@@ -58,10 +58,10 @@ class _MyHomePageState extends State<userShiftCalendar> {
   Map<DateTime, List> _holiday ;
   Map<DateTime, String> holidayNameList = {};
   AnimationController _animationController;
-  List<shiftplanner1> items = null;
-  List<multishift> specialshift = null ;
-  List<AttendanceList> AttendanceLists = null ;
-  List<Holiday> holidayList = null ;
+  List<shiftplanner1> items = [];
+  List<multishift> specialshift = [] ;
+  List<AttendanceList> AttendanceLists = [] ;
+  List<Holiday> holidayList = [] ;
   DateTime Holidaydate;
   List<dynamic> holidayDateList = [];
   var dateUtility = DateUtil();
@@ -72,11 +72,11 @@ class _MyHomePageState extends State<userShiftCalendar> {
   Map<DateTime, List> weekoff = {};
   Map<DateTime, List<String>> specialShiftsList = {};
   Map<DateTime, List<String>> removedShiftsList = {};
-  List<DateTime> defaultshifts = null;
-  List<DateTime> specialshiftdate = null;
-  List<DateTime> weekofflist = null;
+  List<DateTime> defaultshifts = [];
+  List<DateTime> specialshiftdate = [];
+  List<DateTime> weekofflist = [];    //21 sept
   List<dynamic> PresentAttendanceDate=[];
-  List<String> values = null;
+  List<String> values = [];
   var onTapListCall = null;
   var _shifts;
   String selectedShiftTiming;
@@ -883,6 +883,7 @@ class _MyHomePageState extends State<userShiftCalendar> {
     ),
   );
 
+
   Widget _attendanceIcon(String day, String timein, String timeout) => Container(    /// icon for days gone(present)
     decoration: BoxDecoration(
       //color: Colors.teal[100],
@@ -904,11 +905,12 @@ class _MyHomePageState extends State<userShiftCalendar> {
     ),
   );
 
+
   Widget _daysGoneicon(String day, String string1) => Container(         /// icon for days gone(absent)
     decoration: BoxDecoration(
       color: Colors.red[100],
       border: Border.all(
-          width: 1, color: Colors.red//                   <--- border width here
+          width: 1, color: Colors.red       //                     <--- border width here
       ),
       borderRadius: BorderRadius.all(
         Radius.circular(5),
@@ -2682,7 +2684,7 @@ class _MyHomePageState extends State<userShiftCalendar> {
 
 
 
-   
+
 
     var alertStyle = AlertStyle(
         animationType: AnimationType.fromBottom,
