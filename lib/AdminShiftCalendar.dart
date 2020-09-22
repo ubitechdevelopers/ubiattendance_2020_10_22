@@ -162,7 +162,7 @@ class _MyHomePageState extends State<MyHomePage1> {
   var ids = [];
   int indexOfColor;
   int indexOfColorforShiftTile;
-  int indexOfColorforShiftTile1 ;
+  int indexOfColorforShiftTile1;
   int _currentIndex = 1;
   int response;
   String _orgName='';
@@ -783,7 +783,8 @@ class _MyHomePageState extends State<MyHomePage1> {
                   ),
                 ),
               ]
-          ), new Row(
+            ),
+          new Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 !string1.contains("Flexi")?Text(
@@ -798,12 +799,11 @@ class _MyHomePageState extends State<MyHomePage1> {
                   ),
                 ),
               ]
-          ),
-
-        ],
-      ),
-    ),
-  );
+            ),
+         ],
+       ),
+     ),
+   );
 
 
 
