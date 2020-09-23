@@ -25,6 +25,7 @@ import 'package:flutter/services.dart';
 import 'package:splashscreen/splashscreen.dart';
 
 import 'globals.dart';
+import 'newHomePage.dart';
 import 'services/services.dart';
 import 'package:http/http.dart' as http;
 
@@ -32,6 +33,7 @@ void main(){
   runApp(
       new MaterialApp(
         home: new MyApp(),
+        //home: new NewHomePage(),
       ));
 }   
 
