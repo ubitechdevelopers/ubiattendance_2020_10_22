@@ -19,6 +19,7 @@ import 'package:Shrine/services/newservices.dart';
 import 'package:Shrine/services/saveimage.dart';
 import 'package:Shrine/services/services.dart';
 import 'package:Shrine/timeoff_list.dart';
+import 'package:Shrine/userviewShiftPlanner.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:device_info/device_info.dart';
 import 'package:dio/dio.dart';
@@ -2664,7 +2665,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       ));
     }
 
-    if((admin_sts == '1' || admin_sts == '2')&&globals.ShiftPlanner==1) {
+    if(globals.ShiftPlanner==1) {
       widList.add(Container(
         padding: EdgeInsets.only(top: 5.0),
         constraints: BoxConstraints(
@@ -2673,9 +2674,14 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         ),
         child: new GestureDetector(
             onTap: () {
+
+              admin_sts == '1' || admin_sts == '2'?
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => shiftPlannerList()),
+              ): Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => userViewShiftPlanner()),
               );
             },
             child: Column(
@@ -2685,11 +2691,14 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                   size: 29.0,
                   color: iconcolor,
                 ),
-                Text('Shift Planner',
+                admin_sts == '1' || admin_sts == '2'? Text('Shift Planner',
+                    textAlign: TextAlign.center,
+                    style: new TextStyle(fontSize: 12.0, color: iconcolor)):Text('Shifts ',
                     textAlign: TextAlign.center,
                     style: new TextStyle(fontSize: 12.0, color: iconcolor)),
               ],
-            )),
+            ),
+        ),
       ));
     }
 

@@ -73,6 +73,10 @@ class _MyHomePageState extends State<MyHomePage1> {
   Map<DateTime, List> _events;
   Map<DateTime, List> DaysPass;
   Map<DateTime, List> _holiday ;
+  List<Holiday> holidayList = [] ;
+  DateTime Holidaydate;
+  List<dynamic> holidayDateList = [];
+  Map<DateTime, String> holidayNameList = {};
   AnimationController _animationController;
   //List<Shiftplanner> items = null;
   List<shiftplanner1> items = [];
@@ -292,6 +296,70 @@ class _MyHomePageState extends State<MyHomePage1> {
         //print(_holiday.length);
       }));
 
+
+      getHolidays().then((val) {
+        setState(() {
+          holidayList = val;
+        });
+
+        for (int i = 0; i < holidayList.length; i++) {
+          // print("holidaysss");
+          if (int.parse(holidayList[i].Days) > 1) {
+            Holidaydate = holidayList[i].fromDateFormat;
+            holidayNameList.addAll({Holidaydate:holidayList[i].Name});
+            print(holidayNameList);
+            print("_holidayName");
+            holidayDateList.add(Holidaydate);
+            _markedDateMap.removeAll(Holidaydate);
+            _markedDateMap.add(
+              Holidaydate,
+              new Event(
+                date: Holidaydate,
+                title: 'Event 5',
+                icon: _holidayIcon(Holidaydate.day.toString()),
+              ),
+            );
+            int days = 0;
+            while (days != int.parse(holidayList[i].Days) - 1) {
+              print("Event 5");
+              print(Holidaydate);
+              Holidaydate = Holidaydate.add(Duration(days: 1));
+              holidayNameList.addAll({Holidaydate:holidayList[i].Name});
+
+              holidayDateList.add(Holidaydate);
+              _markedDateMap.removeAll(Holidaydate);
+              _markedDateMap.add(
+                Holidaydate,
+                new Event(
+                  date: Holidaydate,
+                  title: 'Event 5',
+                  icon: _holidayIcon(Holidaydate.day.toString()),
+                ),
+              );
+              days++;
+            }
+          }
+          else {
+            Holidaydate = holidayList[i].fromDateFormat;
+            _markedDateMap.removeAll(Holidaydate);
+            _markedDateMap.add(
+              Holidaydate,
+              new Event(
+                date: Holidaydate,
+                title: 'Event 5',
+                icon: _holidayIcon(Holidaydate.day.toString()),
+              ),
+            );
+            holidayDateList.add(Holidaydate);
+            holidayNameList.addAll({Holidaydate:holidayList[i].Name});
+
+          }
+          print(holidayDateList);
+          print("holidayDateList");
+        }
+
+
+
       getMultiShiftsList(Id).then((val) {
         setState(() {
           print(val);
@@ -447,9 +515,12 @@ class _MyHomePageState extends State<MyHomePage1> {
             firstDayOfMonth123 = firstDayOfMonth123.add(Duration(days: 1));
 
           }
+
+
           // print(daysGoneList);
           //  print("Days Gone");
         }
+      });
       });
 
 //      print(daysGoneList);
@@ -489,6 +560,31 @@ class _MyHomePageState extends State<MyHomePage1> {
     response = prefs.getInt('response') ?? 0;
 
   }
+
+  Widget _holidayIcon(String day) => Container(    /// icon for days gone(present)
+    decoration: new BoxDecoration(
+      color: Colors.white,
+      border: Border.all(
+          width: 1, color: Colors.blue[100]       //                     <--- border width here
+      ),
+      borderRadius: BorderRadius.all(
+        Radius.circular(5),
+      ),
+      image: new DecorationImage(
+        fit: BoxFit.cover,
+        colorFilter: new ColorFilter.mode(Colors.white.withOpacity(0.9), BlendMode.dstATop),
+        image: AssetImage("assets/weekofficon.png"),
+      ),
+    ),
+    child: Center(
+      child: Text(
+        day,
+        style: TextStyle(
+          color: Colors.black,fontSize: 16,
+        ),
+      ),
+    ),
+  );
 
   _onAlertShiftPlannerPopup(context) async {
     final prefs = await SharedPreferences.getInstance();
@@ -1617,6 +1713,19 @@ class _MyHomePageState extends State<MyHomePage1> {
               ),
             );
           }
+          else if(holidayDateList.contains(_selectedEvents)){
+            specialShiftsList.remove(_selectedEvents);
+            removedShiftsList.addAll({_selectedEvents:[selectedShiftTiming,selectedShiftName,'0',selectedShiftId,_selectedEvents.toString(),'0']});
+            _markedDateMap.removeAll(day);
+            _markedDateMap.add(
+              _selectedEvents,
+              new Event(
+                date: _selectedEvents,
+                title: 'Event 5',
+                icon: _holidayIcon(_selectedEvents.day.toString()),
+              ),
+            );
+          }
           else {
             specialShiftsList.remove(_selectedEvents);
             removedShiftsList.addAll({_selectedEvents:[selectedShiftTiming,selectedShiftName,'0',selectedShiftId,_selectedEvents.toString(),'0']});
@@ -1683,6 +1792,18 @@ class _MyHomePageState extends State<MyHomePage1> {
               icon: _absentIcon(_selectedEvents.day.toString()),
             ),
           );
+        }
+        else if(holidayDateList.contains(_selectedEvents)){
+          _markedDateMap.removeAll(day);
+          _markedDateMap.add(
+            _selectedEvents,
+            new Event(
+              date: _selectedEvents,
+              title: 'Event 5',
+              icon: _holidayIcon(_selectedEvents.day.toString()),
+            ),
+          );
+
         }
         else{
           _markedDateMap.removeAll(day);
