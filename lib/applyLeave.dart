@@ -652,7 +652,7 @@ class _ApplyLeave extends State<ApplyLeave> with SingleTickerProviderStateMixin 
         */
         showDialog(context: context, child:
         new AlertDialog(
-          content: new Text("You have Already Applied for Leave for this day"),
+          content: new Text("You have already applied for same date"),
         )
         );
       } else if(MarkAttMap["status"].toString()=='false2') {
