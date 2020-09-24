@@ -19,7 +19,7 @@ import 'package:Shrine/services/newservices.dart';
 import 'package:Shrine/services/saveimage.dart';
 import 'package:Shrine/services/services.dart';
 import 'package:Shrine/timeoff_list.dart';
-import 'package:Shrine/userviewShiftPlanner.dart';
+//import 'package:Shrine/userviewShiftPlanner.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:device_info/device_info.dart';
 import 'package:dio/dio.dart';
@@ -53,6 +53,7 @@ import 'database_models/qr_offline.dart';
 import 'drawer.dart';
 import 'every7dayscovidsurvey.dart';
 import 'faceIdScreen.dart';
+import 'globals.dart';
 import 'globals.dart';
 import 'leave_summary.dart';
 import 'location_tracking/home_view.dart';
@@ -2504,7 +2505,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       return Padding(
         padding: const EdgeInsets.only(left:45.0),
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-           Text('Kindly enable location excess from settings',
+           Text('Kindly enable location access from settings',
                 textAlign: TextAlign.center,
                 style: new TextStyle(fontSize: 14.0, color: Colors.red)),
               RaisedButton(
@@ -2681,7 +2682,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 MaterialPageRoute(builder: (context) => shiftPlannerList()),
               ): Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => userViewShiftPlanner()),
+                MaterialPageRoute(builder: (context) => shiftPlannerList()),
               );
             },
             child: Column(
@@ -2760,7 +2761,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       ));
     }
 
-    if (timeOff.toString() == '1') {
+    if (timeOff.toString() == '1'&&shiftType.toString()!='3') {
       widList.add(Container(
         padding: EdgeInsets.only(top: 5.0),
         constraints: BoxConstraints(

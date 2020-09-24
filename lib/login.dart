@@ -185,7 +185,7 @@ class _LoginPageState extends State<LoginPage> {
                                   barrierDismissible: false,
                                   // ignore: deprecated_member_use
                                   child: new AlertDialog(
-                                    content: new Text('Kindly enable location excess from settings',style:TextStyle(fontSize: 16.0,)),
+                                    content: new Text('Kindly enable location access from settings',style:TextStyle(fontSize: 16.0,)),
                                     actions: <Widget>[
                                       RaisedButton(
                                         child: Text('Open Settings'),

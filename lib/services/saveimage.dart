@@ -224,7 +224,7 @@ class SaveImage {
           if (MarkAttMap["status"] == 1 || MarkAttMap["status"] == 2) {
             if(globals.facerecognition!=1){
               globals.PictureBase64Att = PictureBase64;
-              TempImage tempimage = new TempImage(null, int.parse(mk.uid),mk.act, MarkAttMap["insert_updateid"], PictureBase64, int.parse(mk.refid) , 'Attendance');
+              TempImage tempimage = new TempImage(null, int.parse(mk.uid),mk.act, MarkAttMap["insert_updateid"], MarkAttMap["interimAttendanceId"].toString()??'0', PictureBase64, int.parse(mk.refid) , 'Attendance',globals.shiftId);
               tempimage.save();
             }
 
@@ -426,7 +426,7 @@ class SaveImage {
           if (MarkAttMap["status"] == 1 || MarkAttMap["status"] == 2) {
             globals.firstface=1;
             globals.PictureBase64Att = PictureBase64;
-            TempImage tempimage = new TempImage(null, int.parse(mk.uid),mk.act, MarkAttMap["insert_updateid"], PictureBase64, int.parse(mk.refid) , 'Attendance');
+            TempImage tempimage = new TempImage(null, int.parse(mk.uid),mk.act, MarkAttMap["insert_updateid"], MarkAttMap["interimAttendanceId"].toString()??'0',PictureBase64, int.parse(mk.refid) , 'Attendance',globals.shiftId);
             tempimage.save();
             return true;
           }
@@ -536,6 +536,8 @@ class SaveImage {
           "PictureBase64": img[i].PictureBase64,
           "OrganizationId": img[i].OrganizationId,
           "Module": img[i].Module,
+          "ShiftId": img[i].shiftId,
+          "InterimAttendanceId": img[i].interimAttendanceId,
 
         });
       }
@@ -560,7 +562,7 @@ class SaveImage {
                   ));
             }
             print(status);
-            imagedata.delete(int.parse(localDbId));
+            //imagedata.delete(int.parse(localDbId));
           });
         }
       });
@@ -568,6 +570,9 @@ class SaveImage {
   }
 
   Future<Map> saveTimeInOutImagePicker(MarkTime mk,context) async {
+
+    print("he;;;;;");
+
 
  /*  int EmployeeId = 123;
     String Action = "AttendanceTimein";
@@ -696,9 +701,13 @@ class SaveImage {
           print(formData);
          // print(globals.path + "saveImage?uid=${ mk.uid}&location=${location}&aid=${mk.aid}&act=${mk.act}");
           Response<String> response1;
-          if(globals.facerecognition==1){
+
+          print("FFFFacial"+globals.facerecognition.toString());
+          var ss=globals.shiftType;
+          if(globals.facerecognition.toString()=='1'){
+            print(globals.path + "saveImageSandbox?ShiftType={$ss}&uid=${mk.uid}&location=$location&aid=${mk.aid}&act=${mk.act}&shiftid=${mk.shiftid}&refid=${mk.refid}&latit=$lat&longi=$long&file=$imagei&FakeLocationStatus=${mk.FakeLocationStatus}&platform=android&tempimagestatus=1&deviceidmobile=$deviceidmobile&devicenamebrand=${globals.devicenamebrand}&city=$city&appVersion=${globals.appVersion}&geofence=${globals.geofence}");
             response1 = await dio.post(globals.path + "saveImageSandbox", data: formData);
-            print(globals.path + "saveImageSandbox?uid=${mk.uid}&location=$location&aid=${mk.aid}&act=${mk.act}&shiftid=${mk.shiftid}&refid=${mk.refid}&latit=$lat&longi=$long&file=$imagei&FakeLocationStatus=${mk.FakeLocationStatus}&platform=android&tempimagestatus=1&deviceidmobile=$deviceidmobile&devicenamebrand=${globals.devicenamebrand}&city=$city&appVersion=${globals.appVersion}&geofence=${globals.geofence}");
+
           }else{
             print(globals.path + "saveImage?uid=${mk.uid}&location=$location&aid=${mk.aid}&act=${mk.act}&shiftid=${mk.shiftid}&refid=${mk.refid}&latit=$lat&longi=$long&file=$imagei&FakeLocationStatus=${mk.FakeLocationStatus}&platform=android&tempimagestatus=1&deviceidmobile=$deviceidmobile&devicenamebrand=${globals.devicenamebrand}&city=$city&appVersion=${globals.appVersion}&geofence=${globals.geofence}");
             response1 = await dio.post(globals.path + "saveImage", data: formData);
@@ -717,7 +726,7 @@ class SaveImage {
             /*** Save temp image in local database statrt here ***/
             if(globals.facerecognition!=1){
               globals.PictureBase64Att = PictureBase64;
-              TempImage tempimage = new TempImage(null, int.parse(mk.uid),mk.act, MarkAttMap["insert_updateid"], PictureBase64, int.parse(mk.refid) , 'Attendance');
+              TempImage tempimage = new TempImage(null, int.parse(mk.uid),mk.act, MarkAttMap["insert_updateid"],MarkAttMap["interimAttendanceId"].toString()??"0", PictureBase64, int.parse(mk.refid) , 'Attendance',globals.shiftId);
               tempimage.save();
             }
 
@@ -737,8 +746,11 @@ class SaveImage {
             }
             return MarkAttMap;
           }
-          else
+          else{
+            print("ended here");
             return {'status':4};
+          }
+
         }
         else {
           globals.globalCameraOpenedStatus=false;
