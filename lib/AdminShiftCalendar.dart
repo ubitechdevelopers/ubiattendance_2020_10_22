@@ -73,6 +73,10 @@ class _MyHomePageState extends State<MyHomePage1> {
   Map<DateTime, List> _events;
   Map<DateTime, List> DaysPass;
   Map<DateTime, List> _holiday ;
+  List<Holiday> holidayList = [] ;
+  DateTime Holidaydate;
+  List<dynamic> holidayDateList = [];
+  Map<DateTime, String> holidayNameList = {};
   AnimationController _animationController;
   //List<Shiftplanner> items = null;
   List<shiftplanner1> items = [];
@@ -105,9 +109,17 @@ class _MyHomePageState extends State<MyHomePage1> {
   String goneShift;
   String hoursPerDayForFlexi;
   var statusOfShift;
+  bool cond = false;
   final _formKey = GlobalKey<FormState>();
 
   final List<Color> circleColors =
+  [     Colors.blue[200], Colors.red[100], Colors.orange[200],
+    Colors.tealAccent[100], Colors.purple[100], Colors.yellow[200],Colors.greenAccent[200],Colors.lightBlue[100], Colors.teal[200],
+    Colors.green[200],Colors.red[100],Colors.cyan[100],Colors.purple[100],
+    Colors.red[200],Colors.lime[200] ];
+
+
+  /*  final List<Color> circleColors =
   [ Colors.orangeAccent[100],
     Colors.blue[200], Colors.red[100],
     Colors.lime[100], Colors.deepPurple[100],
@@ -138,21 +150,23 @@ class _MyHomePageState extends State<MyHomePage1> {
     Colors.teal[200],Colors.yellow[200],
     Colors.lightBlueAccent[100],Colors.lightBlue[400],
     Colors.cyan[100],Colors.yellow[100],Colors.greenAccent[200],
-    Colors.blue[100], Colors.blue[200], Colors.lightBlueAccent[100] ];
+    Colors.blue[100], Colors.blue[200], Colors.lightBlueAccent[100] ];*/
 
 
   final List<Color> specialshiftColor =
   [
     Colors.blue[200], Colors.red[100], Colors.orange[200],
-    Colors.orange[400], Colors.purple[200], Colors.yellow[200],Colors.greenAccent[200],Colors.lightBlue[400], Colors.teal[200],
-    Colors.green[400],Colors.red[300],Colors.cyan[200],Colors.purple[200]
+    Colors.tealAccent[100], Colors.purple[100], Colors.yellow[200],Colors.greenAccent[200],Colors.lightBlue[100], Colors.teal[200],
+    Colors.green[200],Colors.red[100],Colors.cyan[100],Colors.purple[100],
+    Colors.red[200],Colors.lime[200]
   ];
 
-  int _selectedIndex;
+  int _selectedIndex = null;
   List distinctIds=[];
   var ids = [];
   int indexOfColor;
   int indexOfColorforShiftTile;
+  int indexOfColorforShiftTile1;
   int _currentIndex = 1;
   int response;
   String _orgName='';
@@ -282,6 +296,70 @@ class _MyHomePageState extends State<MyHomePage1> {
         //print(_holiday.length);
       }));
 
+
+      getHolidays().then((val) {
+        setState(() {
+          holidayList = val;
+        });
+
+        for (int i = 0; i < holidayList.length; i++) {
+          // print("holidaysss");
+          if (int.parse(holidayList[i].Days) > 1) {
+            Holidaydate = holidayList[i].fromDateFormat;
+            holidayNameList.addAll({Holidaydate:holidayList[i].Name});
+            print(holidayNameList);
+            print("_holidayName");
+            holidayDateList.add(Holidaydate);
+            _markedDateMap.removeAll(Holidaydate);
+            _markedDateMap.add(
+              Holidaydate,
+              new Event(
+                date: Holidaydate,
+                title: 'Event 5',
+                icon: _holidayIcon(Holidaydate.day.toString()),
+              ),
+            );
+            int days = 0;
+            while (days != int.parse(holidayList[i].Days) - 1) {
+              print("Event 5");
+              print(Holidaydate);
+              Holidaydate = Holidaydate.add(Duration(days: 1));
+              holidayNameList.addAll({Holidaydate:holidayList[i].Name});
+
+              holidayDateList.add(Holidaydate);
+              _markedDateMap.removeAll(Holidaydate);
+              _markedDateMap.add(
+                Holidaydate,
+                new Event(
+                  date: Holidaydate,
+                  title: 'Event 5',
+                  icon: _holidayIcon(Holidaydate.day.toString()),
+                ),
+              );
+              days++;
+            }
+          }
+          else {
+            Holidaydate = holidayList[i].fromDateFormat;
+            _markedDateMap.removeAll(Holidaydate);
+            _markedDateMap.add(
+              Holidaydate,
+              new Event(
+                date: Holidaydate,
+                title: 'Event 5',
+                icon: _holidayIcon(Holidaydate.day.toString()),
+              ),
+            );
+            holidayDateList.add(Holidaydate);
+            holidayNameList.addAll({Holidaydate:holidayList[i].Name});
+
+          }
+          print(holidayDateList);
+          print("holidayDateList");
+        }
+
+
+
       getMultiShiftsList(Id).then((val) {
         setState(() {
           print(val);
@@ -298,13 +376,18 @@ class _MyHomePageState extends State<MyHomePage1> {
             final unique = ids.where((str) => seen.add(str)).toList();
             distinctIds = unique;                   //list of unique shift ids
             indexOfColor = distinctIds.indexOf(specialshift[i].shiftid.toString()) % 12;
-            print(indexOfColor);
+           /* print(indexOfColor);
             print(specialshift[i].shiftid.toString());
-            print(distinctIds);
+            print(specialshift[i].shiftdate.toString());
+            print(distinctIds);*/
             print("indexOfColorhmfjhfjfj");
           });
 
           if(specialshift[i].shifttype =='3'){
+            print(indexOfColor);
+            print(specialshift[i].shiftid.toString());
+            print(specialshift[i].shiftdate.toString());
+            print("jgjggjgjgjg");
             _markedDateMap.removeAll(specialshift[i].shiftdate);
             _markedDateMap.add(
               specialshift[i].shiftdate,
@@ -432,9 +515,12 @@ class _MyHomePageState extends State<MyHomePage1> {
             firstDayOfMonth123 = firstDayOfMonth123.add(Duration(days: 1));
 
           }
+
+
           // print(daysGoneList);
           //  print("Days Gone");
         }
+      });
       });
 
 //      print(daysGoneList);
@@ -474,6 +560,31 @@ class _MyHomePageState extends State<MyHomePage1> {
     response = prefs.getInt('response') ?? 0;
 
   }
+
+  Widget _holidayIcon(String day) => Container(    /// icon for days gone(present)
+    decoration: new BoxDecoration(
+      color: Colors.white,
+      border: Border.all(
+          width: 1, color: Colors.blue[100]       //                     <--- border width here
+      ),
+      borderRadius: BorderRadius.all(
+        Radius.circular(5),
+      ),
+      image: new DecorationImage(
+        fit: BoxFit.cover,
+        colorFilter: new ColorFilter.mode(Colors.white.withOpacity(0.9), BlendMode.dstATop),
+        image: AssetImage("assets/weekofficon.png"),
+      ),
+    ),
+    child: Center(
+      child: Text(
+        day,
+        style: TextStyle(
+          color: Colors.black,fontSize: 16,
+        ),
+      ),
+    ),
+  );
 
   _onAlertShiftPlannerPopup(context) async {
     final prefs = await SharedPreferences.getInstance();
@@ -768,7 +879,8 @@ class _MyHomePageState extends State<MyHomePage1> {
                   ),
                 ),
               ]
-          ), new Row(
+            ),
+          new Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 !string1.contains("Flexi")?Text(
@@ -783,12 +895,11 @@ class _MyHomePageState extends State<MyHomePage1> {
                   ),
                 ),
               ]
-          ),
-
-        ],
-      ),
-    ),
-  );
+            ),
+         ],
+       ),
+     ),
+   );
 
 
 
@@ -1004,7 +1115,7 @@ class _MyHomePageState extends State<MyHomePage1> {
   Widget _FlexiIcon(String day, String string1, int i) =>
       Container(
         decoration: BoxDecoration(
-          color: randomGenerator(i),
+          color: randomGenerator1(i),
           borderRadius: BorderRadius.all(
             Radius.circular(5),
           ),
@@ -1602,6 +1713,19 @@ class _MyHomePageState extends State<MyHomePage1> {
               ),
             );
           }
+          else if(holidayDateList.contains(_selectedEvents)){
+            specialShiftsList.remove(_selectedEvents);
+            removedShiftsList.addAll({_selectedEvents:[selectedShiftTiming,selectedShiftName,'0',selectedShiftId,_selectedEvents.toString(),'0']});
+            _markedDateMap.removeAll(day);
+            _markedDateMap.add(
+              _selectedEvents,
+              new Event(
+                date: _selectedEvents,
+                title: 'Event 5',
+                icon: _holidayIcon(_selectedEvents.day.toString()),
+              ),
+            );
+          }
           else {
             specialShiftsList.remove(_selectedEvents);
             removedShiftsList.addAll({_selectedEvents:[selectedShiftTiming,selectedShiftName,'0',selectedShiftId,_selectedEvents.toString(),'0']});
@@ -1668,6 +1792,18 @@ class _MyHomePageState extends State<MyHomePage1> {
               icon: _absentIcon(_selectedEvents.day.toString()),
             ),
           );
+        }
+        else if(holidayDateList.contains(_selectedEvents)){
+          _markedDateMap.removeAll(day);
+          _markedDateMap.add(
+            _selectedEvents,
+            new Event(
+              date: _selectedEvents,
+              title: 'Event 5',
+              icon: _holidayIcon(_selectedEvents.day.toString()),
+            ),
+          );
+
         }
         else{
           _markedDateMap.removeAll(day);
@@ -2564,20 +2700,12 @@ class _MyHomePageState extends State<MyHomePage1> {
                 scrollDirection: Axis.horizontal,
                 itemCount: snapshot.data.length,
                 itemBuilder: (BuildContext context, int index) {
-                 bool cond = false;
-                  print(distinctIds);
-                  print("distinctIds123456");
+                  cond = false;
+
                   if(distinctIds.contains(snapshot.data[index].Id.toString())) {
-                   print(distinctIds);
-                    print("distinctIds123456");
                     cond = true;
                     indexOfColorforShiftTile = distinctIds.indexOf(snapshot.data[index].Id.toString()) % 12;
-                    print(snapshot.data[index].Name.toString());
-                    print(snapshot.data[index].Id.toString());
-                    print(indexOfColorforShiftTile);
-                    print("indexOfColorforShiftTile");
-                    //print(snapshot.data[index].Id.toString());
-                   // print(snapshot.data[index].Id.toString());
+
                   }
 
                   return  new Column(
@@ -2599,13 +2727,14 @@ class _MyHomePageState extends State<MyHomePage1> {
 
                                     //specialshiftColor[i]
 
-                                    color: cond?specialshiftColor[indexOfColorforShiftTile]:_selectedIndex != null && _selectedIndex == index? circleColors[shiftColor]
+                                    color:  cond?specialshiftColor[indexOfColorforShiftTile]:_selectedIndex != null && _selectedIndex == index? circleColors[shiftColor]
                                         : Colors.grey[200],
                                     borderRadius:BorderRadius.all(
                                       Radius.circular(5),
                                     )
                                 ),
                                 width: MediaQuery.of(context).size.width*0.30,
+
                                 child: ListTile(
                                   title: _selectedIndex != null && _selectedIndex == index?  Text(snapshot.data[index].Name.toString(),textAlign: TextAlign.center,style: new TextStyle( color: Colors.black,),)
                                       :Text(snapshot.data[index].Name.toString(),textAlign: TextAlign.center,),
@@ -2617,6 +2746,7 @@ class _MyHomePageState extends State<MyHomePage1> {
                                   dense:true,
                                   onTap: (){
                                     setState(() {
+
                                       selectedShiftTiming = snapshot.data[index].TimeIn+snapshot.data[index].TimeOut ;
                                       selectedShiftId = snapshot.data[index].Id;
                                       selectedShiftName = snapshot.data[index].Name;
@@ -2625,6 +2755,15 @@ class _MyHomePageState extends State<MyHomePage1> {
                                       print(HoursPerDay);
                                       print("HoursPerDay123");
                                       print(shifttype);
+                                      indexOfColorforShiftTile1=null;
+
+                                      if(distinctIds.contains(snapshot.data[index].Id.toString())) {
+                                        cond = true;
+                                        indexOfColorforShiftTile1 = distinctIds.indexOf(snapshot.data[index].Id.toString()) % 12;
+                                      }
+
+                                      print(indexOfColorforShiftTile1);
+                                      print("indexOfColorforShiftTile1");
 
                                       shiftplanner(Id,selectedShiftId).then((val) {
 
@@ -2632,9 +2771,16 @@ class _MyHomePageState extends State<MyHomePage1> {
                                           items1 = val;
                                           _onSelected(index);
                                           shiftPressed = true;
-                                          shiftColor++;
-                                          if(shiftColor == 13)
-                                            shiftColor=0;
+                                          if(indexOfColorforShiftTile1!=null){
+                                            shiftColor = indexOfColorforShiftTile1;
+                                          }
+                                          else {
+                                            print(shiftColor);
+                                            print("shiftColor");
+                                            shiftColor++;
+                                          }
+                                          if (shiftColor == 13)
+                                            shiftColor = 0;
                                         });
 
                                         getSelectedShiftWekoff().then((val) => setState(() {
@@ -2685,7 +2831,12 @@ class _MyHomePageState extends State<MyHomePage1> {
   }
 
   _onSelected(int index) {
-    setState(() => _selectedIndex = index);
+
+    setState(() {
+      _selectedIndex = index;
+      cond = false;
+    });
+   // setState(() => _selectedIndex = index);
   }
 
   loader() {

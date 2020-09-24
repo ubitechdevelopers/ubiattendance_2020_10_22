@@ -110,7 +110,6 @@ class _MyHomePageState extends State<userShiftCalendar> {
   String admin_sts='0';
   ScaffoldState scaffold;
   String empid ="";
-  var defaultShiftTimings ="";
   String fname ="";
   String shiftId ="";
   var daysgone1;
@@ -246,6 +245,12 @@ class _MyHomePageState extends State<userShiftCalendar> {
       Widget _holidayIcon(String day) => Container(    /// icon for days gone(present)
         decoration: new BoxDecoration(
           color: Colors.white,
+          border: Border.all(
+              width: 1, color: Colors.blue[100]       //                     <--- border width here
+          ),
+          borderRadius: BorderRadius.all(
+            Radius.circular(5),
+          ),
           image: new DecorationImage(
             fit: BoxFit.cover,
             colorFilter: new ColorFilter.mode(Colors.white.withOpacity(0.9), BlendMode.dstATop),
@@ -408,7 +413,6 @@ class _MyHomePageState extends State<userShiftCalendar> {
 
           if(i==0) {
 
-
             getHolidays().then((val) {
               setState(() {
                 holidayList = val;
@@ -501,100 +505,6 @@ class _MyHomePageState extends State<userShiftCalendar> {
               });
 
             });
-
-            /*  var holidayList = await getHolidays();
-            if(holidayList.isNotEmpty) {
-              for (int i = 0; i < holidayList.length; i++) {
-                print("holidaysss");
-
-                if (int.parse(holidayList[i].Days) > 1) {
-                  Holidaydate = holidayList[i].fromDateFormat;
-                  _markedDateMap.removeAll(Holidaydate);
-                  _markedDateMap.add(
-                    Holidaydate,
-                    new Event(
-                      date: Holidaydate,
-                      title: 'Event 5',
-                      icon: _holidayIcon(Holidaydate.day.toString()),
-                    ),
-                  );
-                  int days = 0;
-                  while (days != int.parse(holidayList[i].Days) - 1) {
-                    print("Event 5");
-                    print(Holidaydate);
-                    holidayDateList.add(Holidaydate);
-                    Holidaydate = Holidaydate.add(Duration(days: 1));
-                    _markedDateMap.removeAll(Holidaydate);
-                    _markedDateMap.add(
-                      Holidaydate,
-                      new Event(
-                        date: Holidaydate,
-                        title: 'Event 5',
-                        icon: _holidayIcon(Holidaydate.day.toString()),
-                      ),
-                    );
-                    days++;
-                  }
-                }
-                else {
-                  Holidaydate = holidayList[i].fromDateFormat;
-                  _markedDateMap.removeAll(Holidaydate);
-                  _markedDateMap.add(
-                    Holidaydate,
-                    new Event(
-                      date: Holidaydate,
-                      title: 'Event 5',
-                      icon: _holidayIcon(Holidaydate.day.toString()),
-                    ),
-                  );
-                  holidayDateList.add(Holidaydate);
-                }
-                print(holidayDateList);
-                print("holidayDateList");
-              }
-            }*/
-            //  });
-
-            /*  getHolidays().then((val) {
-              setState(() {
-                holidayList = val;
-                *//*print(holidayList.length);
-                 print("holidayList.length");*//*
-              });
-
-              for(int i = 0 ;i<holidayList.length;i++){
-
-                if(int.parse(holidayList[i].Days)>1){
-                  Holidaydate =  holidayList[i].fromDateFormat;
-                  int days=0;
-                  while(days!=int.parse(holidayList[i].Days)){
-
-                    holidayDateList.add(Holidaydate);
-                    Holidaydate = Holidaydate.add(Duration(days: 1));
-                    days++;
-                  }
-                }
-                else{
-                  Holidaydate = holidayList[i].fromDateFormat;
-                  holidayDateList.add(Holidaydate);
-                }
-              }
-
-              for(int i = 0; i<holidayDateList.length;i++){
-                print("gkgkuguigiu");
-
-                _markedDateMap.removeAll(Holidaydate);
-                _markedDateMap.add(
-                  Holidaydate,
-                  new Event(
-                    date:Holidaydate,
-                    title: 'Event 5',
-                    icon:_holidayIcon(Holidaydate.day.toString()),
-                  ),
-                );
-              }
-            });
-*/
           }
         }
 

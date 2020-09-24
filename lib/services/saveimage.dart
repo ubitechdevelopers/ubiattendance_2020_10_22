@@ -224,7 +224,7 @@ class SaveImage {
           if (MarkAttMap["status"] == 1 || MarkAttMap["status"] == 2) {
             if(globals.facerecognition!=1){
               globals.PictureBase64Att = PictureBase64;
-              TempImage tempimage = new TempImage(null, int.parse(mk.uid),mk.act, MarkAttMap["insert_updateid"], PictureBase64, int.parse(mk.refid) , 'Attendance');
+              TempImage tempimage = new TempImage(null, int.parse(mk.uid),mk.act, MarkAttMap["insert_updateid"], MarkAttMap["interimAttendanceId"].toString()??'0', PictureBase64, int.parse(mk.refid) , 'Attendance',globals.shiftId);
               tempimage.save();
             }
 
@@ -426,7 +426,7 @@ class SaveImage {
           if (MarkAttMap["status"] == 1 || MarkAttMap["status"] == 2) {
             globals.firstface=1;
             globals.PictureBase64Att = PictureBase64;
-            TempImage tempimage = new TempImage(null, int.parse(mk.uid),mk.act, MarkAttMap["insert_updateid"], PictureBase64, int.parse(mk.refid) , 'Attendance');
+            TempImage tempimage = new TempImage(null, int.parse(mk.uid),mk.act, MarkAttMap["insert_updateid"], MarkAttMap["interimAttendanceId"].toString()??'0',PictureBase64, int.parse(mk.refid) , 'Attendance',globals.shiftId);
             tempimage.save();
             return true;
           }
@@ -536,6 +536,8 @@ class SaveImage {
           "PictureBase64": img[i].PictureBase64,
           "OrganizationId": img[i].OrganizationId,
           "Module": img[i].Module,
+          "ShiftId": img[i].shiftId,
+          "InterimAttendanceId": img[i].interimAttendanceId,
 
         });
       }
@@ -560,7 +562,7 @@ class SaveImage {
                   ));
             }
             print(status);
-            imagedata.delete(int.parse(localDbId));
+            //imagedata.delete(int.parse(localDbId));
           });
         }
       });
@@ -717,7 +719,7 @@ class SaveImage {
             /*** Save temp image in local database statrt here ***/
             if(globals.facerecognition!=1){
               globals.PictureBase64Att = PictureBase64;
-              TempImage tempimage = new TempImage(null, int.parse(mk.uid),mk.act, MarkAttMap["insert_updateid"], PictureBase64, int.parse(mk.refid) , 'Attendance');
+              TempImage tempimage = new TempImage(null, int.parse(mk.uid),mk.act, MarkAttMap["insert_updateid"],MarkAttMap["interimAttendanceId"].toString()??"0", PictureBase64, int.parse(mk.refid) , 'Attendance',globals.shiftId);
               tempimage.save();
             }
 
@@ -737,8 +739,11 @@ class SaveImage {
             }
             return MarkAttMap;
           }
-          else
+          else{
+            print("ended here");
             return {'status':4};
+          }
+
         }
         else {
           globals.globalCameraOpenedStatus=false;

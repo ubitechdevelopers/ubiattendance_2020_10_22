@@ -9,15 +9,18 @@ class TempImage{
   String PictureBase64;
   int OrganizationId;
   String Module;
-
+  String interimAttendanceId;
+  String shiftId;
 
   TempImage(this.Id,
       this.EmployeeId,
       this.Action,
       this.ActionId,
+      this.interimAttendanceId,
       this.PictureBase64,
       this.OrganizationId,
-      this.Module
+      this.Module,
+      this.shiftId
 
       );
 
@@ -33,6 +36,8 @@ class TempImage{
       'PictureBase64':PictureBase64,
       'OrganizationId':OrganizationId,
       'Module':Module,
+      'InterimAttendanceId':interimAttendanceId,
+      'ShiftId':shiftId,
     };
     return map;
   }
@@ -45,6 +50,8 @@ class TempImage{
     PictureBase64=map['PictureBase64'];
     OrganizationId=map['OrganizationId'];
     Module=map['Module'];
+    interimAttendanceId=map['InterimAttendanceId'];
+    Module=map['ShiftId'];
   }
 
 
@@ -81,6 +88,8 @@ class TempImage{
       'PictureBase64',
       'OrganizationId',
       'Module',
+      'InterimAttendanceId',
+      'ShiftId',
 
 
     ],orderBy: "Id desc");
@@ -106,6 +115,8 @@ class TempImage{
       'PictureBase64',
       'OrganizationId',
       'Module',
+      'InterimAttendanceId',
+      'ShiftId',
 
     ],orderBy: "Id desc");
     return maps;
@@ -124,6 +135,8 @@ class TempImage{
       'PictureBase64',
       'OrganizationId',
       'Module',
+      'InterimAttendanceId',
+      'ShiftId',
 
     ],where: "Id=?",whereArgs: [Id]);
     TempImage ams=TempImage.fromMap(map[0]);

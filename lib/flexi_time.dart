@@ -415,7 +415,7 @@ class _Flexitime extends State<Flexitime> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-                'Kindly enable location excess from settings',
+                'Kindly enable location access from settings',
                 textAlign: TextAlign.center,
                 style: new TextStyle(fontSize: 14.0, color: Colors.red)),
             RaisedButton(
@@ -685,7 +685,7 @@ class _Flexitime extends State<Flexitime> {
     } else {
       return Column(children: [
         Text(
-            'Kindly enable location excess from settings',
+            'Kindly enable location access from settings',
             textAlign: TextAlign.center,
             style: new TextStyle(fontSize: 14.0, color: Colors.red)),
         RaisedButton(

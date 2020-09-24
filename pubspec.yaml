@@ -90,11 +90,12 @@ dependencies:
   flutter_rating_bar: 3.0.1+1
   expandable: 4.1.4
   store_redirect: 1.0.2
-
+  google_fonts: 1.0.0
   date_util: ^0.1.4
   flutter_calendar_carousel: ^1.4.12
   configurable_expansion_tile: 1.0.0
-
+  lite_rolling_switch: 0.1.1
+  photofilters: 2.0.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -146,6 +147,7 @@ flutter:
       - assets/weekoff.png
       - assets/weekoff1.png
       - assets/weekofficon.png
+      - assets/ShiftIcon.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
