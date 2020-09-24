@@ -58,13 +58,14 @@ String path_hrm_india="http://ubiattendance.zentylpro.com/index.php/Att_services
 
 
 
+
 /*
 String path="http://zentylpro.com/SFUbiattendance/index.php/Att_services/";
 String internetConnectivityURL="http://zentylpro.com/SFUbiattendance/index.php/Att_services/isInternetConnected";
 String path_hrm_india="http://zentylpro.com/SFUbiattendance/index.php/Att_services/";
 */
 //String path_hrm_india="https://ubitech.ubihrm.com/services/";
-  
+
 MarkTime mk1;
 List<LocationData> list = new List();
 String globalstreamlocationaddr="Location not fetched.";
