@@ -571,6 +571,9 @@ class SaveImage {
 
   Future<Map> saveTimeInOutImagePicker(MarkTime mk,context) async {
 
+    print("he;;;;;");
+
+
  /*  int EmployeeId = 123;
     String Action = "AttendanceTimein";
     int ActionId = 12;
@@ -698,9 +701,13 @@ class SaveImage {
           print(formData);
          // print(globals.path + "saveImage?uid=${ mk.uid}&location=${location}&aid=${mk.aid}&act=${mk.act}");
           Response<String> response1;
-          if(globals.facerecognition==1){
+
+          print("FFFFacial"+globals.facerecognition.toString());
+          var ss=globals.shiftType;
+          if(globals.facerecognition.toString()=='1'){
+            print(globals.path + "saveImageSandbox?ShiftType={$ss}&uid=${mk.uid}&location=$location&aid=${mk.aid}&act=${mk.act}&shiftid=${mk.shiftid}&refid=${mk.refid}&latit=$lat&longi=$long&file=$imagei&FakeLocationStatus=${mk.FakeLocationStatus}&platform=android&tempimagestatus=1&deviceidmobile=$deviceidmobile&devicenamebrand=${globals.devicenamebrand}&city=$city&appVersion=${globals.appVersion}&geofence=${globals.geofence}");
             response1 = await dio.post(globals.path + "saveImageSandbox", data: formData);
-            print(globals.path + "saveImageSandbox?uid=${mk.uid}&location=$location&aid=${mk.aid}&act=${mk.act}&shiftid=${mk.shiftid}&refid=${mk.refid}&latit=$lat&longi=$long&file=$imagei&FakeLocationStatus=${mk.FakeLocationStatus}&platform=android&tempimagestatus=1&deviceidmobile=$deviceidmobile&devicenamebrand=${globals.devicenamebrand}&city=$city&appVersion=${globals.appVersion}&geofence=${globals.geofence}");
+
           }else{
             print(globals.path + "saveImage?uid=${mk.uid}&location=$location&aid=${mk.aid}&act=${mk.act}&shiftid=${mk.shiftid}&refid=${mk.refid}&latit=$lat&longi=$long&file=$imagei&FakeLocationStatus=${mk.FakeLocationStatus}&platform=android&tempimagestatus=1&deviceidmobile=$deviceidmobile&devicenamebrand=${globals.devicenamebrand}&city=$city&appVersion=${globals.appVersion}&geofence=${globals.geofence}");
             response1 = await dio.post(globals.path + "saveImage", data: formData);

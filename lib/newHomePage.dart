@@ -66,7 +66,7 @@ class _NewHomePage extends State<NewHomePage> {
               offset: const Offset(10, 50),
               child: Container(
                 child: Image.network(
-                'https://ubihrmimages.s3.ap-south-1.amazonaws.com/10/144427.jpg',
+                'https://ubitech.ubihrm.com/public/uploads/10/117252.jpg',
                   fit: BoxFit.cover,
                   height: MediaQuery.of(context).size.height*0.9,
                 ),
