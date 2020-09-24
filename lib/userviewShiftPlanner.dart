@@ -1556,7 +1556,7 @@ class _userViewShiftCalendarState extends State<userViewShiftPlanner> {
                         children: <Widget>[
                           CircleAvatar(
                             backgroundColor: Colors.blue[100],
-                            radius: cHeight * 0.011,
+                            radius: cHeight * 0.011,   
                           ),
                           Text("  Missed",
                             style: new TextStyle(fontSize: 15.0, color: Colors.black,),),
