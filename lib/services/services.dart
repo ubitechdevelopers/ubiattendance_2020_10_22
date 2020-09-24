@@ -593,7 +593,7 @@ ApproveLeave(Leaveid,comment,sts) async{
     print(sts);*/
     //Response response = await dio.post("https://sandbox.ubiattendance.com/index.php/services/getInfo", data: formData);
 //Response response = await dio.post(  path_hrm_india+"ApproveLeave",data: formData);
-    print(globals.path+"Approveleave?LeaveId=$Leaveid&refid=$orgid&comment=$comment&sts=$sts");
+    print(globals.path+"Approveleave?LeaveId=$Leaveid&refid=$orgid&comment=$comment&sts=$sts&uid=$empid");
     Response response = await dio.post(
         globals.path+"Approveleave",
         data: formData);
@@ -2052,7 +2052,14 @@ List<Shift> createShiftList(List data) {
     String timeout = data[i]["TimeOut"];
     String id = data[i]["Id"];
     String status = data[i]["archive"] == '0' ? 'Inactive' : 'Active';
-    String type = data[i]["shifttype"] == '1' ? 'Single Date' : 'Multi Date';
+    String type;
+    if(data[i]["shifttype"] == '1'){
+      type= 'Single Date';
+    }else if(data[i]["shifttype"] == '3'){
+      type= 'Flexi';
+    }else{
+      type = 'Multi Date';
+    }
     String HoursPerDay = data[i]["HoursPerDay"];
     String shifttype = data[i]["shifttype"];
 
@@ -2086,12 +2093,12 @@ class Shift {
       {this.Id, this.Name, this.TimeIn, this.TimeOut, this.Status, this.Type,this.HoursPerDay,this.shifttype});
 }
 
-Future<int> createShift(name, type, from, to, from_b, to_b) async {
+Future<int> createShift(name, type, from, to, from_b, to_b, minimumworkinghours) async {
   final prefs = await SharedPreferences.getInstance();
   String empid = prefs.getString('empid') ?? '';
   String orgdir = prefs.getString('orgdir') ?? '';
   final response = await http.get(globals.path +
-      'addShift?name=$name&org_id=$orgdir&ti=$from&to=$to&tib=$from_b&tob=$to_b&sts=1&shifttype=$type');
+      'addShift?name=$name&org_id=$orgdir&ti=$from&to=$to&tib=$from_b&tob=$to_b&sts=1&shifttype=$type&minimumworkinghours=$minimumworkinghours');
   int res = int.parse(response.body);
   return res;
 }

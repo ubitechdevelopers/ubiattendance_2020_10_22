@@ -229,7 +229,7 @@ class _ApplyLeave extends State<ApplyLeave> with SingleTickerProviderStateMixin 
                                       //firstDate: new DateTime.now(),
                                       //initialDate: new DateTime.now(),
                                       //dateOnly: true,
-                                      format: dateFormat,
+                                      format: formatter,
                                       controller: _dateController,
                                       readOnly: true,
                                       onShowPicker: (context, currentValue) {
@@ -278,7 +278,7 @@ class _ApplyLeave extends State<ApplyLeave> with SingleTickerProviderStateMixin 
                                       //firstDate: new DateTime.now(),
                                       //initialDate: new DateTime.now(),
                                       //dateOnly: true,
-                                      format: dateFormat,
+                                      format: formatter,
                                       controller: _dateController1,
                                       readOnly: true,
                                       onShowPicker: (context, currentValue) {
@@ -682,7 +682,7 @@ class _ApplyLeave extends State<ApplyLeave> with SingleTickerProviderStateMixin 
         );*/
         showDialog(context: context, child:
         new AlertDialog(
-          content: new Text("Leave can not be applied after marking Time In"),
+          content: new Text("Leave can not be applied after punching Time In"),
         )
         );
       }else if(MarkAttMap["status"].toString()=='false5') {

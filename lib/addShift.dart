@@ -21,18 +21,22 @@ class _addShift extends State<addShift> {
   bool isloading = false;
   final _shiftName = TextEditingController();
   final _from = TextEditingController();
+  final minimumworkinghours = TextEditingController();
   final _to = TextEditingController();
   final _from_b = TextEditingController();
   final _to_b = TextEditingController();
   final timeFormat = DateFormat("H:mm");
+  final timeFormatnew = DateFormat("H:mm");
   final _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   int response=0;
   int _currentIndex = 2;
   String org_name="";
   String admin_sts="0";
-  List<Map> shiftlist=[{"id":"1","name":"Single Date"},{"id":"2","name":"Multi Date"}];
+  List<Map> shiftlist=[{"id":"1","name":"Single Date"},{"id":"2","name":"Multi Date"},{"id":"3","name":"Flexi"}];
   String shifttype = "1";
+  var visiblity= true;
+  var visiblitymin= false;
 
   bool _isButtonDisabled=false;
   @override
@@ -183,13 +187,14 @@ class _addShift extends State<addShift> {
                           color: Colors.white),),
                     color: buttoncolor,
                     onPressed: () async {
+                      print('thisisshifttype------->>>>>'+shifttype);
 
                       if (_formKey.currentState.validate()) {
                         if(_isButtonDisabled)
                           return null;
-                        /*     print('Name:'+_shiftName.text);
+                            print('Name:'+_shiftName.text);
                             print('Starts:'+_from.text);
-                            print('Ends:'+_to.text);*/
+                            print('Ends:'+_to.text);
                         var diff = "";
                         var diff1 ;
                         var diff_b = "";
@@ -199,42 +204,58 @@ class _addShift extends State<addShift> {
                         DateTime from_b ;
                         DateTime to_b ;
 
-                        if (shifttype.toString() == '1')
+                        if (shifttype.toString() == '1' || shifttype.toString() == '3')
                         {
-                          var arr=_from.text.split(':');
-                          var arr1=_to.text.split(':');
-                          from=new DateTime(2001,01,01,int.parse(arr[0]),int.parse(arr[1]),00,00);
-                          to=new DateTime(2001,01,01,int.parse(arr1[0]),int.parse(arr1[1]),00,00);
+                        //var arr2='00:00';
+                        var arr;
+                        var arr1;
+                        if(shifttype=='3'){
+                        arr= '00:00';
+                        arr1='00:00';
+                        print('minimumworkinghours---->'+minimumworkinghours.text);
+                        if(minimumworkinghours.text=='0:00'){
+                          showInSnackBar("Shift hours cannot be equal to 0 hrs");
+                          return null;
 
-                          var arr_b=_from_b.text.split(':');
-                          var arr1_b=_to_b.text.split(':');
-                          from_b=new DateTime(2001,01,01,int.parse(arr_b[0]),int.parse(arr_b[1]),00,00);
-                          to_b=new DateTime(2001,01,01,int.parse(arr1_b[0]),int.parse(arr1_b[1]),00,00);
+
+                        }
+
+                        }else{
+                        arr=_from.text.split(':');
+                        arr1=_to.text.split(':');
+
+                        from=new DateTime(2001,01,01,int.parse(arr[0]),int.parse(arr[1]),00,00);
+                        to=new DateTime(2001,01,01,int.parse(arr1[0]),int.parse(arr1[1]),00,00);
+
+                        var arr_b=_from_b.text.split(':');
+                        var arr1_b=_to_b.text.split(':');
+                        from_b=new DateTime(2001,01,01,int.parse(arr_b[0]),int.parse(arr_b[1]),00,00);
+                        to_b=new DateTime(2001,01,01,int.parse(arr1_b[0]),int.parse(arr1_b[1]),00,00);
 
 
+                        diff = to.difference(from).toString();
+                        diff_b = to_b.difference(from_b).toString();
+                        diff_b1 = to_b.difference(from_b);
 
-                          diff = to.difference(from).toString();
-                          diff_b = to_b.difference(from_b).toString();
-                          diff_b1 = to_b.difference(from_b);
-
-                          if(to.isAtSameMomentAs(from)){
-                            showInSnackBar("Shift's start and end time can't be same");
-                            return null;
-                          }
-                          else if(!from.isBefore(to)){
-                            showInSnackBar('Invalid Shift time');
-                            return null;
-                          }
-                          else if(!from_b.isBefore(to_b))
-                          {
-                            showInSnackBar('Invalid Break time');
-                            return null;
-                          }
-                          else if((!from.isBefore(from_b)) ||  (!to_b.isBefore(to)))
-                          {
-                            showInSnackBar('Invalid Break time');
-                            return null;
-                          }
+                        if(to.isAtSameMomentAs(from)){
+                        showInSnackBar("Shift's start and end time can't be same");
+                        return null;
+                        }
+                        else if(!from.isBefore(to)){
+                        showInSnackBar('Invalid Shift time');
+                        return null;
+                        }
+                        else if(!from_b.isBefore(to_b))
+                        {
+                        showInSnackBar('Invalid Break time');
+                        return null;
+                        }
+                        else if((!from.isBefore(from_b)) || (!to_b.isBefore(to)))
+                        {
+                        showInSnackBar('Invalid Break time');
+                        return null;
+                        }
+                        }
 
                         }
                         else
@@ -351,7 +372,7 @@ class _addShift extends State<addShift> {
                           _isButtonDisabled=true;
                         });
 
-                        createShift(_shiftName.text,shifttype,_from.text,_to.text,_from_b.text,_to_b.text).then((res)async{
+                        createShift(_shiftName.text,shifttype,_from.text,_to.text,_from_b.text,_to_b.text,minimumworkinghours.text).then((res)async{
                           if(res.toString()=='1') {
 
                             var prefs=await SharedPreferences.getInstance();
@@ -507,6 +528,19 @@ class _addShift extends State<addShift> {
                                   });
                                 },
                                 items: shiftlist.map((Map map) {
+                                  print('shiftypenew----->>>'+shifttype);
+                                   setState(() {
+                                      if(shifttype=='3'){
+                                        visiblity=false;
+                                        visiblitymin=true;
+                                      }else{
+                                        visiblity=true;
+                                        visiblitymin=false;
+
+                                      }
+
+                                    });
+
                                   return new DropdownMenuItem<String>(
                                     value: map["id"].toString(),
                                     child:  new SizedBox(
@@ -545,14 +579,20 @@ class _addShift extends State<addShift> {
                     ),
                   ), //Enter date
                   SizedBox(height: 20.0),
-                  Text('Shift Timings',style: TextStyle(fontSize: 17.0),),
+                  Visibility(
+                      visible:visiblitymin,child: Text('Minimum Working Hours',style: TextStyle(fontSize: 17.0),)),
+
+                  Visibility(
+                      visible:visiblity,child: Text('Shift Timings',style: TextStyle(fontSize: 17.0),)),
                   SizedBox(height: 15.0),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
+                  Visibility(
+                    visible: visiblitymin,
+                    child: Row(
+                      children: <Widget>[
+                       Expanded(
                         child:DateTimeField(
-                          format: timeFormat,
-                          controller: _from,
+                          format: timeFormatnew,
+                          controller: minimumworkinghours,
                           //editable: false,
                           onShowPicker: (context, currentValue) async {
                             final time = await showTimePicker(
@@ -568,7 +608,7 @@ class _addShift extends State<addShift> {
                               borderSide: BorderSide( color: Colors.grey.withOpacity(0.0), width: 1,),
                             ),
 
-                            labelText: 'From',
+                            labelText: 'Minimum Working Hours',
                             labelStyle: TextStyle(
                               fontSize: 15,
 
@@ -577,118 +617,159 @@ class _addShift extends State<addShift> {
                           ),
                           validator: (time) {
                             if (time==null) {
-                              return 'Please enter shift start time';
+                              return 'Please enter minimum working hours';
                             }
                           },
                         ),
-                      ),
-                      SizedBox(width: 10.0),
-                      Expanded(
-                        child:DateTimeField(
-                          format: timeFormat,
-                          controller: _to,
-                          // editable: false,
-                          onShowPicker: (context, currentValue) async {
-                            final time = await showTimePicker(
-                              context: context,
-                              initialTime: TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
-                            );
-                            return DateTimeField.convert(time);
-                          },
-                          readOnly: true,
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: BorderSide( color: Colors.grey.withOpacity(0.0), width: 1,),
-                              ),
-
-                              labelText: 'To',
-                              labelStyle: TextStyle(
-                                fontSize: 15,
-
-                              )
-                          ),
-
-                          validator: (time) {
-                            if (time==null) {
-                              return 'Please enter shift end time';
-                            }
-                          },
-                        ),
-                      ),
-                    ],
+                      )],
+                    ),
                   ),
-                  SizedBox(height: 20.0),
-                  Text('Break Timings',style: TextStyle(fontSize: 17.0),),
-                  SizedBox(height: 15.0),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child:DateTimeField(
-                          format: timeFormat,
-                          controller: _from_b,
-                          //editable: false,
-                          onShowPicker: (context, currentValue) async {
-                            final time = await showTimePicker(
-                              context: context,
-                              initialTime: TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
-                            );
-                            return DateTimeField.convert(time);
-                          },
-                          readOnly: true,
-
-                          decoration: InputDecoration(
+                  Visibility(
+                    visible:visiblity, child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child:DateTimeField(
+                            format: timeFormat,
+                            controller: _from,
+                            //editable: false,
+                            onShowPicker: (context, currentValue) async {
+                              final time = await showTimePicker(
+                                context: context,
+                                initialTime: TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
+                              );
+                              return DateTimeField.convert(time);
+                            },
+                            readOnly: true,
+                            decoration: InputDecoration(
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8),
                                 borderSide: BorderSide( color: Colors.grey.withOpacity(0.0), width: 1,),
                               ),
+
                               labelText: 'From',
                               labelStyle: TextStyle(
                                 fontSize: 15,
 
-                              )
-                          ),
-                          validator: (time) {
-                            if (time==null) {
-                              return 'Please enter break start time';
-                            }
-                          },
-                        ),
-                      ),
-                      SizedBox(width: 10.0),
-                      Expanded(
-                        child:DateTimeField(
-                          format: timeFormat,
-                          controller: _to_b,
-                          // editable: false,
-                          onShowPicker: (context, currentValue) async {
-                            final time = await showTimePicker(
-                              context: context,
-                              initialTime: TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
-                            );
-                            return DateTimeField.convert(time);
-                          },
-                          readOnly: true,
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: BorderSide( color: Colors.grey.withOpacity(0.0), width: 1,),
+
                               ),
-
-                              labelText: 'To',
-                              labelStyle: TextStyle(
-                                fontSize: 15,
-
-                              )
+                            ),
+                            validator: (time) {
+                              if (time==null && shifttype!='3') {
+                                return 'Please enter shift start time';
+                              }
+                            },
                           ),
-                          validator: (time) {
-                            if (time==null) {
-                              return 'Please enter break end time';
-                            }
-                          },
                         ),
-                      ),
-                    ],
+                        SizedBox(width: 10.0),
+                        Expanded(
+                          child:DateTimeField(
+                            format: timeFormat,
+                            controller: _to,
+                            // editable: false,
+                            onShowPicker: (context, currentValue) async {
+                              final time = await showTimePicker(
+                                context: context,
+                                initialTime: TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
+                              );
+                              return DateTimeField.convert(time);
+                            },
+                            readOnly: true,
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  borderSide: BorderSide( color: Colors.grey.withOpacity(0.0), width: 1,),
+                                ),
+
+                                labelText: 'To',
+                                labelStyle: TextStyle(
+                                  fontSize: 15,
+
+                                )
+                            ),
+
+                            validator: (time) {
+                              if (time==null && shifttype!='3') {
+                                return 'Please enter shift end time';
+                              }
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 20.0),
+                  Visibility(visible:visiblity,child: Text('Break Timings',style: TextStyle(fontSize: 17.0),)),
+                  SizedBox(height: 15.0),
+                  Visibility(
+                    visible:visiblity,child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child:DateTimeField(
+                            format: timeFormat,
+                            controller: _from_b,
+                            //editable: false,
+                            onShowPicker: (context, currentValue) async {
+                              final time = await showTimePicker(
+                                context: context,
+                                initialTime: TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
+                              );
+                              return DateTimeField.convert(time);
+                            },
+                            readOnly: true,
+
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  borderSide: BorderSide( color: Colors.grey.withOpacity(0.0), width: 1,),
+                                ),
+                                labelText: 'From',
+                                labelStyle: TextStyle(
+                                  fontSize: 15,
+
+                                )
+                            ),
+                            validator: (time) {
+                              if (time==null && shifttype!='3') {
+                                return 'Please enter break start time';
+                              }
+                            },
+                          ),
+                        ),
+                        SizedBox(width: 10.0),
+                        Expanded(
+                          child:DateTimeField(
+                            format: timeFormat,
+                            controller: _to_b,
+                            // editable: false,
+                            onShowPicker: (context, currentValue) async {
+                              final time = await showTimePicker(
+                                context: context,
+                                initialTime: TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
+                              );
+                              return DateTimeField.convert(time);
+                            },
+                            readOnly: true,
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  borderSide: BorderSide( color: Colors.grey.withOpacity(0.0), width: 1,),
+                                ),
+
+                                labelText: 'To',
+                                labelStyle: TextStyle(
+                                  fontSize: 15,
+
+                                )
+                            ),
+                            validator: (time) {
+                              if (time==null && shifttype!='3') {
+                                return 'Please enter break end time';
+                              }
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
