@@ -487,6 +487,22 @@ class _MyHomePageState extends State<userShiftCalendar> {
                 for (int k = 0; k < AttendanceLists.length; k++) {
 
                   PresentAttendanceDate.add(AttendanceLists[k].AttendanceDate);
+
+                  /*if(AttendanceLists[k].TimeIn == AttendanceLists[k].TimeOut){
+
+                    _markedDateMap.removeAll(AttendanceLists[k].AttendanceDate);
+                    _markedDateMap.add(
+                      AttendanceLists[k].AttendanceDate,
+                      new Event(
+                        date: AttendanceLists[k].AttendanceDate,
+                        title: 'Event 5',
+                        icon: _missedPunches(
+                            AttendanceLists[k].AttendanceDate.day.toString(),
+                            AttendanceLists[k].TimeIn, AttendanceLists[k].TimeOut),
+                      ),
+                    );
+                  }*/
+
                   print(PresentAttendanceDate);
                   print("PresentAttend123anceDate");
 
@@ -501,6 +517,21 @@ class _MyHomePageState extends State<userShiftCalendar> {
                           AttendanceLists[k].TimeIn, AttendanceLists[k].TimeOut),
                     ),
                   );
+
+                  if(AttendanceLists[k].TimeIn == AttendanceLists[k].TimeOut){
+
+                    _markedDateMap.removeAll(AttendanceLists[k].AttendanceDate);
+                    _markedDateMap.add(
+                      AttendanceLists[k].AttendanceDate,
+                      new Event(
+                        date: AttendanceLists[k].AttendanceDate,
+                        title: 'Event 5',
+                        icon: _missedPunches(
+                            AttendanceLists[k].AttendanceDate.day.toString(),
+                            AttendanceLists[k].TimeIn, AttendanceLists[k].TimeOut),
+                      ),
+                    );
+                  }
                 }
               });
 
@@ -800,6 +831,27 @@ class _MyHomePageState extends State<userShiftCalendar> {
       color: Colors.green[100],
       border: Border.all(
           width: 1, color: Colors.green//                   <--- border width here
+      ),
+      borderRadius: BorderRadius.all(
+        Radius.circular(5),
+      ),
+    ),
+    child: Center(
+      child: Text(
+        day,
+        style: TextStyle(
+          color: Colors.black,fontSize: 16,
+        ),
+      ),
+    ),
+  );
+
+  Widget _missedPunches(String day, String timein, String timeout) => Container(    /// icon for days gone(present)
+    decoration: BoxDecoration(
+      //color: Colors.teal[100],
+      color: Colors.blue[100],
+      border: Border.all(
+          width: 1, color: Colors.blue//                   <--- border width here
       ),
       borderRadius: BorderRadius.all(
         Radius.circular(5),
@@ -1259,6 +1311,18 @@ class _MyHomePageState extends State<userShiftCalendar> {
                             radius: cHeight * 0.011,
                           ),
                           Text("  Week off",
+                            style: new TextStyle(fontSize: 15.0, color: Colors.black,),),
+                        ]
+                    ),
+                  ),
+                  Container(
+                    child: Row(
+                        children: <Widget>[
+                          CircleAvatar(
+                            backgroundColor: Colors.blue[100],
+                            radius: cHeight * 0.011,
+                          ),
+                          Text("  Missed",
                             style: new TextStyle(fontSize: 15.0, color: Colors.black,),),
                         ]
                     ),
@@ -2477,6 +2541,24 @@ class _MyHomePageState extends State<userShiftCalendar> {
                                       fontWeight: FontWeight.w400)),
                             ],
                           ),
+                         /* SizedBox(height: MediaQuery
+                              .of(context)
+                              .size
+                              .height * .01),
+                          Row(
+                            children: <Widget>[
+                              Icon(Icons.access_time, size: 20.0,
+                                color: Colors.black54,), SizedBox(width: 5.0),
+                              new Text("Time off: ", style: new TextStyle(
+                                  fontSize: 15.0,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.bold)),
+                              new Text(
+                                  userlist.isEmpty ? "-" : userlist[0].bhour.toString()+" Hr(s)",
+                                  style: new TextStyle(fontSize: 15.0,
+                                      fontWeight: FontWeight.w400)),
+                            ],
+                          ),*/
                           /*SizedBox(height: MediaQuery
                               .of(context)
                               .size
@@ -2548,6 +2630,20 @@ class _MyHomePageState extends State<userShiftCalendar> {
                               .of(context)
                               .size
                               .height * .01),
+                          userlist[0].bhour.toString()!='-'?Row(
+                            children: <Widget>[
+                              Icon(Icons.access_alarm, size: 20.0,
+                                color: Colors.black54,), SizedBox(width: 5.0),
+                              new Text("Time off: ", style: new TextStyle(
+                                  fontSize: 15.0,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.bold)),
+                              new Text(
+                                  userlist.isEmpty ? "-" : userlist[0].bhour.toString()+" Hr(s)",
+                                  style: new TextStyle(fontSize: 15.0,
+                                      fontWeight: FontWeight.w400)),
+                            ],
+                          ):Container(),
                         ],
 
                       ),
@@ -4324,7 +4420,7 @@ List<User> createUserList(List data){
     String ShiftTimeIn=data[i]["shiftin"]=="00:00:00"?'-':formatTime(data[i]["shiftin"].toString());
     String ShiftTimeOut=data[i]["shiftout"]=="00:00:00"?'-':formatTime(data[i]["shiftout"].toString());
     String thours=data[i]["thours"]=="00:00:00"?'00:00':formatTime(data[i]["thours"].toString());
-    String bhour=data[i]["bhour"]==null?'':'Time Off: '+data[i]["bhour"].substring(0,5);
+    String bhour=data[i]["bhour"]==null?'-':formatTime(data[i]["bhour"].substring(0,5));                //time off string
     // String overtime=data[i]["overtime"]=="00:00:00"?'-':data[i]["overtime"];
     String overtime=data[i]["overtime"]==null?'-': formatTime(data[i]["overtime"]);
     String EntryImage=data[i]["EntryImage"]!=''?data[i]["EntryImage"]:'http://ubiattendance.ubihrm.com/assets/img/avatar.png';
@@ -4335,7 +4431,6 @@ List<User> createUserList(List data){
     String Longi_in=data[i]["longi_in"].toString();
     String Latit_out=data[i]["latit_out"].toString();
     String Longi_out=data[i]["longi_out"].toString();
-
     String timeindate=data[i]["timeindate"];
     if(timeindate =='0000-00-00')
       timeindate = data[i]["AttendanceDate"];

@@ -175,6 +175,8 @@ class _MyHomePageState extends State<MyHomePage1> {
   ScaffoldState scaffold;
   var daysgone1;
   var daysgone2=0;
+  bool timeInPunched=false;
+  String AttendanceDate;
   // bool checkStatus = false;
   // final seen = Set<String>();
   // List unique =[];
@@ -268,6 +270,33 @@ class _MyHomePageState extends State<MyHomePage1> {
   @override
   // Platform messages are asynchronous, so we initialize in an async method.
   initPlatformState() async {
+
+   /*   getPlannerWiseSummary(now,Id).then((values){
+        print("hhkhkjhkhkh");
+        print(timeInPunched);
+        setState(() {
+          userlist = values;
+          print(userlist);
+          print(userlist.isEmpty);
+          if(userlist.isNotEmpty) {
+            timeInPunched = true;        //attendance has marked
+             print("inside if");
+           }
+        });
+      });*/
+
+
+    AttendanceDate = DateFormat('yyyy-MM-dd').format(now);
+   var userlist1 = await getPlannerWiseSummary(AttendanceDate,Id);
+
+   if(userlist1.isNotEmpty){
+     print("hklhhhlkhlhl");
+     setState(() {
+       timeInPunched = true;
+     });
+   }
+
+
 
     Future.delayed(const Duration(milliseconds: 1000), () {
     _onAlertShiftPlannerPopup(context);
@@ -632,6 +661,43 @@ class _MyHomePageState extends State<MyHomePage1> {
       showInSnackBar("Tap on the shift from top and \nthen tap on dates to assign. ");
     });
     }
+  }
+
+  _onAlertTimeInPunched(date) async {
+
+    var alertStyle = AlertStyle(
+        animationType: AnimationType.fromTop,
+        isCloseButton: false,
+        isOverlayTapDismiss: false,
+        descStyle: TextStyle(fontWeight: FontWeight.bold),
+        animationDuration: Duration(milliseconds: 400),
+
+      );
+      Alert(
+          style: alertStyle,
+          context: context,
+          title: "Time In punched",
+          buttons: [
+            DialogButton(
+              width: MediaQuery
+                  .of(context)
+                  .size
+                  .width * 0.27,
+              color: Colors.orangeAccent,
+              onPressed: () {
+                //final prefs = await SharedPreferences.getInstance();
+                // prefs.setBool("shiftPlannerPop",true);
+                Navigator.of(context, rootNavigator: true).pop();
+              },
+              child: Text(
+                "OK",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+            )
+          ]).show();
+
+
+
   }
 
 
@@ -1391,7 +1457,29 @@ class _MyHomePageState extends State<MyHomePage1> {
       daysHaveCircularBorder: null,
       markedDateShowIcon: true,
       onDayPressed: (date, events) {
+
+        String Date = DateFormat('yyyy-MM-dd').format(date);
+
+        print(Date);
+        print(date);
+        print(AttendanceDate);
+        print(Date!= AttendanceDate);
+        print("Date!= AttendanceDate");
+
+       /* if((timeInPunched == false)  && (Date!= AttendanceDate))
         _onDaySelected(date, events);
+        else{
+          print(timeInPunched);
+          print("timeInPunched");
+          _onAlertTimeInPunched(date);
+        }*/
+
+        if((timeInPunched == true) && Date == AttendanceDate){
+          _onAlertTimeInPunched(date);
+        }
+        else{
+          _onDaySelected(date, events);
+        }
       },
       showOnlyCurrentMonthDate: true,
       markedDateIconMargin: 0,
@@ -1923,11 +2011,6 @@ class _MyHomePageState extends State<MyHomePage1> {
   }
 
   _onAlertWithCustomContentPressed(date) async {
-    //onpop
-    /*  getPlannerWiseSummary(date,Id).then((values) {
-      setState(() {
-        userlist = values;
-      });*/
 
     var userlist = await getPlannerWiseSummary(date,Id);
 
