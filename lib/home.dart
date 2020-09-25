@@ -1048,11 +1048,14 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         dioForSavingOfflineAttendance
             .post(globals.path + "saveOfflineData", data: formData)
             .then((responseAfterSavingOfflineData) async {
-          var response = json.decode(responseAfterSavingOfflineData.toString());
 
           print(
               '--------------------- Data Syncing Response--------------------------------');
           LogPrint(responseAfterSavingOfflineData);
+
+          var response = json.decode(responseAfterSavingOfflineData.toString());
+
+
 
           print(
               '--------------------- Data Syncing Response--------------------------------');

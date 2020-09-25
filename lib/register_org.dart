@@ -523,35 +523,38 @@ class _MyHomePageState extends State<MyHomePage> {
                     ],
                   ),
                   SizedBox(height: 15.0),
-                  Container(
-                    width: MediaQuery.of(context).size.width*0.9,
-                    decoration: BoxDecoration(
-                        color: const Color(0xFFFBFBFB),
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        boxShadow: [new BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 1.0,
-                        ),]
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: new TextFormField(
-                        decoration:  InputDecoration(
-                            border: InputBorder.none,
-                            prefixIcon: Icon(
-                              Icons.location_city,
-                              color: Colors.black38,
-                            ),
-                            hintText: 'City',
-                            //hintText: AppTranslations.of(context).text("key_city"),
-                            hintStyle: TextStyle(
-                              color: Colors.black45,
-                            )
-                        ),
-                        //controller: _city,
+                  Visibility(
+                    visible: false,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width*0.9,
+                      decoration: BoxDecoration(
+                          color: const Color(0xFFFBFBFB),
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          boxShadow: [new BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 1.0,
+                          ),]
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: new TextFormField(
+                          decoration:  InputDecoration(
+                              border: InputBorder.none,
+                              prefixIcon: Icon(
+                                Icons.location_city,
+                                color: Colors.black38,
+                              ),
+                              hintText: 'City',
+                              //hintText: AppTranslations.of(context).text("key_city"),
+                              hintStyle: TextStyle(
+                                color: Colors.black45,
+                              )
+                          ),
+                          //controller: _city,
 
-                        controller: locController1,
-                        keyboardType:  TextInputType.text,
+                          controller: locController1,
+                          keyboardType:  TextInputType.text,
+                        ),
                       ),
                     ),
                   ),
@@ -762,6 +765,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               ));
                               return null;
                             }
+                            /*
                             else if(locController1.text.trim()=='') {
                               // ignore: deprecated_member_use
                               // FocusScope.of(context).requestFocus(__name);
@@ -772,7 +776,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 //content: new Text(AppTranslations.of(context).text("key_enter_company_name")),
                               ));
                               return null;
-                            }
+                            }*/
                             else if(_cname.text.trim()=='') {
                               // ignore: deprecated_member_use
                               showDialog(context: context, child:
