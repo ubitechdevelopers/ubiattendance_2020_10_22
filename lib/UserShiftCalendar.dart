@@ -2595,10 +2595,10 @@ class _MyHomePageState extends State<userShiftCalendar> {
                                       fontWeight: FontWeight.w400)),
                             ],
                           ),*/
-                          SizedBox(height: MediaQuery
+                          (date.toString().substring(0,10).compareTo(now.toString().substring(0,10))) != 0?SizedBox(height: MediaQuery
                               .of(context)
                               .size
-                              .height * .01),
+                              .height * .01):Container(),
                           (date.toString().substring(0,10).compareTo(now.toString().substring(0,10))) != 0?Row(
                             children: <Widget>[
                               Icon(Icons.timer, size: 20.0,
