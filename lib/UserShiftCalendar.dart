@@ -419,7 +419,7 @@ class _MyHomePageState extends State<userShiftCalendar> {
               });
 
               for (int i = 0; i < holidayList.length; i++) {
-               // print("holidaysss");
+                // print("holidaysss");
                 if (int.parse(holidayList[i].Days) > 1) {
                   Holidaydate = holidayList[i].fromDateFormat;
                   holidayNameList.addAll({Holidaydate:holidayList[i].Name});
@@ -825,26 +825,30 @@ class _MyHomePageState extends State<userShiftCalendar> {
   );
 
 
-  Widget _attendanceIcon(String day, String timein, String timeout) => Container(    /// icon for days gone(present)
-    decoration: BoxDecoration(
-      //color: Colors.teal[100],
-      color: Colors.green[100],
-      border: Border.all(
-          width: 1, color: Colors.green//                   <--- border width here
-      ),
-      borderRadius: BorderRadius.all(
-        Radius.circular(5),
-      ),
-    ),
-    child: Center(
-      child: Text(
-        day,
-        style: TextStyle(
-          color: Colors.black,fontSize: 16,
+  Widget _attendanceIcon(String day, String timein, String timeout) =>
+      Container(
+        //  height: 5000,
+        //   width: 5000,
+        decoration: BoxDecoration(
+
+          //color: Colors.teal[100],
+          color: Colors.green[100],
+          border: Border.all(
+              width: 1, color: Colors.green//                   <--- border width here
+          ),
+          borderRadius: BorderRadius.all(
+            Radius.circular(5),
+          ),
         ),
-      ),
-    ),
-  );
+        child: Center(
+          child: Text(
+            day,
+            style: TextStyle(
+              color: Colors.black,fontSize: 16,
+            ),
+          ),
+        ),
+      );
 
   Widget _missedPunches(String day, String timein, String timeout) => Container(    /// icon for days gone(present)
     decoration: BoxDecoration(
@@ -1172,9 +1176,10 @@ class _MyHomePageState extends State<userShiftCalendar> {
     _calendarCarouselNoHeader = CalendarCarousel<Event>(
       height: cHeight * 0.54,
 
-     // todayButtonColor: Colors.teal[400],
-    //  todayBorderColor:Colors.teal,
+      // todayButtonColor: Colors.teal[400],
+      //  todayBorderColor:Colors.teal,
       todayButtonColor: Colors.transparent,
+      markedDateIconMargin:0,
 
 
       inactiveDaysTextStyle:  TextStyle(
@@ -1223,7 +1228,7 @@ class _MyHomePageState extends State<userShiftCalendar> {
         }
       },
       showOnlyCurrentMonthDate: true,
-      markedDateIconMargin: 0,
+      //markedDateIconMargin: 0,
       //targetDateTime: DateTime.now(),
       minSelectedDate: DateTime(now.year , now.month - 2 , 1),
       maxSelectedDate:  DateTime(now.year , now.month  , now.day),
@@ -1232,6 +1237,7 @@ class _MyHomePageState extends State<userShiftCalendar> {
       iconColor: globals.appcolor,
 
       //  weekDayBackgroundColor: Colors.teal[100],
+      // markedDateWidget:  Positioned(child: Container(color: Colors.red, height: 4.0, width: 4.0), bottom: 4.0, left: 18.0),
 
 
       weekdayTextStyle:TextStyle(
@@ -1292,7 +1298,8 @@ class _MyHomePageState extends State<userShiftCalendar> {
                             style: new TextStyle(fontSize: 15.0, color: Colors.black,),),
                         ]
                     ),
-                  ), Container(
+                  ),
+                  Container(
                     child: Row(
                         children: <Widget>[
                           CircleAvatar(
@@ -1303,7 +1310,8 @@ class _MyHomePageState extends State<userShiftCalendar> {
                             style: new TextStyle(fontSize: 15.0, color: Colors.black,),),
                         ]
                     ),
-                  ), Container(
+                  ),
+                  Container(
                     child: Row(
                         children: <Widget>[
                           CircleAvatar(
@@ -2508,7 +2516,7 @@ class _MyHomePageState extends State<userShiftCalendar> {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
 
-                          Row(
+                          userlist[0].shifttype.toString() != '3' ?Row(
                             children: <Widget>[
                               Icon(Icons.timelapse, size: 20.0,
                                 color: Colors.black54,), SizedBox(width: 5.0),
@@ -2519,6 +2527,20 @@ class _MyHomePageState extends State<userShiftCalendar> {
                               new Text(
                                   userlist.isEmpty ? "-"
                                       : userlist[0].ShiftTimeIn+" - "+userlist[0].ShiftTimeOut,
+                                  style: new TextStyle(fontSize: 15.0,
+                                      fontWeight: FontWeight.w400)),
+                            ],
+                          ):Row(
+                            children: <Widget>[
+                              Icon(Icons.timelapse, size: 20.0,
+                                color: Colors.black54,), SizedBox(width: 5.0),
+                              new Text("Shift Timings: ", style: new TextStyle(
+                                  fontSize: 15.0,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.bold)),
+                              new Text(
+                                  userlist.isEmpty ? "-"
+                                      : userlist[0].HoursPerDay.toString()+" Hrs/Day",
                                   style: new TextStyle(fontSize: 15.0,
                                       fontWeight: FontWeight.w400)),
                             ],
@@ -2541,7 +2563,7 @@ class _MyHomePageState extends State<userShiftCalendar> {
                                       fontWeight: FontWeight.w400)),
                             ],
                           ),
-                         /* SizedBox(height: MediaQuery
+                          /* SizedBox(height: MediaQuery
                               .of(context)
                               .size
                               .height * .01),
@@ -2676,35 +2698,35 @@ class _MyHomePageState extends State<userShiftCalendar> {
 
   _onAlertForHolidays(date) {
 
-   var nameOfHoliday="";
-   holidayNameList.forEach((k,v){
+    var nameOfHoliday="";
+    holidayNameList.forEach((k,v){
 
-     if(k == date ){
-       nameOfHoliday = v;
-     }
+      if(k == date ){
+        nameOfHoliday = v;
+      }
 
-     print(nameOfHoliday);
-     print("nameOfHoliday");
+      print(nameOfHoliday);
+      print("nameOfHoliday");
 
-   });
+    });
 
 
 
 
 
     var alertStyle = AlertStyle(
-        animationType: AnimationType.fromBottom,
-        isCloseButton: false,
-        isOverlayTapDismiss: true,
-        descStyle: TextStyle(fontWeight: FontWeight.bold),
-        animationDuration: Duration(milliseconds: 400),
+      animationType: AnimationType.fromBottom,
+      isCloseButton: false,
+      isOverlayTapDismiss: true,
+      descStyle: TextStyle(fontWeight: FontWeight.bold),
+      animationDuration: Duration(milliseconds: 400),
 
-      );
-      Alert(
-          style: alertStyle,
-          context: context,
-          title: ""+Formatdate(date.toString().substring(0, 10))+"\n\n"+nameOfHoliday,
-         /* content: Wrap(
+    );
+    Alert(
+        style: alertStyle,
+        context: context,
+        title: ""+Formatdate(date.toString().substring(0, 10))+"\n\n"+nameOfHoliday,
+        /* content: Wrap(
 
             children: <Widget>[
               Container(
@@ -3232,22 +3254,22 @@ class _MyHomePageState extends State<userShiftCalendar> {
             ],
           ),*/
 
-          buttons: [
-            DialogButton(
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width * 0.22,
-              color: Colors.orangeAccent,
-              onPressed: () {
-                Navigator.of(context, rootNavigator: true).pop();
-              },
-              child: Text(
-                "OK",
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              ),
-            )
-          ]).show();
+        buttons: [
+          DialogButton(
+            width: MediaQuery
+                .of(context)
+                .size
+                .width * 0.22,
+            color: Colors.orangeAccent,
+            onPressed: () {
+              Navigator.of(context, rootNavigator: true).pop();
+            },
+            child: Text(
+              "OK",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          )
+        ]).show();
     ///});
   }
 
@@ -4419,6 +4441,8 @@ List<User> createUserList(List data){
     String TimeIn=data[i]["TimeIn"]=="00:00:00"?'-':data[i]["TimeIn"].toString().substring(0,5);
     String ShiftTimeIn=data[i]["shiftin"]=="00:00:00"?'-':formatTime(data[i]["shiftin"].toString());
     String ShiftTimeOut=data[i]["shiftout"]=="00:00:00"?'-':formatTime(data[i]["shiftout"].toString());
+    String shifttype=data[i]["shifttype"]=="00:00:00"?'-':formatTime(data[i]["shifttype"].toString());
+    String HoursPerDay=data[i]["HoursPerDay"]=="00:00:00"?'-':formatTime(data[i]["HoursPerDay"].toString());
     String thours=data[i]["thours"]=="00:00:00"?'00:00':formatTime(data[i]["thours"].toString());
     String bhour=data[i]["bhour"]==null?'-':formatTime(data[i]["bhour"].substring(0,5));                //time off string
     // String overtime=data[i]["overtime"]=="00:00:00"?'-':data[i]["overtime"];
@@ -4440,7 +4464,7 @@ List<User> createUserList(List data){
       timeoutdate=data[i]["AttendanceDate"];
     int id = 0;
     User user = new User(
-        AttendanceDate: title,ShiftTimeIn:ShiftTimeIn,ShiftTimeOut:ShiftTimeOut,thours: thours,id: id,overtime:overtime,TimeOut:TimeOut,TimeIn:TimeIn,bhour:bhour,EntryImage:EntryImage,checkInLoc:checkInLoc,ExitImage:ExitImage,CheckOutLoc:CheckOutLoc,latit_in: Latit_in,longi_in: Longi_in,latit_out: Latit_out,longi_out: Longi_out,timeindate: timeindate,timeoutdate: timeoutdate);
+        AttendanceDate: title,ShiftTimeIn:ShiftTimeIn,HoursPerDay:HoursPerDay,ShiftTimeOut:ShiftTimeOut,shifttype:shifttype,thours: thours,id: id,overtime:overtime,TimeOut:TimeOut,TimeIn:TimeIn,bhour:bhour,EntryImage:EntryImage,checkInLoc:checkInLoc,ExitImage:ExitImage,CheckOutLoc:CheckOutLoc,latit_in: Latit_in,longi_in: Longi_in,latit_out: Latit_out,longi_out: Longi_out,timeindate: timeindate,timeoutdate: timeoutdate);
     list.add(user);
   }
   return list;
@@ -4464,8 +4488,10 @@ class User {
   String overtime;
   String ShiftTimeIn;
   String ShiftTimeOut;
+  String shifttype;
+  String HoursPerDay;
   int id=0;
-  User({this.AttendanceDate,this.thours,this.overtime,this.ShiftTimeIn,this.ShiftTimeOut,this.id,this.TimeOut,this.TimeIn,this.bhour,this.EntryImage,this.checkInLoc,this.ExitImage,this.CheckOutLoc,this.latit_in,this.longi_in,this.latit_out,this.longi_out,this.timeindate,this.timeoutdate});
+  User({this.AttendanceDate,this.thours,this.overtime,this.ShiftTimeIn,this.HoursPerDay,this.ShiftTimeOut,this.shifttype,this.id,this.TimeOut,this.TimeIn,this.bhour,this.EntryImage,this.checkInLoc,this.ExitImage,this.CheckOutLoc,this.latit_in,this.longi_in,this.latit_out,this.longi_out,this.timeindate,this.timeoutdate});
 }
 formatTime(String time){
   if(time.contains(":")){

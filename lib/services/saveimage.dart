@@ -546,6 +546,9 @@ class SaveImage {
       Dio dioForSavingOfflineAttendance = new Dio();
       dioForSavingOfflineAttendance.post(globals.path + "SendTempimage", data: formData).then((responseAfterSendTempimage) async {
         var response = json.decode(responseAfterSendTempimage.toString());
+
+        debugPrint("rrrrr"+response.toString());
+
         for (int i = 0; i < response.length; i++) {
           print(response);
           var map = response[i];
@@ -562,7 +565,7 @@ class SaveImage {
                   ));
             }
             print(status);
-            //imagedata.delete(int.parse(localDbId));
+            imagedata.delete(int.parse(localDbId));
           });
         }
       });
@@ -632,7 +635,6 @@ class SaveImage {
 
       imageCache.clear();
       if (globals.attImage == 1) {
-
         globals.cameraChannel.invokeMethod("cameraOpened");
         imagei = await ImagePicker.pickImage(source: ImageSource.camera, maxWidth: 200.0, maxHeight: 200.0);
 

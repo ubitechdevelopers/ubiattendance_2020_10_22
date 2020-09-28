@@ -1530,11 +1530,11 @@ class _MyHomePageState extends State<MyHomePage1> {
             SizedBox(height: 8.0,),
             ///SizedBox(height: 8.0),
             Center(
-              child: Name.length >15?Text( "Shift Planner - "+Name.toString().substring(0,15)+"...",
-                style: new TextStyle(fontSize: 25.0, color: appcolor,),)
+              child: Name.length >12?Text( "Shift Planner - "+Name.toString().substring(0,12)+"...",
+                style: new TextStyle(fontSize: 22.0, color: appcolor,),)
 
                   :Text("Shift Planner - "+Name,
-                style: new TextStyle(fontSize: 25.0, color: appcolor,),),
+                style: new TextStyle(fontSize: 22.0, color: appcolor,),),
             ),
             Divider(height: 10.0,color: Colors.black),
             SizedBox(height: 3.0,),

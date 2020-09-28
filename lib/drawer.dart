@@ -265,7 +265,7 @@ class AppDrawerState extends State<AppDrawer> {
               );
             },
           ):new Center(),
-*/
+*//*
           flexi_permission ==1 ?
           new ListTile(
             title: Row(
@@ -295,7 +295,7 @@ class AppDrawerState extends State<AppDrawer> {
                 MaterialPageRoute(builder: (context) => Notifications()),
               );
             },
-          ):new Center(),
+          ):new Center(),*/
           /*(reportper ==1 || reportper ==2)&&geoFence==1?new ListTile(
             title: Row(
               children: <Widget>[

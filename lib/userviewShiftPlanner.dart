@@ -1474,7 +1474,7 @@ class _userViewShiftCalendarState extends State<userViewShiftPlanner> {
       showOnlyCurrentMonthDate: true,
       markedDateIconMargin: 0,
       //targetDateTime: DateTime.now(),
-      minSelectedDate: DateTime(now.year , now.month -4 , 1),
+      minSelectedDate: DateTime(now.year , now.month -3 , 1),
       maxSelectedDate:  DateTime(now.year , now.month +6  , now.day),
       markedDateIconMaxShown: 1,
       markedDateMoreShowTotal: null,

@@ -56,6 +56,7 @@ import 'every7dayscovidsurvey.dart';
 import 'faceIdScreen.dart';
 import 'globals.dart';
 import 'globals.dart';
+import 'globals.dart';
 import 'leave_summary.dart';
 import 'location_tracking/home_view.dart';
 import "offline_home.dart";
@@ -247,7 +248,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                           shape: BoxShape.circle,
                           image: new DecorationImage(
                             fit: BoxFit.cover,
-                            image: val2!=null?new NetworkImage(val2):AssetImage('assets/avatar.png'),
+
+                            image: facerecognition.toString()=='1'?(val2!=null?new NetworkImage(val2):AssetImage('assets/avatar.png')):MemoryImage(base64Decode(globals.PictureBase64Att)),
                             //image: AssetImage('assets/avatar.png')
                           ))),
                 ),

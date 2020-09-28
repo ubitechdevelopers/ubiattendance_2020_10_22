@@ -51,7 +51,7 @@ class TempImage{
     OrganizationId=map['OrganizationId'];
     Module=map['Module'];
     interimAttendanceId=map['InterimAttendanceId'];
-    Module=map['ShiftId'];
+    shiftId=map['ShiftId'];
   }
 
 
