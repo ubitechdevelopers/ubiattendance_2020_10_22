@@ -151,7 +151,7 @@ var timeoffRunning=false;
 var ShiftPlanner=0;
 String defaultShiftTimings='';
 
-String appVersion='5.4.0';
+String appVersion='5.4.1';
 
 
 
