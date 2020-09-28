@@ -326,7 +326,7 @@ class _TimeOffList extends State<TimeOffList> {
                   width: MediaQuery.of(context).size.width*1,
                   color: appcolor.withOpacity(0.1),
                   padding:EdgeInsets.only(top:5.0,bottom: 5.0),
-                  child:Text("No one is on Time Off ",style: TextStyle(fontSize: 18.0),textAlign: TextAlign.center,),
+                  child:Text("No records found ",style: TextStyle(fontSize: 18.0),textAlign: TextAlign.center,),
                 ),
               );
             }

@@ -349,6 +349,7 @@ class LeaveList {
   String Remarks;
   String LeaveId;
   String NoofLeaves;
+  String ApprovebyRemark;
 
   LeaveList({
     this.Id,
@@ -361,7 +362,8 @@ class LeaveList {
     this.ApproverName,
     this.Remarks,
     this.LeaveId,
-    this.NoofLeaves
+    this.NoofLeaves,
+    this.ApprovebyRemark
   });
 }
 
@@ -401,23 +403,24 @@ List<LeaveList> createLeaveList(List data){
     String Name = data[i]["name"];
     String AppliedDate = data[i]["AppliedDate"];
     String Reason=data[i]["Reason"];
-    String ApprovalStatus='';
+    String ApprovalStatus=data[i]["ApprovalStatus"];
     String ApproverName=data[i]["ApproverName"];
+    String ApprovebyRemark;
     String Remarks=data[i]["Remarks"];
     String FromDate = data[i]["Date"].toString();
     String ToDate = data[i]["ToDate"].toString();
     String LeaveId = data[i]["LeaveId"].toString();
     String NoofLeaves = data[i]["NoofLeaves"].toString();
     if(data[i]["ApprovalStatus"].toString()=='1')
-      ApprovalStatus='Pending';
+      ApprovebyRemark='Pending';
     else  if(data[i]["ApprovalStatus"].toString()=='2')
-      ApprovalStatus='Approved by '+ApproverName;
+      ApprovebyRemark='Approved by '+ApproverName;
     else  if(data[i]["ApprovalStatus"].toString()=='3')
-      ApprovalStatus='Rejected by '+ApproverName;
+      ApprovebyRemark='Rejected by '+ApproverName;
     else  if(data[i]["ApprovalStatus"].toString()=='4')
-      ApprovalStatus='Withdrawn';
+      ApprovebyRemark='Withdrawn';
     //print(LeaveDate);
-    LeaveList leave = new LeaveList(Id: Id,Name: Name,AppliedDate: AppliedDate,FromDate :FromDate,ToDate: ToDate, Reason: Reason, ApprovalStatus: ApprovalStatus,ApproverName: ApproverName, Remarks: Remarks, LeaveId: LeaveId,NoofLeaves: NoofLeaves);
+    LeaveList leave = new LeaveList(Id: Id,Name: Name,AppliedDate: AppliedDate,FromDate :FromDate,ToDate: ToDate, Reason: Reason, ApprovalStatus: ApprovalStatus,ApproverName: ApproverName, Remarks: Remarks, LeaveId: LeaveId,NoofLeaves: NoofLeaves,ApprovebyRemark:ApprovebyRemark);
     list.add(leave);
      //print("LEAVE LIST");
    // print(list);
@@ -438,6 +441,7 @@ class LeaveListAll {
   String Remark;
   int NoofLeaves;
   String EmployeeId;
+  String ApprovebyRemark;
 
   LeaveListAll(
       { this.Id,
@@ -451,7 +455,8 @@ class LeaveListAll {
         this.LeaveId,
         this.Remark,
         this.NoofLeaves,
-        this.EmployeeId
+        this.EmployeeId,
+        this.ApprovebyRemark
       });
 }
 class LeaveH {
@@ -515,16 +520,17 @@ List<LeaveListAll> createTeamleaveapporval(List data) {
     String LeaveId = data[i]["LeaveId"].toString();
     int NoofLeaves = int.parse(data[i]["NoofLeaves"]);
     String EmployeeId = data[i]["EmployeeId"];
-    String ApprovalStatus='';
+    String ApprovalStatus=data[i]["ApprovalStatus"];
+    String ApprovebyRemark;
     String ApproverName= data[i]["ApproverName"];
     if(data[i]["ApprovalStatus"].toString()=='1')
-       ApprovalStatus='Pending';
+      ApprovebyRemark='Pending';
     else  if(data[i]["ApprovalStatus"].toString()=='2')
-      ApprovalStatus='Approved by '+ApproverName;
+      ApprovebyRemark='Approved by '+ApproverName;
     else  if(data[i]["ApprovalStatus"].toString()=='3')
-       ApprovalStatus='Rejected by '+ApproverName;
+      ApprovebyRemark='Rejected by '+ApproverName;
     else  if(data[i]["ApprovalStatus"].toString()=='4')
-       ApprovalStatus='Withdrawn';
+      ApprovebyRemark='Withdrawn';
 
 
     LeaveListAll tos = new LeaveListAll(
@@ -538,7 +544,8 @@ List<LeaveListAll> createTeamleaveapporval(List data) {
         ApprovalStatus:  ApprovalStatus,
         ApproverName: ApproverName,
         NoofLeaves: NoofLeaves,
-        EmployeeId: EmployeeId);
+        EmployeeId: EmployeeId,
+        ApprovebyRemark:ApprovebyRemark);
     list.add(tos);
 
   }

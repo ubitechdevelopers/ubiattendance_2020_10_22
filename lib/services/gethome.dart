@@ -73,6 +73,8 @@ class Home{
         String password_sts = timeinoutMap['password_sts'].toString(); //somya
         String changepasswordStatus = timeinoutMap['admin_password_sts'].toString();
         print('beforepushnotification');
+        globals.MinimumWorkingHours=timeinoutMap['MinimumWorkingHours'].toString()??"00:00:00";
+        print(globals.MinimumWorkingHours);
 
         //////////////////// Push Notification Status ///////////////////////
 
@@ -157,6 +159,7 @@ class Home{
         globals.ableToMarkAttendance = int.parse(timeinoutMap['ableToMarkAttendance']);
         globals.areaId=int.parse(timeinoutMap['areaId']);
         print("Testing line4");
+
 
         print("Area Id :"+globals.areaId.toString()+" geofence :"+globals.geoFence.toString());
         prefs.setString('buysts', timeinoutMap["buysts"]);

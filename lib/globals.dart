@@ -84,6 +84,7 @@ int firstface=0;
 String globalcity='City Not Fetched';
 var deviceid="0";
 var devicenamebrand="";
+String MinimumWorkingHours;
 int visitImage = 0;
 
 int attImage = 0;

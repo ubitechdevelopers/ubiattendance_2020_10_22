@@ -468,7 +468,7 @@ class _MyLeaveState extends State<MyLeave> {
 
 
 
-                                              (snapshot.data[index].ApprovalStatus.toString() !='Withdrawn' && snapshot.data[index].ApprovalStatus.toString() !="Rejected" && snapshot.data[index].ApprovalStatus.toString()!="Approved")?
+                                              (snapshot.data[index].ApprovalStatus.toString() !='4' && snapshot.data[index].ApprovalStatus.toString() !="3" && snapshot.data[index].ApprovalStatus.toString()!="2")?
                                                 new Expanded(
                                                   child: Padding(
                                                     padding: const EdgeInsets.fromLTRB(115.0,3.0,0.0,0.0),
@@ -575,7 +575,7 @@ class _MyLeaveState extends State<MyLeave> {
                                                 ),
                                                 children: <TextSpan>[
                                                   new TextSpan(text: 'Status: ',style:TextStyle(color: Colors.black54,), ),
-                                                  new TextSpan(text: snapshot.data[index].ApprovalStatus.toString(), style: TextStyle(color: snapshot.data[index].ApprovalStatus.toString()=='Approved'?appcolor :snapshot.data[index].ApprovalStatus.toString()=='Rejected' || snapshot.data[index].ApprovalStatus.toString()=='Cancel' ?Colors.red:snapshot.data[index].ApprovalStatus.toString().startsWith('Pending')?Colors.orange[800]:Colors.blue[600], fontSize: 14.0),),
+                                                  new TextSpan(text: snapshot.data[index].ApprovebyRemark.toString(), style: TextStyle(color: snapshot.data[index].ApprovalStatus.toString()=='2'?appcolor :snapshot.data[index].ApprovalStatus.toString()=='3' || snapshot.data[index].ApprovalStatus.toString()=='Cancel' ?Colors.red:snapshot.data[index].ApprovalStatus.toString().startsWith('1')?Colors.orange[800]:Colors.blue[600], fontSize: 14.0),),
                                                 ],
                                               ),
                                             ),

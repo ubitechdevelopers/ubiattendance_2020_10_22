@@ -379,7 +379,7 @@ class _MyTeamLeaveState extends State<MyTeamLeave> {
                                                   ),
                                                 ),
 
-                                               (snapshot.data[index].ApprovalStatus.toString() == 'Pending')?
+                                               (snapshot.data[index].ApprovalStatus.toString() == '1')?
                                                 new Expanded(
                                                   child: Container (
                                                      //color:Colors.yellow,
@@ -427,7 +427,7 @@ class _MyTeamLeaveState extends State<MyTeamLeave> {
                                               child: Text('No of Leave: '+snapshot.data[index].NoofLeaves.toString(), style: TextStyle(color: Colors.black54),),
                                             ),
 
-                                            (snapshot.data[index].ApprovalStatus.toString()!='Pending' ) ?Container(
+                                            (snapshot.data[index].ApprovalStatus.toString()!='1' ) ?Container(
                                               width: MediaQuery.of(context).size.width*.90,
                                               //padding: EdgeInsets.only(top:.5,bottom: 1.5),
                                               margin: EdgeInsets.only(top: 4.0),
@@ -441,7 +441,7 @@ class _MyTeamLeaveState extends State<MyTeamLeave> {
                                                   ),
                                                   children: <TextSpan>[
                                                     new TextSpan(text: 'Status: ',style:TextStyle(color: Colors.black54,), ),
-                                                    new TextSpan(text: snapshot.data[index].ApprovalStatus.toString(), style: TextStyle(color: snapshot.data[index].ApprovalStatus.toString()=='Approved'?appcolor :snapshot.data[index].ApprovalStatus.toString()=='Rejected' || snapshot.data[index].ApprovalStatus.toString()=='Withdrawn' ?Colors.red:Colors.blue[600], fontSize: 14.0),),
+                                                    new TextSpan(text: snapshot.data[index].ApprovebyRemark.toString(), style: TextStyle(color: snapshot.data[index].ApprovalStatus.toString()=='2'?appcolor :snapshot.data[index].ApprovalStatus.toString()=='3' || snapshot.data[index].ApprovalStatus.toString()=='' ?Colors.red:Colors.blue[600], fontSize: 14.0),),
                                                   ],
                                                 ),
                                               ),
@@ -449,7 +449,7 @@ class _MyTeamLeaveState extends State<MyTeamLeave> {
                                               // child:Text(snapshot.data[index].withdrawlsts.toString()),
                                             ),
 
-                                            (snapshot.data[index].ApprovalStatus.toString()=='Pending') ?Container(
+                                            (snapshot.data[index].ApprovalStatus.toString()=='1') ?Container(
                                               width: MediaQuery.of(context).size.width*.90,
                                               //padding: EdgeInsets.only(top:.5,bottom: 1.5),
                                               margin: EdgeInsets.only(top: 4.0),
@@ -463,7 +463,7 @@ class _MyTeamLeaveState extends State<MyTeamLeave> {
                                                   ),
                                                   children: <TextSpan>[
                                                     new TextSpan(text: 'Status: ',style:TextStyle(color: Colors.black54,), ),
-                                                    new TextSpan(text: snapshot.data[index].ApprovalStatus.toString(), style: TextStyle(color: Colors.orange[800], fontSize: 14.0),),
+                                                    new TextSpan(text: snapshot.data[index].ApprovebyRemark.toString(), style: TextStyle(color: Colors.orange[800], fontSize: 14.0),),
                                                   ],
                                                 ),
                                               ),
