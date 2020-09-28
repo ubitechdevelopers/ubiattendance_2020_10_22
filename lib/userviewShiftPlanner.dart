@@ -734,57 +734,69 @@ class _userViewShiftCalendarState extends State<userViewShiftPlanner> {
   }
 
   Widget _attendanceIcon(String day, String Shift ) => Container(    /// icon for days gone(present)
-    decoration: BoxDecoration(
-      //color: Colors.teal[100],
-      color: Colors.green[100],
-      border: Border.all(
-          width: 1, color: Colors.green//                   <--- border width here
+      decoration: BoxDecoration(
+        //color: Colors.teal[100],
+        color: Colors.green[100],
+        border: Border.all(
+            width: 1, color: Colors.green//                   <--- border width here
+        ),
+        borderRadius: BorderRadius.all(
+          Radius.circular(5),
+        ),
       ),
-      borderRadius: BorderRadius.all(
-        Radius.circular(5),
-      ),
-    ),
-    child: Container(
-      child: new Column(
-        children: <Widget>[
-          new Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  day,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Colors.black, fontSize: 12
+      child: Container(
+        child: new Column(
+          children: <Widget>[
+            new Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    day,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.black, fontSize: 12
+                    ),
                   ),
-                ),
-              ]
-          ),
-          SizedBox(height: 1,),
-          new Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  Shift.substring(1, 6),
-                  style: TextStyle(
-                      color: Colors.black, fontSize: 9
+                ]
+            ),
+            SizedBox(height: 1,),
+            new Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  !Shift.contains("Flexi")?Text(
+                    Shift.substring(1, 6),
+                    style: TextStyle(
+                        color: Colors.black, fontSize: 9
+                    ),
+                  ):Text(
+                    Shift.substring(1, 6),
+                    style: TextStyle(
+                        color: Colors.black, fontSize: 9
+                    ),
                   ),
-                )
-              ]
-          ), new Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  Shift.substring(9, 14),
-                  style: TextStyle(
-                      color: Colors.black, fontSize: 9
+                ]
+            ),
+            new Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  !Shift.contains("Flexi")?Text(
+                    Shift.substring(9, 14),
+                    style: TextStyle(
+                        color: Colors.black, fontSize: 9
+                    ),
+                  ):Text(
+                    Shift.substring(7, 12)+" "+Shift.substring(16, 19),
+                    style: TextStyle(
+                        color: Colors.black, fontSize: 9
+                    ),
                   ),
-                ),
-              ]
-          ),
+                ]
+            ),
 
-        ],
-      ),
-    )
+
+          ],
+        ),
+      )
   );
 
   Widget _missedPunches(String day, String timein, String timeout) => Container(    /// icon for days gone(present)
@@ -860,7 +872,7 @@ class _userViewShiftCalendarState extends State<userViewShiftPlanner> {
                     ),
                   ]
               ),
-              SizedBox(height: 4,),
+              SizedBox(height: 1,),
               new Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -1556,7 +1568,7 @@ class _userViewShiftCalendarState extends State<userViewShiftPlanner> {
                         children: <Widget>[
                           CircleAvatar(
                             backgroundColor: Colors.blue[100],
-                            radius: cHeight * 0.011,   
+                            radius: cHeight * 0.011,
                           ),
                           Text("  Missed",
                             style: new TextStyle(fontSize: 15.0, color: Colors.black,),),

@@ -5,8 +5,10 @@ import 'package:Shrine/drawer.dart';
 import 'package:Shrine/services/gethome.dart';
 import 'package:Shrine/services/services.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,12 +22,14 @@ class addShift extends StatefulWidget {
 class _addShift extends State<addShift> {
   bool isloading = false;
   final _shiftName = TextEditingController();
+  final shiftHours = TextEditingController();
   final _from = TextEditingController();
   final minimumworkinghours = TextEditingController();
   final _to = TextEditingController();
   final _from_b = TextEditingController();
   final _to_b = TextEditingController();
   final timeFormat = DateFormat("H:mm");
+  var datenew = new DateTime.now();
   final timeFormatnew = DateFormat("H:mm");
   final _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -37,8 +41,21 @@ class _addShift extends State<addShift> {
   String shifttype = "1";
   var visiblity= true;
   var visiblitymin= false;
+  var visiblityhours= false;
+  var textedit= true;
+  var formatter = new DateFormat('HH:mm');
+  var formatter1 = new DateFormat('HH');
+  var formatter2 = new DateFormat('mm');
 
   bool _isButtonDisabled=false;
+
+  DateTime _dateTime;
+
+  String date1='';
+  String date2='';
+  String date3='';
+  int date_hours=0;
+  int date_min=0;
   @override
   void initState() {
     super.initState();
@@ -212,12 +229,28 @@ class _addShift extends State<addShift> {
                         if(shifttype=='3'){
                         arr= '00:00';
                         arr1='00:00';
-                        print('minimumworkinghours---->'+minimumworkinghours.text);
-                        if(minimumworkinghours.text=='0:00'){
-                          showInSnackBar("Shift hours cannot be equal to 0 hrs");
-                          return null;
+                        print('minimumworkinghours---->'+date2.toString());
+                        if(date1==''){
+                            showInSnackBar(
+                                "Please enter minimum working hours");
+                            return null;
+                          }
+
+                        if(date_hours>=18){
+                          if(date_min>0) {
+                            showInSnackBar(
+                                "Minimum working hours cannot be greater than 18 hrs");
+                            return null;
+                          }
 
 
+                        }
+                        if(date_hours==0){
+                          if(date_min<15){
+                            showInSnackBar(
+                                "Minimum working hours cannot be less than 00:15 hours");
+                            return null;
+                          }
                         }
 
                         }else{
@@ -372,7 +405,7 @@ class _addShift extends State<addShift> {
                           _isButtonDisabled=true;
                         });
 
-                        createShift(_shiftName.text,shifttype,_from.text,_to.text,_from_b.text,_to_b.text,minimumworkinghours.text).then((res)async{
+                        createShift(_shiftName.text,shifttype,_from.text,_to.text,_from_b.text,_to_b.text,date1).then((res)async{
                           if(res.toString()=='1') {
 
                             var prefs=await SharedPreferences.getInstance();
@@ -536,6 +569,7 @@ class _addShift extends State<addShift> {
                                       }else{
                                         visiblity=true;
                                         visiblitymin=false;
+                                        visiblityhours=false;
 
                                       }
 
@@ -589,41 +623,72 @@ class _addShift extends State<addShift> {
                     visible: visiblitymin,
                     child: Row(
                       children: <Widget>[
-                       Expanded(
-                        child:DateTimeField(
-                          format: timeFormatnew,
-                          controller: minimumworkinghours,
-                          //editable: false,
-                          onShowPicker: (context, currentValue) async {
-                            final time = await showTimePicker(
-                              context: context,
-                              initialTime: TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
-                            );
-                            return DateTimeField.convert(time);
-                          },
-                          readOnly: true,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide( color: Colors.grey.withOpacity(0.0), width: 1,),
-                            ),
+                        Expanded(
+                          child: InkWell(
+                            onTap: (){
+                              DatePicker.showTimePicker(context, showTitleActions: true, showSecondsColumn:false, onChanged: (date) {
+                                print('change $date in time zone ' + date.timeZoneOffset.inHours.toString());
+                              }, onConfirm: (date) {
+                                print('confirm $date');
 
-                            labelText: 'Minimum Working Hours',
-                            labelStyle: TextStyle(
-                              fontSize: 15,
+                                setState(() {
+                                  datenew=date;
+                                  date1 = formatter.format(date);
+                                  date2 = formatter1.format(date);
+                                  date3 = formatter2.format(date);
+                                  print(int.parse(date2));
+                                  print(int.parse(date3));
+                                  date_hours = int.parse(date2);
+                                  date_min = int.parse(date3);
+
+                                  visiblityhours=true;
+                                });
+
+                              }, currentTime: DateTime.now());
+
+                            },
+                            child: TextFormField(
+                              enabled: false,
+                              decoration: InputDecoration(
+                                //hintText: 'Maximum 18 hours',
+                                //hintStyle: TextStyle(color:Colors.black87),
+                                suffixIcon: Padding(
+                                    padding: EdgeInsets.only(top: 15), // add padding to adjust icon
+                                    child: Icon(Icons.access_time)),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  borderSide: BorderSide( color: Colors.grey.withOpacity(0.0), width: 1,),
+                                ),
+                                labelText: visiblityhours==false ? "Maximum 18 hours": date1.toString(),labelStyle: TextStyle(color: Colors.black45)
+                              ),
+                              //format: dateFormat,
+                              controller: shiftHours,
+                              validator: (date) {
+                               /* if (_shiftName.text==null||_shiftName.text.trim()==''){
+                                  return 'Please enter shift name';
+                                }
+
+                                */
+                              },
+                              onTap: (){
 
 
+                              },
                             ),
                           ),
-                          validator: (time) {
-                            if (time==null) {
-                              return 'Please enter minimum working hours';
-                            }
-                          },
                         ),
-                      )],
+                      ],
                     ),
+                    ),
+            /*
+                        ,Visibility(
+                    visible: visiblityhours,
+                          child: Text(
+                            date1.toString(),textAlign: TextAlign.center,
+                    style: TextStyle(color:Colors.black87,fontSize: 18.0),
                   ),
+                        ),
+                  */
                   Visibility(
                     visible:visiblity, child: Row(
                       children: <Widget>[

@@ -19,6 +19,7 @@ import 'package:Shrine/services/newservices.dart';
 import 'package:Shrine/services/saveimage.dart';
 import 'package:Shrine/services/services.dart';
 import 'package:Shrine/timeoff_list.dart';
+import 'package:Shrine/userviewShiftPlanner.dart';
 //import 'package:Shrine/userviewShiftPlanner.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:device_info/device_info.dart';
@@ -2679,15 +2680,15 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         child: new GestureDetector(
             onTap: () {
 
-             // admin_sts == '1' || admin_sts == '2'?
+              admin_sts == '1' || admin_sts == '2'?
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => shiftPlannerList()),
-              );/*: Navigator.push(
+              ): Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => shiftPlannerList()),
+                MaterialPageRoute(builder: (context) => userViewShiftPlanner()),
               );
-              */
+
             },
             child: Column(
               children: [

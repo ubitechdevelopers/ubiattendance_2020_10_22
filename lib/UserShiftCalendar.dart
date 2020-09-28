@@ -2595,10 +2595,10 @@ class _MyHomePageState extends State<userShiftCalendar> {
                                       fontWeight: FontWeight.w400)),
                             ],
                           ),*/
-                          SizedBox(height: MediaQuery
+                          (date.toString().substring(0,10).compareTo(now.toString().substring(0,10))) != 0?SizedBox(height: MediaQuery
                               .of(context)
                               .size
-                              .height * .01),
+                              .height * .01):Container(),
                           (date.toString().substring(0,10).compareTo(now.toString().substring(0,10))) != 0?Row(
                             children: <Widget>[
                               Icon(Icons.timer, size: 20.0,
@@ -2607,7 +2607,7 @@ class _MyHomePageState extends State<userShiftCalendar> {
                               userlist.isEmpty ?new Text("Undertime: ", style: new TextStyle(
                                   fontSize: 15.0,
                                   color: Colors.black87,
-                                  fontWeight: FontWeight.bold))
+                                  fontWeight: FontWeight.bold) )
 
                                   :userlist[0].overtime.contains("-")?new Text("Undertime: ", style: new TextStyle(
                                   fontSize: 15.0,

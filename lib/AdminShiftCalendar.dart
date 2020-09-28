@@ -430,6 +430,10 @@ class _MyHomePageState extends State<MyHomePage1> {
             );
           }
           else {
+            print(specialshift[i].shiftdate);
+            print(specialshift[i].shiftdate.day.toString());
+            print(specialshift[i].shiftTiming);
+            print("specialshift[i].shiftTiming");
             _markedDateMap.removeAll(specialshift[i].shiftdate);
             _markedDateMap.add(
               specialshift[i].shiftdate,
