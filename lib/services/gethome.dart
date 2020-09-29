@@ -73,7 +73,7 @@ class Home{
         String password_sts = timeinoutMap['password_sts'].toString(); //somya
         String changepasswordStatus = timeinoutMap['admin_password_sts'].toString();
         print('beforepushnotification');
-        globals.MinimumWorkingHours=timeinoutMap['MinimumWorkingHours'].toString()??"00:00:00";
+        globals.MinimumWorkingHours=timeinoutMap['MinimumWorkingHours'].toString()??"00:00";
         print(globals.MinimumWorkingHours);
 
         //////////////////// Push Notification Status ///////////////////////

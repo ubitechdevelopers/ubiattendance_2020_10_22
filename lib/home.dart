@@ -2401,7 +2401,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       );
     } else {
       return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        Text('Kindly allow location access from settings',
+        Text('Kindly allow location permission from settings',
             textAlign: TextAlign.center,
             style: new TextStyle(fontSize: 14.0, color: Colors.red)),
         RaisedButton(
@@ -2511,7 +2511,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       return Padding(
         padding: const EdgeInsets.only(left:45.0),
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-           Text('Kindly enable location access from settings',
+           Text('Kindly allow location permission from settings',
                 textAlign: TextAlign.center,
                 style: new TextStyle(fontSize: 14.0, color: Colors.red)),
               RaisedButton(
@@ -4376,7 +4376,7 @@ var FakeLocationStatus=0;
                     child: Column(
                         children: <Widget>[
                        new Text(
-                      "Rate us Play Store"),
+                      "Rate us on Play Store"),
                           Padding(
                             padding: const EdgeInsets.only(top:5.0),
                             child: RaisedButton(elevation: 2.0,
@@ -4584,7 +4584,7 @@ var FakeLocationStatus=0;
                                         child: Column(
                                             children: <Widget>[
                                               new Text(
-                                                  "Rate us Play Store"),
+                                                  "Rate us on Play Store"),
                                               Padding(
                                                 padding: const EdgeInsets.only(top:5.0),
                                                 child: RaisedButton(elevation: 2.0,

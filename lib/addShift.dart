@@ -37,7 +37,7 @@ class _addShift extends State<addShift> {
   int _currentIndex = 2;
   String org_name="";
   String admin_sts="0";
-  List<Map> shiftlist=[{"id":"1","name":"Single Date"},{"id":"2","name":"Multi Date"},{"id":"3","name":"Flexi"}];
+  List<Map> shiftlist=[{"id":"1","name":"Single Date"},{"id":"2","name":"Multi Date"},if(bulkAttn==0){"id":"3","name":"Flexi"}];
   String shifttype = "1";
   var visiblity= true;
   var visiblitymin= false;

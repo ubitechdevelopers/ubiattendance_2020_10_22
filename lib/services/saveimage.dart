@@ -563,9 +563,11 @@ class SaveImage {
                   child: new AlertDialog(
                     content: new Text("Attendance punched without Selfie due to poor network"),
                   ));
+            }else{
+              imagedata.delete(int.parse(localDbId));
             }
             print(status);
-            imagedata.delete(int.parse(localDbId));
+
           });
         }
       });

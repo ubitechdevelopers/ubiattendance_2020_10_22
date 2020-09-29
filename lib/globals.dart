@@ -37,6 +37,10 @@ String path_hrm_india="https://ubiattendance.ubihrm.com/index.php/Att_services/"
 
 
 
+
+
+
+
    
 
 
@@ -53,6 +57,10 @@ String path_hrm_india="http://ubiattendance.zentylpro.com/index.php/Att_services
 
 
  */
+
+
+
+
 
 
 
@@ -151,7 +159,7 @@ var timeoffRunning=false;
 var ShiftPlanner=0;
 String defaultShiftTimings='';
 
-String appVersion='5.4.1';
+String appVersion='5.4.2';
 
 
 

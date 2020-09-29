@@ -600,122 +600,22 @@ class _MyTeamLeaveState extends State<MyTeamLeave> {
                       maxLines: 3,
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                        top: 10.0, bottom: 0.0, left: 60.0, right: 7.0),
-                    child:  ButtonTheme(
-                      minWidth: 50.0,
-                  //    height: 40.0,
+                  Center(
+                    child: Row(
+                      children: <Widget>[
+                       Padding(
+                        padding: EdgeInsets.only(
+                            top: 10.0, bottom: 0.0, left: 25.0, right: 7.0),
+                        child:  ButtonTheme(
+                          minWidth: 50.0,
+                      //    height: 40.0,
 /*                      child: RaisedGradientButton(
-                        onPressed: () async  {
-                          //getApprovals(choice.title);
-                          final sts= await ApproveLeave(leaveid,CommentController.text,2);
-                          //  print("kk");
-                          // print("kk"+sts);
-                          if(sts=="true") {
-                            showDialog(
-                                context: context,
-                                builder: (_) =>
-                                new AlertDialog(
-                                  //title: new Text("Dialog Title"),
-                                  content: new Text("Approved succesfully"),
-                                )
-                            );
-                          }
-                          else{
-                            showDialog(
-                                context: context,
-                                builder: (_) =>
-                                new AlertDialog(
-                                  //title: new Text("Dialog Title"),
-                                  content: new Text("Could not be approved. Try again. "),
-                                )
-                            );
-                          }
-
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => TabbedApp()),
-                          ); },
-                        // color: Colors.green[400],
-                        //shape: new RoundedRectangleBorder(
-                        //  borderRadius: new BorderRadius.circular(30.0)),
-                        gradient: LinearGradient(
-                          colors: <Color>[Colors.green[700], Colors.green[700]],
-                        ),
-                        child: new Text('Approve',
-                            style: new TextStyle(
-                              color: Colors.white,
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.bold,
-                            )),
-                      ),*/
-                        child: RaisedButton(
-                          elevation: 2.0,
-                          highlightElevation: 5.0,
-                          highlightColor: Colors.transparent,
-                          disabledElevation: 0.0,
-                          focusColor: Colors.transparent,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: Text(
-                            'Approve',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          color: buttoncolor,
-                          onPressed: () async{
-                            //getApprovals(choice.title);
-                            final sts= await ApproveLeave(leaveid,CommentController.text,2);
-                            //  print("kk");
-                            // print("kk"+sts);
-                            if(sts=="true") {
-                              Navigator.pop(context);
-                              showDialog(
-                                  context: context,
-                                  builder: (_) =>
-                                  new AlertDialog(
-                                    //title: new Text("Dialog Title"),
-                                    content: new Text("Approved succesfully"),
-                                  )
-                              );
-                              await new Future.delayed(const Duration(seconds: 1));
-                              Navigator.pop(context);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => MyTeamLeave()),
-                              );
-                            }
-                            else{
-                              showDialog(
-                                  context: context,
-                                  builder: (_) =>
-                                  new AlertDialog(
-                                    //title: new Text("Dialog Title"),
-                                    content: new Text("Could not be approved. Try again. "),
-                                  )
-                              );
-                            }
-                          },
-                        ),
-/*
-                        child: new OutlineButton(
-                            child: new Text('Approve',
-                                style: new TextStyle(
-                                  color: Colors.green[700],
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.bold,
-
-                                )),
-                             borderSide: BorderSide(color: Colors.green[700],),
                             onPressed: () async  {
-
                               //getApprovals(choice.title);
                               final sts= await ApproveLeave(leaveid,CommentController.text,2);
                               //  print("kk");
                               // print("kk"+sts);
                               if(sts=="true") {
-                                Navigator.pop(context);
                                 showDialog(
                                     context: context,
                                     builder: (_) =>
@@ -723,12 +623,6 @@ class _MyTeamLeaveState extends State<MyTeamLeave> {
                                       //title: new Text("Dialog Title"),
                                       content: new Text("Approved succesfully"),
                                     )
-                                );
-                                await new Future.delayed(const Duration(seconds: 1));
-                                Navigator.pop(context);
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => MyTeamLeave()),
                                 );
                               }
                               else{
@@ -742,122 +636,136 @@ class _MyTeamLeaveState extends State<MyTeamLeave> {
                                 );
                               }
 
-
-                            },
-                            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(0.0),),
-
-                        )
-                        */
-
-
-                    ),),
-
-
-                  Padding(
-                    padding: EdgeInsets.only(
-                        top: 10.0, bottom: 0.0, left: 7.0, right: 60.0),
-                    child:  ButtonTheme(
-                      minWidth: 50.0,
-                //      height: 40.0,
-/*                      child: RaisedGradientButton(
-                        onPressed: () async {
-                          //getApprovals(choice.title);
-                          var sts = await ApproveLeave(leaveid,CommentController.text,1);
-                          print("ff"+sts);
-                          if(sts=="true") {
-                            showDialog(
-                                context: context,
-                                builder: (_) =>
-                                new AlertDialog(
-                                  //title: new Text("Dialog Title"),
-                                  content: new Text("Leave rejected"),
-                                )
-                            );
-                          }
-                          else{
-                            showDialog(
-                                context: context,
-                                builder: (_) =>
-                                new AlertDialog(
-                                  //title: new Text("Dialog Title"),
-                                  content: new Text("Could not be rejected. Try again."),
-                                )
-                            );
-                          }
-
-
-
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => TabbedApp()),
-                          ); },
-                        // color: Colors.red[400],
-                        gradient: LinearGradient(
-                          colors: <Color>[Colors.red[700], Colors.red[700]],
-                        ),
-                        child: new Text('Reject',
-                            style: new TextStyle(
-                                color: Colors.white,
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.bold)),
-                      ),*/
-                    child:FlatButton(
-                      highlightColor: Colors.transparent,
-                      focusColor: Colors.transparent,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                        side: BorderSide( color: Colors.grey.withOpacity(0.5), width: 1,),
-                      )
-                      ,child: Text('Reject',style: TextStyle(color: Colors.blue),),
-                      onPressed: () async{
-                        //getApprovals(choice.title);
-                        var sts = await ApproveLeave(leaveid,CommentController.text,3);
-                        print("ff"+sts);
-                        if(sts=="true") {
-                          Navigator.pop(context);
-                          showDialog(
-                              context: context,
-                              builder: (_) =>
-                              new AlertDialog(
-                                //title: new Text("Dialog Title"),
-                                content: new Text("Leave rejected"),
-                              )
-                          );
-                          await new Future.delayed(const Duration(seconds: 2));
-                          Navigator.pop(context);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => MyTeamLeave()),
-                          );
-                        }
-                        else{
-                          showDialog(
-                              context: context,
-                              builder: (_) =>
-                              new AlertDialog(
-                                //title: new Text("Dialog Title"),
-                                content: new Text("Could not be rejected. Try again."),
-                              )
-                          );
-                        }
-
-                      },
-
-                     )
-/*
-                      child: new OutlineButton(
-                          child: new Text('Reject',
-                              style: new TextStyle(
-                                  color: Colors.red[700],
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => TabbedApp()),
+                              ); },
+                            // color: Colors.green[400],
+                            //shape: new RoundedRectangleBorder(
+                            //  borderRadius: new BorderRadius.circular(30.0)),
+                            gradient: LinearGradient(
+                              colors: <Color>[Colors.green[700], Colors.green[700]],
+                            ),
+                            child: new Text('Approve',
+                                style: new TextStyle(
+                                  color: Colors.white,
                                   fontSize: 16.0,
-                                  fontWeight: FontWeight.bold)),borderSide: BorderSide(color: Colors.red[700]),
-                          onPressed: () async {
+                                  fontWeight: FontWeight.bold,
+                                )),
+                          ),*/
+                            child: RaisedButton(
+                              elevation: 2.0,
+                              highlightElevation: 5.0,
+                              highlightColor: Colors.transparent,
+                              disabledElevation: 0.0,
+                              focusColor: Colors.transparent,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: Text(
+                                'Approve',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              color: buttoncolor,
+                              onPressed: () async{
+                                //getApprovals(choice.title);
+                                final sts= await ApproveLeave(leaveid,CommentController.text,2);
+                                //  print("kk");
+                                // print("kk"+sts);
+                                if(sts=="true") {
+                                  Navigator.pop(context);
+                                  showDialog(
+                                      context: context,
+                                      builder: (_) =>
+                                      new AlertDialog(
+                                        //title: new Text("Dialog Title"),
+                                        content: new Text("Approved succesfully"),
+                                      )
+                                  );
+                                  await new Future.delayed(const Duration(seconds: 1));
+                                  Navigator.pop(context);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => MyTeamLeave()),
+                                  );
+                                }
+                                else{
+                                  showDialog(
+                                      context: context,
+                                      builder: (_) =>
+                                      new AlertDialog(
+                                        //title: new Text("Dialog Title"),
+                                        content: new Text("Could not be approved. Try again. "),
+                                      )
+                                  );
+                                }
+                              },
+                            ),
+/*
+                            child: new OutlineButton(
+                                child: new Text('Approve',
+                                    style: new TextStyle(
+                                      color: Colors.green[700],
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.bold,
 
+                                    )),
+                                 borderSide: BorderSide(color: Colors.green[700],),
+                                onPressed: () async  {
+
+                                  //getApprovals(choice.title);
+                                  final sts= await ApproveLeave(leaveid,CommentController.text,2);
+                                  //  print("kk");
+                                  // print("kk"+sts);
+                                  if(sts=="true") {
+                                    Navigator.pop(context);
+                                    showDialog(
+                                        context: context,
+                                        builder: (_) =>
+                                        new AlertDialog(
+                                          //title: new Text("Dialog Title"),
+                                          content: new Text("Approved succesfully"),
+                                        )
+                                    );
+                                    await new Future.delayed(const Duration(seconds: 1));
+                                    Navigator.pop(context);
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => MyTeamLeave()),
+                                    );
+                                  }
+                                  else{
+                                    showDialog(
+                                        context: context,
+                                        builder: (_) =>
+                                        new AlertDialog(
+                                          //title: new Text("Dialog Title"),
+                                          content: new Text("Could not be approved. Try again. "),
+                                        )
+                                    );
+                                  }
+
+
+                                },
+                                shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(0.0),),
+
+                            )
+                            */
+
+
+                        ),),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              top: 10.0, bottom: 0.0, left: 7.0, right: 60.0),
+                          child:  ButtonTheme(
+                              minWidth: 50.0,
+                              //      height: 40.0,
+/*                      child: RaisedGradientButton(
+                          onPressed: () async {
                             //getApprovals(choice.title);
-                            var sts = await ApproveLeave(leaveid,CommentController.text,3);
+                            var sts = await ApproveLeave(leaveid,CommentController.text,1);
                             print("ff"+sts);
                             if(sts=="true") {
-                              Navigator.pop(context);
                               showDialog(
                                   context: context,
                                   builder: (_) =>
@@ -865,12 +773,6 @@ class _MyTeamLeaveState extends State<MyTeamLeave> {
                                     //title: new Text("Dialog Title"),
                                     content: new Text("Leave rejected"),
                                   )
-                              );
-                              await new Future.delayed(const Duration(seconds: 2));
-                              Navigator.pop(context);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => MyTeamLeave()),
                               );
                             }
                             else{
@@ -885,14 +787,117 @@ class _MyTeamLeaveState extends State<MyTeamLeave> {
                             }
 
 
-                            },
-                          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(0.0))
-                      ),
-                      */
+
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => TabbedApp()),
+                            ); },
+                          // color: Colors.red[400],
+                          gradient: LinearGradient(
+                            colors: <Color>[Colors.red[700], Colors.red[700]],
+                          ),
+                          child: new Text('Reject',
+                              style: new TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold)),
+                        ),*/
+                              child:FlatButton(
+                                highlightColor: Colors.transparent,
+                                focusColor: Colors.transparent,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  side: BorderSide( color: Colors.grey.withOpacity(0.5), width: 1,),
+                                )
+                                ,child: Text('Reject',style: TextStyle(color: Colors.blue),),
+                                onPressed: () async{
+                                  //getApprovals(choice.title);
+                                  var sts = await ApproveLeave(leaveid,CommentController.text,3);
+                                  print("ff"+sts);
+                                  if(sts=="true") {
+                                    Navigator.pop(context);
+                                    showDialog(
+                                        context: context,
+                                        builder: (_) =>
+                                        new AlertDialog(
+                                          //title: new Text("Dialog Title"),
+                                          content: new Text("Leave rejected"),
+                                        )
+                                    );
+                                    await new Future.delayed(const Duration(seconds: 2));
+                                    Navigator.pop(context);
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => MyTeamLeave()),
+                                    );
+                                  }
+                                  else{
+                                    showDialog(
+                                        context: context,
+                                        builder: (_) =>
+                                        new AlertDialog(
+                                          //title: new Text("Dialog Title"),
+                                          content: new Text("Could not be rejected. Try again."),
+                                        )
+                                    );
+                                  }
+
+                                },
+
+                              )
+/*
+                        child: new OutlineButton(
+                            child: new Text('Reject',
+                                style: new TextStyle(
+                                    color: Colors.red[700],
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold)),borderSide: BorderSide(color: Colors.red[700]),
+                            onPressed: () async {
+
+                              //getApprovals(choice.title);
+                              var sts = await ApproveLeave(leaveid,CommentController.text,3);
+                              print("ff"+sts);
+                              if(sts=="true") {
+                                Navigator.pop(context);
+                                showDialog(
+                                    context: context,
+                                    builder: (_) =>
+                                    new AlertDialog(
+                                      //title: new Text("Dialog Title"),
+                                      content: new Text("Leave rejected"),
+                                    )
+                                );
+                                await new Future.delayed(const Duration(seconds: 2));
+                                Navigator.pop(context);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => MyTeamLeave()),
+                                );
+                              }
+                              else{
+                                showDialog(
+                                    context: context,
+                                    builder: (_) =>
+                                    new AlertDialog(
+                                      //title: new Text("Dialog Title"),
+                                      content: new Text("Could not be rejected. Try again."),
+                                    )
+                                );
+                              }
 
 
-                    ),
+                              },
+                            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(0.0))
+                        ),
+                        */
+
+
+                          ),
+                        ),]),
                   ),
+
+
+
                 ],
               ),
             ),

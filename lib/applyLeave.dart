@@ -714,7 +714,7 @@ class _ApplyLeave extends State<ApplyLeave> with SingleTickerProviderStateMixin 
         );*/
         showDialog(context: context, child:
         new AlertDialog(
-          content: new Text("You can apply only "+MarkAttMap['days_allowed'].toString()+' days leave'),
+          content: new Text("You can apply for only "+MarkAttMap['days_allowed'].toString()+' days leave'),
         )
         );
       }else {
