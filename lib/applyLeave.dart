@@ -703,7 +703,7 @@ class _ApplyLeave extends State<ApplyLeave> with SingleTickerProviderStateMixin 
         );*/
         showDialog(context: context, child:
         new AlertDialog(
-          content: new Text("Contact admin and get date of joining assigned to you"),
+          content: new Text("Contact admin and request for date of joining"),
         )
         );
       }

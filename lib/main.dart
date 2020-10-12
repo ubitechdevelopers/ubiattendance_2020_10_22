@@ -77,6 +77,25 @@ class _MyAppState extends State<MyApp> {
         address=await getAddressFromLati(lat, long);
         print(call.arguments["mocked"].toString());
 
+        getAreaStatus().then((res) {
+          // print('called again');
+          print('main dot dart');
+          if (mounted) {
+            setState(() {
+              areaSts = res.toString();
+              print('response'+res.toString());
+              if (areaId != 0 && geoFence == 1) {
+                AbleTomarkAttendance = areaSts;
+                print('insideable to markatt --------->>>>');
+                print('insideabletoatt'+areaId.toString());
+              }
+            });
+          }
+        }).catchError((onError) {
+          print('Exception occured in clling function.......');
+          print(onError);
+        });
+
         globalstreamlocationaddr=address;
 
         break;

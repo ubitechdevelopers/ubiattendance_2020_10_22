@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 import 'package:Shrine/globals.dart' as globals;
+import 'package:Shrine/services/services.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -108,6 +109,7 @@ class Home{
 
 
 
+
         //////////////////// Push Notification Status ///////////////////////
 
         print('afterpushnotification');
@@ -128,6 +130,9 @@ class Home{
         globals.tracking=int.parse(timeinoutMap['Addon_Tracking']);
         globals.payroll=int.parse(timeinoutMap['Addon_Payroll']);
         globals.ShiftPlanner=int.parse(timeinoutMap['Addon_ShiftPlanner'])??0;
+        prefs.setInt('geoFence',globals.geoFence);
+
+
 
         print("Testing line11111111111111111111111111111"+globals.shiftType);
         print("Testing line1");
@@ -157,7 +162,9 @@ class Home{
         globals.attImage=int.parse(timeinoutMap['attImage']);
         print("Testing line3");
         globals.ableToMarkAttendance = int.parse(timeinoutMap['ableToMarkAttendance']);
+        prefs.setInt('ableToMarkAttendance',ableToMarkAttendance);
         globals.areaId=int.parse(timeinoutMap['areaId']);
+        prefs.setInt('areaId',globals.areaId);
         print("Testing line4");
 
 
@@ -176,6 +183,9 @@ class Home{
         globals.assigned_lat=  (timeinoutMap['assign_lat']).toDouble();
         globals.assigned_long=    (timeinoutMap['assign_long']).toDouble();
         globals.assign_radius=  (timeinoutMap['assign_radius']).toDouble();
+        prefs.setDouble("assigned_lat",globals.assigned_lat);
+        prefs.setDouble("assigned_long",globals.assigned_long);
+        prefs.setDouble("assign_radius",globals.assign_radius);
         print("----visitImage------>"+globals.visitImage.toString());
       //  print(newpwd+" new pwd  and old pwd "+  prefs.getString('userpwd'));
        // print(timeinoutMap['pwd']);
@@ -219,6 +229,15 @@ class Home{
         String createdDate = timeinoutMap['CreatedDate'].toString();
         prefs.setString('CreatedDate',createdDate);
         globals.inactivestatus=timeinoutMap['inactivestatus'];
+        areaSts= await getAreaStatus();
+        var areaSts1= await getAreaStatus();
+        print('thisis area sts'+areaSts1);
+        if (areaId != 0 && geoFence == 1) {
+          AbleTomarkAttendance = areaSts;
+          print('insideable to markatt gethome--------->>>>');
+          print('insideabletoattgethome'+areaId.toString());
+        }
+
 
        /* if(timeinoutMap['inactivestatus'] == 'inactive') {
           print("somya code");

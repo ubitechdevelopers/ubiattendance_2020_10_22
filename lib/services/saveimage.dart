@@ -221,6 +221,9 @@ class SaveImage {
           /*getTempImageDirectory();*/
           MarkAttMap = json.decode(response1.data);
           print(MarkAttMap["status"].toString());
+          if(MarkAttMap["facerecog"]== '6'){
+            return {'status': 6};
+          }
           if (MarkAttMap["status"] == 1 || MarkAttMap["status"] == 2) {
             if(globals.facerecognition!=1){
               globals.PictureBase64Att = PictureBase64;

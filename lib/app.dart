@@ -37,7 +37,7 @@ class _ShrineAppState extends State<ShrineApp> {
   int response;
   int responsestate;
   int mand_login=0; // mandatory update is false by default.
-  String cur_ver='5.4.2',new_ver='5.4.2';
+  String cur_ver='5.4.4',new_ver='5.4.4';
   String updatestatus = "0";
   Widget _defaultHome = new LoginPage();
   @override
@@ -76,6 +76,25 @@ class _ShrineAppState extends State<ShrineApp> {
         address=await getAddressFromLati(lat, long);
         print(call.arguments["mocked"].toString());
         globalstreamlocationaddr=address;
+
+        getAreaStatus().then((res) {
+          // print('called again');
+          print('app dot dart');
+          if (mounted) {
+            setState(() {
+              areaSts = res.toString();
+              print('response'+res.toString());
+              if (areaId != 0 && geoFence == 1) {
+                AbleTomarkAttendance = areaSts;
+                print('insideable to markatt --------->>>>');
+                print('insideabletoatt'+areaId.toString());
+              }
+            });
+          }
+        }).catchError((onError) {
+          print('Exception occured in clling function.......');
+          print(onError);
+        });
         if(call.arguments["TimeSpoofed"].toString()=="Yes"){
           timeSpoofed=true;
         }

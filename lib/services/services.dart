@@ -3704,6 +3704,12 @@ Future<String> getAreaStatus() async {
   double assign_lat = globals.assigned_lat;
   double assign_long = globals.assigned_long;
   double assign_radius = globals.assign_radius;
+  print('getareastatusfunctionstart');
+  print(lat);
+  print(long);
+  print(assign_lat);
+  print(assign_long);
+  print('getareastatusfunction');
 
   /*print("${assign_long}");
   print("${assign_lat}");
@@ -3736,8 +3742,63 @@ Future<String> getAreaStatus() async {
     status = (assign_radius >= totalDistance) ? '1' : '0';
     // print("sohan ${status}");
   }
- // print(status);
+  print(status);
+  globals.areaSts=status;
   return status;
+
+}
+Future<String> getAreaStatusforOffline() async {
+  //print('getAreaStatus 1');
+  // LocationData _currentLocation = globals.list[globals.list.length - 1];
+  double lat = globals.assign_lat;
+  double long = globals.assign_long;
+
+  print('getareastatusfunctionstart');
+  print(lat);
+  print(long);
+  print('getareastatusfunction');
+
+  /*print("${assign_long}");
+  print("${assign_lat}");
+  print("${assign_radius}");*/
+  final prefs = await SharedPreferences.getInstance();
+  String empid = prefs.getString('empid') ?? '';
+  //print('SERVICE CALLED: '+globals.path + 'getAreaStatus?lat=$lat&long=$long&empid=$empid');
+  String status = '0';
+  double assign_lat = prefs.getDouble('assigned_lat');
+  double assign_long = prefs.getDouble('assigned_long');
+  double assign_radius = prefs.getDouble('assign_radius');
+  print(assign_lat);
+  print(assign_long);
+  print(assign_radius);
+  /*if(empid!=null && empid!='' && empid!=0) {
+    final response =
+    await http.get(
+        globals.path + 'getAreaStatus?lat=$lat&long=$long&empid=$empid');
+    status = json.decode(response.body.toString());
+  }*/
+  //print('-------status----------->');
+  //print(status);
+  // print('<-------status-----------');
+  if (empid != null && empid != '' && empid != 0) {
+    double calculateDistance(lat1, lon1, lat2, lon2) {
+      var p = 0.017453292519943295;
+      var c = cos;
+      var a = 0.5 -
+          c((lat2 - lat1) * p) / 2 +
+          c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
+      return 12742 * asin(sqrt(a));
+    }
+
+    double totalDistance =
+    calculateDistance(lat, long, assign_lat, assign_long);
+    status = (assign_radius >= totalDistance) ? '1' : '0';
+    // print("sohan ${status}");
+  }
+  print(status);
+  globals.areaSts=status;
+  return status;
+
 }
 
 getCsv(associateList, fname, name) async {

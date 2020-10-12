@@ -98,6 +98,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   String dateShowedFeedbackDialog='';
   String datetoShowRatingDialog='';
   String dateShowedRatingDialog='';
+  bool isRestriction=false; // First Restriction while marking attendance in face recognition
   bool _checkLoaded = true;
   int _currentIndex = 1;
   String userpwd = "new";
@@ -108,7 +109,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   String admin_sts = '0';
   bool glow = true;
   String mail_varified = '1';
-  String AbleTomarkAttendance = '0';
+ // String AbleTomarkAttendance = '0';
   String act = "";
   String act1 = "";
   int alertdialogcount = 0;
@@ -501,6 +502,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     //setLocationAddress();
     // startTimer();
     platform.setMethodCallHandler(_handleMethod);
+    print('areaSts---->>>>'+areaSts);
 
 
   }
@@ -611,7 +613,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       var isAdmin = admin_sts = prefs.getString('sstatus').toString() ?? '0';
       var employeeTopic = prefs.getString("EmployeeTopic") ?? '';
       //_firebaseMessaging.subscribeToTopic('101');
-      // _firebaseMessaging.subscribeToTopic('testtopic');
+       //_firebaseMessaging.subscribeToTopic('test123456');
 
 
 
@@ -703,6 +705,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         },
         onResume: (Map<String, dynamic> message) async {
           print('on resume $message');
+          print(message['data']['body']);
           var navigate =
               message['data'].isEmpty ? '' : message['data']['pageToNavigate'];
           navigateToPageAfterNotificationClicked(navigate, context);
@@ -713,6 +716,27 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           var navigate =
               message['data'].isEmpty ? '' : message['data']['pageToNavigate'];
           navigateToPageAfterNotificationClicked(navigate, context);
+          print(message['data']['body']);
+          /*
+          if(message['data']['body']=='10'){
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Reports()),
+            );
+//            navigatorKey.currentState.push(
+//                MaterialPageRoute(builder: (_) => Reports())
+//            );
+          }else if(message['data']['body']=='20'){
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => TimeOffList()),
+            );
+//            navigatorKey.currentState.push(
+//                MaterialPageRoute(builder: (_) => TimeOffList())
+//            );
+          }
+          */
+
 
         },
       );
@@ -812,7 +836,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             "Password": qrs[i].Password,
             "FakeLocationStatus": qrs[i].FakeLocationStatus,
             "FakeTimeStatus": qrs[i].FakeTimeStatus,
-            "Address": address
+            "Address": address,
+            "Geofence": qrs[i].Geofence,
+            "appVersion": qrs[i].appVersion
           });
         }
         var jsonList1 = json.encode(jsonList);
@@ -854,6 +880,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   }
 
   Future<dynamic> _handleMethod(MethodCall call) async {
+    print('justtesting');
     switch (call.method) {
       case "navigateToPage":
         navigateToPageAfterNotificationClicked(
@@ -884,13 +911,18 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             "xnjjjjjjlllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll");
         globalstreamlocationaddr = address;
         print(call.arguments["mocked"].toString());
+        //getAreaStatus();
+        print('areasts----->'+globals.areaSts);
+
         getAreaStatus().then((res) {
           // print('called again');
+          print('testagain');
           if (mounted) {
             setState(() {
-              areaStatus = res.toString();
+              areaSts = res.toString();
+              print('response'+res.toString());
               if (areaId != 0 && geoFence == 1) {
-                AbleTomarkAttendance = res.toString();
+                AbleTomarkAttendance = areaSts;
                 print('insideable to markatt --------->>>>');
                 print('insideabletoatt'+areaId.toString());
               }
@@ -900,6 +932,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           print('Exception occured in clling function.......');
           print(onError);
         });
+
         setState(() {
           if (call.arguments["mocked"].toString() == "Yes") {
             fakeLocationDetected = true;
@@ -1038,7 +1071,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
             "FakeLocationStatus": attendances[i].FakeLocationStatus,
             "FakeTimeStatus": attendances[i].FakeTimeStatus,
             "Address": address,
-            "appVersion": globals.appVersion
+            "Geofence": attendances[i].Geofence,
+            "appVersion": attendances[i].TimeInOutAppVersion
           });
         }
         var jsonList1 = json.encode(jsonList);
@@ -1889,6 +1923,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
        dateShowedFeedbackDialog=prefs.getString("dateShowedFeedbackDialog") ?? '';
        datetoShowRatingDialog=prefs.getString("datetoShowRatingDialog") ?? date.toString();
        dateShowedRatingDialog=prefs.getString("dateShowedRatingDialog") ?? '';
+       isRestriction=prefs.getBool('isRestricttion') ?? false;
 
     });
 
@@ -1917,9 +1952,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
     getAreaStatus().then((res) {
       // print('called again');
+      print('home dot dart');
       if (mounted) {
         setState(() {
-          areaStatus = res.toString();
+          areaSts = res.toString();
           if (areaId != 0 && geoFence == 1)
             AbleTomarkAttendance = res.toString();
         });
@@ -1928,6 +1964,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       print('Exception occured in clling function.......');
       print(onError);
     });
+
     if (response == 1) {
       // Loc lock = new Loc();
 
@@ -3104,7 +3141,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                           )
                         else
                           (areaId != 0 && geoFence == 1)
-                              ? areaStatus == '0'
+                              ? areaSts == '0'
                                   ? Container(
                                       padding:
                                           EdgeInsets.only(top: 5.0, right: 5.0),
@@ -3279,7 +3316,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
 
     if(globals.geoFence==1) {
-      if (areaStatus == '0') {
+      if (areaSts == '0') {
         if(areaId==0 || areaId.toString()==""){
           geofence = "";
         }else{
@@ -3380,6 +3417,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       SaveImage saveImage = new SaveImage();
       Map issave;
      var prefs = await SharedPreferences.getInstance();
+     isRestriction=prefs.getBool('isRestriction') ?? false;
       globals.showAppInbuiltCamera =
           prefs.getBool("showAppInbuiltCamera") ?? true;
       issave = globals.showAppInbuiltCamera
@@ -3402,7 +3440,16 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         );
       }
 
-      if (issave['status'] == 1 || issave['status']==2)  {
+      if(issave['status']== 6){
+        showDialog(
+            context: context,
+            // ignore: deprecated_member_use
+            child: new AlertDialog(
+              backgroundColor: Colors.redAccent,
+              content: new Text("Attendance selfie does not match with the registered Face ID. Try Again!",style: TextStyle(color: Colors.white),),
+            ));
+      }
+          else if (issave['status'] == 1 || issave['status']==2)  {
         // Sync image
         saveImage.SendTempimage(context , true);
         if(act1=='TimeIn'){
@@ -3422,8 +3469,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           var date= formatter.format(DateTime.now());
           String topic = empId + 'TI' + orgId;
           if (InPushNotificationStatus == '1') {
-            sendPushNotification(eName + ' has marked Time In at '+ date, '',
-                '\'' + topic + '\' in topics');
+//            sendPushNotification(eName + ' has marked Time In at '+ date, '',
+//                '\'' + topic + '\' in topics');
+            sendPushNotification(
+                eName + ' has marked Time In at '+ date, '',
+                '(\'' + globals.globalOrgTopic +
+                    '\' in topics) && (\'admin\' in topics)');
           }
           if (FakeLocationStatus==1) {
             if(FakeLocation==5|| FakeLocation==13 || FakeLocation==7|| FakeLocation==15){
@@ -3453,8 +3504,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           var date= formatter.format(DateTime.now());
           String topic = empId + 'TO' + orgId;
           if (OutPushNotificationStatus == '1') {
-            sendPushNotification(eName + ' has marked Time Out at '+ date, '',
-                '\'' + topic + '\' in topics');
+//            sendPushNotification(eName + ' has marked Time Out at '+ date, '',
+//                '\'' + topic + '\' in topics');
+            sendPushNotification(
+                eName + ' has marked Time Out at '+ date, '',
+                '(\'' + globals.globalOrgTopic +
+                    '\' in topics) && (\'admin\' in topics)');
 
             print('\'' + topic + '\' in topics');
           }

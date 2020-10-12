@@ -93,6 +93,24 @@ class _LoginPageState extends State<LoginPage> {
         assign_long=double.parse(long);
         address=await getAddressFromLati(lat, long);
         print(call.arguments["mocked"].toString());
+        getAreaStatus().then((res) {
+          // print('called again');
+          print('login dot dart');
+          if (mounted) {
+            setState(() {
+              areaSts = res.toString();
+              print('response'+res.toString());
+              if (areaId != 0 && geoFence == 1) {
+                AbleTomarkAttendance = areaSts;
+                print('insideable to markatt --------->>>>');
+                print('insideabletoatt'+areaId.toString());
+              }
+            });
+          }
+        }).catchError((onError) {
+          print('Exception occured in clling function.......');
+          print(onError);
+        });
 
 
 
@@ -426,6 +444,7 @@ class _LoginPageState extends State<LoginPage> {
     String Latitude;
     String Longitude;
     String Time;
+    String Geofence="";
     String actionString=(action==0)?"Time In":"Time Out";
     File img = null;
     imageCache.clear();
@@ -499,7 +518,9 @@ class _LoginPageState extends State<LoginPage> {
                   UserName,
                   Password,
                   FakeLocationStatus,
-                  timeSpoofed?1:0
+                  timeSpoofed?1:0,
+                  Geofence,
+                  appVersion
               );
               qrOffline.save();
               timeInPressedTime=null;
@@ -577,7 +598,9 @@ class _LoginPageState extends State<LoginPage> {
               UserName,
               Password,
               FakeLocationStatus,
-              timeSpoofed?1:0
+              timeSpoofed?1:0,
+              Geofence,
+              appVersion
           );
           qrOffline.save();
 

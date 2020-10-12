@@ -74,6 +74,9 @@ class _OfflineHomePageState extends State<OfflineHomePage>{
 
   bool internetAvailable=false;
   int _currentIndex=1;
+  int geoFence = 0;
+  int areaId = 0;
+  int ableToMarkAttendance=0;
 
   @override
   void initState() {
@@ -114,7 +117,7 @@ class _OfflineHomePageState extends State<OfflineHomePage>{
         assign_lat=double.parse(lat);
         assign_long=double.parse(long);
         print(call.arguments["mocked"].toString());
-        getAreaStatus().then((res) {
+        getAreaStatusforOffline().then((res) {
           // print('called again');
           if (mounted) {
             setState(() {
@@ -264,6 +267,8 @@ class _OfflineHomePageState extends State<OfflineHomePage>{
 
     cameraChannel.invokeMethod("openLocationDialog");
     final prefs = await SharedPreferences.getInstance();
+    geoFence = prefs.getInt("geoFence") ?? 0;
+    areaId = prefs.getInt("areaId") ?? 0;
 
     DateTime myDatetime = DateTime.parse("2018-07-10 12:04:35");
     print(myDatetime.toIso8601String());
@@ -343,7 +348,7 @@ class _OfflineHomePageState extends State<OfflineHomePage>{
         org_name=prefs.getString("org_name") ?? "";
         attendanceFound=attendanceFound1;
       });
-    getAreaStatus().then((res) {
+    getAreaStatusforOffline().then((res) {
       // print('called again');
       if (mounted) {
         setState(() {
@@ -735,6 +740,8 @@ class _OfflineHomePageState extends State<OfflineHomePage>{
   saveOfflineQrAppCamera(int action) async{
     final prefs = await SharedPreferences.getInstance();
     int UserId = int.parse(prefs.getString("empid")??"0") ?? 0;
+    geoFence = prefs.getInt("geoFence") ?? 0;
+    areaId = prefs.getInt("areaId") ?? 0;
     int Action = action; // 0 for time in and 1 for time out
     String Date;
     int OrganizationId = int.parse(prefs.getString("orgid")??"0") ?? 0;
@@ -743,10 +750,24 @@ class _OfflineHomePageState extends State<OfflineHomePage>{
     String Latitude;
     String Longitude;
     String Time;
+    String Geofence='';
     String actionString=(action==0)?"Time In":"Time Out";
     File img = null;
     imageCache.clear();
     prefix0.globalCameraOpenedStatus=true;
+    if(geoFence==1) {
+      if (areaStatus == '0') {
+        if(areaId==0 || areaId.toString()==""){
+          Geofence = "";
+        }else{
+          Geofence = "Outside Geofence";
+        }
+
+      } else {
+        Geofence = "Within Geofence";
+        print('thisisgeofencefortesting789---->>>>'+Geofence);
+      }
+    }
     scan().then((onValue){
 
       print("******************** QR value **************************");
@@ -821,7 +842,10 @@ class _OfflineHomePageState extends State<OfflineHomePage>{
                   UserName,
                   Password,
                   FakeLocationStatus,
-                  timeSpoofed?1:0
+                  timeSpoofed?1:0,
+                  Geofence,
+                  appVersion
+
               );
               qrOffline.save();
               timeInPressedTime=null;
@@ -919,7 +943,9 @@ class _OfflineHomePageState extends State<OfflineHomePage>{
               UserName,
               Password,
               FakeLocationStatus,
-              timeSpoofed?1:0
+              timeSpoofed?1:0,
+              Geofence,
+              appVersion
           );
           qrOffline.save();
 
@@ -1000,6 +1026,8 @@ class _OfflineHomePageState extends State<OfflineHomePage>{
   saveOfflineQr(int action) async{
     final prefs = await SharedPreferences.getInstance();
     int UserId = int.parse(prefs.getString("empid")??"0") ?? 0;
+    geoFence = prefs.getInt("geoFence") ?? 0;
+    areaId = prefs.getInt("areaId") ?? 0;
     int Action = action; // 0 for time in and 1 for time out
     String Date;
     int OrganizationId = int.parse(prefs.getString("orgid")??"0") ?? 0;
@@ -1008,10 +1036,24 @@ class _OfflineHomePageState extends State<OfflineHomePage>{
     String Latitude;
     String Longitude;
     String Time;
+    String Geofence="";
     String actionString=(action==0)?"Time In":"Time Out";
     File img = null;
     imageCache.clear();
     prefix0.globalCameraOpenedStatus=true;
+    if(geoFence==1) {
+      if (areaStatus == '0') {
+        if(areaId==0 || areaId.toString()==""){
+          Geofence = "";
+        }else{
+          Geofence = "Outside Geofence";
+        }
+
+      } else {
+        Geofence = "Within Geofence";
+        print('thisisgeofencefortesting789---->>>>'+Geofence);
+      }
+    }
     scan().then((onValue){
 
       print("******************** QR value **************************");
@@ -1086,7 +1128,9 @@ class _OfflineHomePageState extends State<OfflineHomePage>{
                   UserName,
                   Password,
                   FakeLocationStatus,
-                  timeSpoofed?1:0
+                  timeSpoofed?1:0,
+                  Geofence,
+                  appVersion
               );
               qrOffline.save();
               timeInPressedTime=null;
@@ -1186,7 +1230,9 @@ class _OfflineHomePageState extends State<OfflineHomePage>{
               UserName,
               Password,
               FakeLocationStatus,
-              timeSpoofed?1:0
+              timeSpoofed?1:0,
+              Geofence,
+              appVersion
           );
           qrOffline.save();
 
@@ -1331,6 +1377,34 @@ class _OfflineHomePageState extends State<OfflineHomePage>{
                   );*/
                     },
                   ),
+                  (areaId != 0 && geoFence == 1)
+                      ? areaStatus == '0'
+                      ? Container(
+                    padding:
+                    EdgeInsets.only(top: 5.0, right: 5.0),
+                    child: Text(
+                      ' Outside Geofence ',
+                      style: TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.white,
+                          backgroundColor: Colors.red,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 1.0),
+                    ),
+                  )
+                      : Container(
+                    padding: EdgeInsets.all(5.0),
+                    child: Text(
+                      ' Within Geofence ',
+                      style: TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.white,
+                          backgroundColor: Colors.green,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 1.0),
+                    ),
+                  )
+                      : Center(),
                   new Center(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -1772,6 +1846,9 @@ class _OfflineHomePageState extends State<OfflineHomePage>{
 
     final prefs = await SharedPreferences.getInstance();
     int UserId = int.parse(prefs.getString("empid")) ?? 0;
+    geoFence = prefs.getInt("geoFence") ?? 0;
+    areaId = prefs.getInt("areaId") ?? 0;
+    ableToMarkAttendance= prefs.getInt('ableToMarkAttendance') ?? 0;
     int Action = actionPressed; // 0 for time in and 1 for time out
     String Date;
     int OrganizationId = int.parse(prefs.getString("orgid")) ?? 0;
@@ -1780,9 +1857,34 @@ class _OfflineHomePageState extends State<OfflineHomePage>{
     String Latitude;
     String Longitude;
     String Time;
+    String Geofence='';
     String actionString=(actionPressed==0)?"Time In":"Time Out";
     File img = null;
     imageCache.clear();
+    if(geoFence==1) {
+      if (areaStatus == '0') {
+        if(areaId==0 || areaId.toString()==""){
+          Geofence = "";
+        }else{
+          Geofence = "Outside Geofence";
+        }
+        if(ableToMarkAttendance==1) {
+          await showDialog(
+              context: context,
+              // ignore: deprecated_member_use
+              child: new AlertDialog(
+                //title: new Text("Warning!"),
+                content: new Text(
+                    "You Can't punch Attendance Outside Geofence."),
+              ));
+          return null;
+        }
+
+      } else {
+        Geofence = "Within Geofence";
+        print('thisisgeofencefortesting789---->>>>'+Geofence);
+      }
+    }
     //img = await ImagePicker.pickImage(source: ImageSource.camera,maxWidth: 250.0, maxHeight: 250.0);
     if(actionPressed==0 && attendanceFound=="Time In Marked"){
       timeInAlreadyMarkedDialog();
@@ -1871,7 +1973,9 @@ class _OfflineHomePageState extends State<OfflineHomePage>{
                 Longitude,
                 Time,
                 FakeLocationStatus,
-                timeSpoofed?1:0
+                timeSpoofed?1:0,
+                Geofence,
+                appVersion
             );
             attendanceOffline.save();
             timeInPressedTime=null;
@@ -1945,7 +2049,9 @@ class _OfflineHomePageState extends State<OfflineHomePage>{
             Longitude,
             Time,
             FakeLocationStatus,
-            timeSpoofed?1:0
+            timeSpoofed?1:0,
+            Geofence,
+            appVersion
         );
         attendanceOffline.save();
 
@@ -1985,6 +2091,8 @@ class _OfflineHomePageState extends State<OfflineHomePage>{
 
     final prefs = await SharedPreferences.getInstance();
     int UserId = int.parse(prefs.getString("empid")) ?? 0;
+    geoFence = prefs.getInt("geoFence") ?? 0;
+    areaId = prefs.getInt("areaId") ?? 0;
     int Action = actionPressed; // 0 for time in and 1 for time out
     String Date;
     int OrganizationId = int.parse(prefs.getString("orgid")) ?? 0;
@@ -1993,9 +2101,23 @@ class _OfflineHomePageState extends State<OfflineHomePage>{
     String Latitude;
     String Longitude;
     String Time;
+    String Geofence='';
     String actionString=(actionPressed==0)?"Time In":"Time Out";
     File img = null;
     imageCache.clear();
+    if(geoFence==1) {
+      if (areaStatus == '0') {
+        if(areaId==0 || areaId.toString()==""){
+          Geofence = "";
+        }else{
+          Geofence = "Outside Geofence";
+        }
+
+      } else {
+        Geofence = "Within Geofence";
+        print('thisisgeofencefortesting789---->>>>'+Geofence);
+      }
+    }
     //img = await ImagePicker.pickImage(source: ImageSource.camera,maxWidth: 250.0, maxHeight: 250.0);
     if(actionPressed==0 && attendanceFound=="Time In Marked"){
       timeInAlreadyMarkedDialog();
@@ -2084,7 +2206,9 @@ class _OfflineHomePageState extends State<OfflineHomePage>{
                 Longitude,
                 Time,
                 FakeLocationStatus,
-                timeSpoofed?1:0
+                timeSpoofed?1:0,
+                Geofence,
+                appVersion
             );
             attendanceOffline.save();
             timeInPressedTime=null;
@@ -2158,7 +2282,9 @@ class _OfflineHomePageState extends State<OfflineHomePage>{
             Longitude,
             Time,
             FakeLocationStatus,
-            timeSpoofed?1:0
+            timeSpoofed?1:0,
+            Geofence,
+            appVersion
         );
         attendanceOffline.save();
 

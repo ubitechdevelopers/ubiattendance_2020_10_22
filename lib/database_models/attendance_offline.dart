@@ -18,6 +18,8 @@ class AttendanceOffline{
   String Time;
   int FakeLocationStatus;
   int FakeTimeStatus;
+  String Geofence;
+  String TimeInOutAppVersion;
 
 
 
@@ -32,7 +34,9 @@ class AttendanceOffline{
   this.Longitude,
   this.Time,
   this.FakeLocationStatus,
-      this.FakeTimeStatus
+      this.FakeTimeStatus,
+      this.Geofence,
+      this.TimeInOutAppVersion
   );
 
 
@@ -51,7 +55,10 @@ class AttendanceOffline{
       'Longitude':Longitude,
       'Time':Time,
       'FakeLocationStatus':FakeLocationStatus,
-      'FakeTimeStatus':FakeTimeStatus
+      'FakeTimeStatus':FakeTimeStatus,
+      'Geofence':Geofence,
+      'TimeInOutAppVersion':TimeInOutAppVersion
+
 
     };
     return map;
@@ -70,6 +77,8 @@ class AttendanceOffline{
     Time=map['Time'];
     FakeLocationStatus=map['FakeLocationStatus'];
     FakeTimeStatus=map['FakeTimeStatus'];
+    Geofence=map['Geofence'];
+    TimeInOutAppVersion=map['TimeInOutAppVersion'];
   }
 
 
@@ -109,7 +118,9 @@ class AttendanceOffline{
         'Longitude',
         'Time',
         'FakeTimeStatus',
-        'FakeLocationStatus'
+        'FakeLocationStatus',
+        'Geofence',
+        'TimeInOutAppVersion'
 
       ],orderBy: "Id desc");
     List<AttendanceOffline> ams=[];
@@ -138,7 +149,9 @@ class AttendanceOffline{
       'Longitude',
       'Time',
       'FakeTimeStatus',
-      'FakeLocationStatus'
+      'FakeLocationStatus',
+      'Geofence',
+      'TimeInOutAppVersion'
 
     ],orderBy: "Id desc");
     return maps;
@@ -161,7 +174,9 @@ class AttendanceOffline{
       'Longitude',
       'Time',
       'FakeTimeStatus',
-      'FakeLocationStatus'
+      'FakeLocationStatus',
+      'Geofence',
+      'TimeInOutAppVersion'
 
     ],where: "Id=?",whereArgs: [Id]);
     AttendanceOffline ams=AttendanceOffline.fromMap(map[0]);
@@ -191,7 +206,10 @@ class AttendanceOffline{
       'Longitude',
       'Time',
       'FakeTimeStatus',
-      'FakeLocationStatus'
+      'FakeLocationStatus',
+      'Geofence',
+      'TimeInOutAppVersion'
+
 
     ],where: "UserId=? and Date=? and Action=0",whereArgs: [Id,today]);
     if(maps.isEmpty){
@@ -208,7 +226,9 @@ class AttendanceOffline{
         'Longitude',
         'Time',
         'FakeTimeStatus',
-        'FakeLocationStatus'
+        'FakeLocationStatus',
+        'Geofence',
+        'TimeInOutAppVersion'
 
       ],where: "UserId=? and Date=? and Action=1",whereArgs: [Id,today]);
       if(map2.isEmpty){
@@ -231,7 +251,9 @@ class AttendanceOffline{
         'Longitude',
         'Time',
         'FakeTimeStatus',
-        'FakeLocationStatus'
+        'FakeLocationStatus',
+        'Geofence',
+        'TimeInOutAppVersion'
 
       ],where: "UserId=? and Date=? and Action=1",whereArgs: [Id,today]);
       if(map1.isEmpty){

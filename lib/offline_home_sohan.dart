@@ -739,6 +739,7 @@ class _OfflineHomePageState extends State<OfflineHomePage>{
     String Latitude;
     String Longitude;
     String Time;
+    String Geofence='';
     String actionString=(action==0)?"Time In":"Time Out";
     File img = null;
     imageCache.clear();
@@ -817,7 +818,9 @@ class _OfflineHomePageState extends State<OfflineHomePage>{
                   UserName,
                   Password,
                   FakeLocationStatus,
-                  timeSpoofed?1:0
+                  timeSpoofed?1:0,
+                  Geofence,
+                  appVersion
               );
               qrOffline.save();
               timeInPressedTime=null;
@@ -915,7 +918,9 @@ class _OfflineHomePageState extends State<OfflineHomePage>{
               UserName,
               Password,
               FakeLocationStatus,
-              timeSpoofed?1:0
+              timeSpoofed?1:0,
+              Geofence,
+              appVersion
           );
           qrOffline.save();
 
@@ -1004,6 +1009,7 @@ class _OfflineHomePageState extends State<OfflineHomePage>{
     String Latitude;
     String Longitude;
     String Time;
+    String Geofence="";
     String actionString=(action==0)?"Time In":"Time Out";
     File img = null;
     imageCache.clear();
@@ -1082,7 +1088,9 @@ class _OfflineHomePageState extends State<OfflineHomePage>{
                   UserName,
                   Password,
                   FakeLocationStatus,
-                  timeSpoofed?1:0
+                  timeSpoofed?1:0,
+                  Geofence,
+                  appVersion
               );
               qrOffline.save();
               timeInPressedTime=null;
@@ -1182,7 +1190,9 @@ class _OfflineHomePageState extends State<OfflineHomePage>{
               UserName,
               Password,
               FakeLocationStatus,
-              timeSpoofed?1:0
+              timeSpoofed?1:0,
+              Geofence,
+              appVersion
           );
           qrOffline.save();
 
@@ -1773,6 +1783,7 @@ class _OfflineHomePageState extends State<OfflineHomePage>{
     String Latitude;
     String Longitude;
     String Time;
+    String Geofence;
     String actionString=(actionPressed==0)?"Time In":"Time Out";
     File img = null;
     imageCache.clear();
@@ -1864,7 +1875,9 @@ class _OfflineHomePageState extends State<OfflineHomePage>{
                 Longitude,
                 Time,
                 FakeLocationStatus,
-                timeSpoofed?1:0
+                timeSpoofed?1:0,
+                Geofence,
+                appVersion
             );
             attendanceOffline.save();
             timeInPressedTime=null;
@@ -1938,7 +1951,9 @@ class _OfflineHomePageState extends State<OfflineHomePage>{
             Longitude,
             Time,
             FakeLocationStatus,
-            timeSpoofed?1:0
+            timeSpoofed?1:0,
+            Geofence,
+            appVersion
         );
         attendanceOffline.save();
 
@@ -1986,6 +2001,7 @@ class _OfflineHomePageState extends State<OfflineHomePage>{
     String Latitude;
     String Longitude;
     String Time;
+    String Geofence;
     String actionString=(actionPressed==0)?"Time In":"Time Out";
     File img = null;
     imageCache.clear();
@@ -2077,7 +2093,9 @@ class _OfflineHomePageState extends State<OfflineHomePage>{
                 Longitude,
                 Time,
                 FakeLocationStatus,
-                timeSpoofed?1:0
+                timeSpoofed?1:0,
+                Geofence,
+                appVersion
             );
             attendanceOffline.save();
             timeInPressedTime=null;
@@ -2151,7 +2169,9 @@ class _OfflineHomePageState extends State<OfflineHomePage>{
             Longitude,
             Time,
             FakeLocationStatus,
-            timeSpoofed?1:0
+            timeSpoofed?1:0,
+            Geofence,
+            appVersion
         );
         attendanceOffline.save();
 

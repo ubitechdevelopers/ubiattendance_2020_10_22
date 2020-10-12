@@ -25,7 +25,7 @@ class DbHelper{
     String path =
     join(documentsDirectory.path,'ubiattendance.db');
     print(path);
-    var db = await openDatabase(path, version: 32, onCreate: _onCreate,onUpgrade: _onUpgrade);
+    var db = await openDatabase(path, version: 33, onCreate: _onCreate,onUpgrade: _onUpgrade);
     return db;
     //}
   }
@@ -64,7 +64,9 @@ class DbHelper{
         'Longitude TEXT,'
         'Time TEXT,'
         'FakeTimeStatus INTEGER,'
-        'FakeLocationStatus INTEGER'
+        'FakeLocationStatus INTEGER,'
+        'Geofence TEXT,'
+        'TimeInOutAppVersion TEXT'
         ")");
 
     await db.execute("CREATE TABLE QROffline (Id INTEGER PRIMARY KEY,"
@@ -82,7 +84,9 @@ class DbHelper{
         'UserName TEXT,'
         'Password TEXT,'
         'FakeTimeStatus INTEGER,'
-        'FakeLocationStatus INTEGER'
+        'FakeLocationStatus INTEGER,'
+        'Geofence TEXT,'
+        'TimeInOutAppVersion TEXT'
         ")");
 
     await db.execute("CREATE TABLE VisitsOffline (Id INTEGER PRIMARY KEY,"
@@ -166,7 +170,9 @@ await db.execute("CREATE TABLE QROffline (Id INTEGER PRIMARY KEY,"
     'UserName TEXT,'
     'Password TEXT,'
     'FakeTimeStatus INTEGER,'
-    'FakeLocationStatus INTEGER'
+    'FakeLocationStatus INTEGER,'
+    'Geofence TEXT,'
+    'TimeInOutAppVersion TEXT'
     ")");
 
       await db.execute("CREATE TABLE AttendanceOffline (Id INTEGER PRIMARY KEY,"
@@ -182,7 +188,9 @@ await db.execute("CREATE TABLE QROffline (Id INTEGER PRIMARY KEY,"
           'Longitude TEXT,'
           'Time TEXT,'
           'FakeTimeStatus INTEGER,'
-          'FakeLocationStatus INTEGER'
+          'FakeLocationStatus INTEGER,'
+          'Geofence TEXT,'
+          'TimeInOutAppVersion TEXT'
           ")");
 await db.execute("CREATE TABLE VisitsOffline (Id INTEGER PRIMARY KEY,"
 

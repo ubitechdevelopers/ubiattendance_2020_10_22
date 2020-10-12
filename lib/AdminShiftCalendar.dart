@@ -1545,7 +1545,7 @@ class _MyHomePageState extends State<MyHomePage1> {
             SizedBox(height: 5.0,),
 
             Container(
-              height: 75,
+              height: MediaQuery.of(context).size.height * .1,
               child: Row(
                 children: <Widget>[
                   /* SizedBox(

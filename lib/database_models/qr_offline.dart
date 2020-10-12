@@ -20,6 +20,8 @@ class QROffline{
   String Password;
   int FakeLocationStatus;
   int FakeTimeStatus;
+  String Geofence;
+  String appVersion;
 
 
 
@@ -36,7 +38,9 @@ class QROffline{
       this.UserName,
       this.Password,
       this.FakeLocationStatus,
-      this.FakeTimeStatus
+      this.FakeTimeStatus,
+      this.Geofence,
+      this.appVersion
       );
 
 
@@ -57,7 +61,9 @@ class QROffline{
       'UserName':UserName,
       'Password':Password,
       'FakeLocationStatus':FakeLocationStatus,
-      'FakeTimeStatus':FakeTimeStatus
+      'FakeTimeStatus':FakeTimeStatus,
+      'Geofence':Geofence,
+      'appVersion':appVersion
 
     };
     return map;
@@ -78,6 +84,8 @@ class QROffline{
     Password=map['Password'];
     FakeLocationStatus=map['FakeLocationStatus'];
     FakeTimeStatus=map['FakeTimeStatus'];
+    Geofence=map['Geofence'];
+    appVersion=map['appVersion'];
   }
 
 
