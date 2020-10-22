@@ -130,6 +130,7 @@ class Home{
         globals.tracking=int.parse(timeinoutMap['Addon_Tracking']);
         globals.payroll=int.parse(timeinoutMap['Addon_Payroll']);
         globals.ShiftPlanner=int.parse(timeinoutMap['Addon_ShiftPlanner'])??0;
+        globals.fencearea=int.parse(timeinoutMap['fencearea'])??0;
         prefs.setInt('geoFence',globals.geoFence);
 
 

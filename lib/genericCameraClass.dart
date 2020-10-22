@@ -54,9 +54,9 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     }
     setState(() {
       this.frontCameraAvailable=frontCameraAvailable;
-      this.camera=firstCamera;
+      this.camera=secondCamera;
 
-      this.frontCamera=secondCamera;
+      this.frontCamera=firstCamera;
       _controller = CameraController(
         // Get a specific camera from the list of available cameras.
         this.camera,
@@ -96,7 +96,11 @@ class TakePictureScreenState extends State<TakePictureScreen> {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               // If the Future is complete, display the preview.
-              return CameraPreview(_controller);
+              return AspectRatio(
+                aspectRatio: _controller.value.aspectRatio,
+                child: CameraPreview(_controller),
+              );
+              //return CameraPreview(_controller);
             } else {
               // Otherwise, display a loading indicator.
               return Center(child: CircularProgressIndicator());

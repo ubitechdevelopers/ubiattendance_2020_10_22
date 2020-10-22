@@ -50,6 +50,7 @@ import 'askregister.dart';
 import 'attendance_summary.dart';
 import 'bulkatt.dart';
 import 'covid19servey.dart';
+import 'database_models/attendance_online.dart';
 import 'database_models/qr_offline.dart';
 import 'drawer.dart';
 import 'every7dayscovidsurvey.dart';
@@ -99,6 +100,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   String datetoShowRatingDialog='';
   String dateShowedRatingDialog='';
   bool isRestriction=false; // First Restriction while marking attendance in face recognition
+  bool isAttendanceSynced;
   bool _checkLoaded = true;
   int _currentIndex = 1;
   String userpwd = "new";
@@ -1139,6 +1141,142 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
     /*****************************For Attendances***********************************************/
   }
+  syncOnlineData() async {
+    int serverAvailable = await checkConnectionToServer();
+    if (serverAvailable == 1) {
+
+      AttendanceOnline attendanceOnline = new AttendanceOnline.empty();
+
+      List<AttendanceOnline> attendances = await attendanceOnline.select();
+      print(attendances);
+
+      List<Map> jsonList = [];
+      if (attendances.isNotEmpty) {
+        int i=0;
+        FormData formData = new FormData.from({
+          "Id": attendances[i].Id,
+          'uid': attendances[i].uid,
+          'location': attendances[i].location, // 0 for time in and 1 for time out
+          'aid': attendances[i].aid,
+          'time': attendances[i].time,
+          'date': attendances[i].date,
+          'act': attendances[i].act,
+          'shiftid': attendances[i].shiftid,
+          'refid': attendances[i].refid,
+          'latit': attendances[i].latit,
+          'longi': attendances[i].longi,
+          'file': attendances[i].PictureBase64,
+          'FakeLocationStatus': attendances[i].FakeLocationStatus,
+          'platform': attendances[i].platform,
+          'tempimagestatus': attendances[i].tempimagestatus,
+          'deviceidmobile': attendances[i].deviceidmobile,
+          'devicenamebrand': attendances[i].devicenamebrand,
+          'city': attendances[i].city,
+          'appVersion': attendances[i].appVersion,
+          'geofence': attendances[i].geofence,
+          'name': attendances[i].name,
+          'globalOrgTopic': attendances[i].globalOrgTopic,
+          'ShiftType': attendances[i].ShiftType,
+          'SyncStatus': 1
+        });
+        /*
+        for (int i = 0; i < attendances.length; i++) {
+          jsonList.add({
+            "Id": attendances[i].Id,
+            'uid': attendances[i].uid,
+            'location': attendances[i].location, // 0 for time in and 1 for time out
+            'aid': attendances[i].aid,
+            'time': attendances[i].time,
+            'date': attendances[i].date,
+            'act': attendances[i].act,
+            'shiftid': attendances[i].shiftid,
+            'refid': attendances[i].refid,
+            'latit': attendances[i].latit,
+            'longi': attendances[i].longi,
+            'PictureBase64': attendances[i].PictureBase64,
+            'FakeLocationStatus': attendances[i].FakeLocationStatus,
+            'platform': attendances[i].platform,
+            'tempimagestatus': attendances[i].tempimagestatus,
+            'deviceidmobile': attendances[i].deviceidmobile,
+            'devicenamebrand': attendances[i].devicenamebrand,
+            'city': attendances[i].city,
+            'appVersion': attendances[i].appVersion,
+            'geofence': attendances[i].geofence,
+            'name': attendances[i].name,
+            'globalOrgTopic': attendances[i].globalOrgTopic,
+            'ShiftType': attendances[i].ShiftType,
+            'SyncStatus': 1
+          });
+        }
+        */
+       // var jsonList1 = json.encode(jsonList);
+        //LogPrint('response1: ' + jsonList1.toString());
+        //LogPrint(attendances);
+        //FormData formData = new FormData.from({"data": jsonList1});
+        String path_saveimage= globals.path+'saveImage';
+        if(globals.facerecognition==1){
+           path_saveimage= globals.path+'saveImageSandbox';
+        }
+
+        Dio dioForSavingOnlineAttendance = new Dio();
+        dioForSavingOnlineAttendance
+            .post(path_saveimage, data: formData)
+            .then((responseAfterSavingOnlineData) async {
+
+          print(
+              '--------------------- Data Syncing Response--------------------------------');
+          LogPrint(responseAfterSavingOnlineData);
+
+          var response = json.decode(responseAfterSavingOnlineData.toString());
+
+
+
+          print(
+              '--------------------- Data Syncing Response--------------------------------');
+          for (int i = 0; i < response.length; i++) {
+            var map = response[i];
+            map.forEach((localDbId, status) {
+              AttendanceOnline attendanceOnline = AttendanceOnline.empty();
+              print(status);
+              attendanceOnline.delete(int.parse(localDbId));
+            });
+          }
+          setState(() {
+            offlineDataSaved = true;
+          });
+
+          Home ho = new Home();
+
+          act = await ho.checkTimeIn(empid, orgdir,context);
+          print("Action from check time in");
+          ho.managePermission(empid, orgdir, desinationId);
+
+          setState(() {
+            act1 = act;
+          });
+        });
+      } else {
+        if (mounted) {
+          setState(() {
+            offlineDataSaved = true;
+          });
+        }
+      }
+    }
+
+    Home ho = new Home();
+    act = await ho.checkTimeIn(empid, orgdir,context);
+    print("Action from check time in1");
+    if (timeoutdate == 'nextdate' && act == 'TimeOut') dialogwidget(context);
+    ho.managePermission(empid, orgdir, desinationId);
+    if (mounted) {
+      setState(() {
+        act1 = act;
+      });
+    }
+
+    /*****************************For Attendances***********************************************/
+  }
 
   static void LogPrint(Object object) async {
     int defaultPrintLength = 1020;
@@ -1924,6 +2062,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
        datetoShowRatingDialog=prefs.getString("datetoShowRatingDialog") ?? date.toString();
        dateShowedRatingDialog=prefs.getString("dateShowedRatingDialog") ?? '';
        isRestriction=prefs.getBool('isRestricttion') ?? false;
+       isAttendanceSynced=prefs.getBool('isAttendanceSynced') ?? false;
 
     });
 
@@ -1969,6 +2108,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       // Loc lock = new Loc();
 
       await syncOfflineData();
+     // await syncOnlineData();
       // //print(act);
       ////print("this is-----> "+act);
       ////print("this is main "+location_addr);
@@ -3337,6 +3477,16 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                     "You Can't punch Attendance Outside Geofence."),
               ));
           return null;
+        }else if(fencearea==1){
+          await showDialog(
+              context: context,
+              // ignore: deprecated_member_use
+              child: new AlertDialog(
+                //title: new Text("Warning!"),
+                content: new Text(
+                    "You Can't punch Attendance Outside Geofence."),
+              ));
+          return null;
         }
 
       } else {
@@ -3558,11 +3708,13 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           });
         }
       } else if(issave['status']==4){
+        await syncOnlineData();
         showDialog(
             context: context,
             // ignore: deprecated_member_use
             child: new AlertDialog(
-              content: new Text("Selfie was not captured. Please change your Camera from Settings."),
+              //content: new Text("Selfie was not captured. Please change your Camera from Settings."),
+              content: new Text("Attendance is being synced"),
             ));
         if (mounted) {
           setState(() {

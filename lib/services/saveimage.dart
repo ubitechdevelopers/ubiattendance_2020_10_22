@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:Shrine/database_models/Save_Tempimage.dart';
+import 'package:Shrine/database_models/attendance_online.dart';
 import 'package:Shrine/face_detection_camera.dart';
 import 'package:Shrine/genericCameraClass.dart';
 import 'package:Shrine/globals.dart' as globals;
@@ -203,6 +204,45 @@ class SaveImage {
             "name": eName,
             "ShiftType": globals.shiftType
           });
+
+          /// for saving data in local database //////////////////
+          var now = new DateTime.now();
+          var formatter = new DateFormat('yyyy-MM-dd');
+          String date = formatter.format(now);
+          var Time = DateFormat("H:mm:ss").format(now);
+          print('date from local'+date);
+          print('time from local'+Time);
+
+          AttendanceOnline attendanceOnline = new AttendanceOnline(
+              null,
+              int.parse(mk.uid),
+              location,
+              int.parse(mk.aid),
+              Time,
+              date,
+              mk.act,
+              int.parse(mk.shiftid),
+              int.parse(mk.refid),
+              lat,
+              long,
+              imagei.readAsStringSync(),
+              mk.FakeLocationStatus,
+              'android',
+              1,
+              deviceidmobile,
+              globals.devicenamebrand,
+              city,
+              globals.appVersion,
+              globals.geofence,
+              eName,
+              globals.globalOrgTopic,
+              globals.shiftType
+          );
+
+          attendanceOnline.save();
+
+          /// for saving data in local database //////////////////
+
           print(formData);
           Response<String> response1;
           if(globals.facerecognition==1){
@@ -233,8 +273,9 @@ class SaveImage {
 
             return MarkAttMap;
           }
-          else
+          else {
             return {'status': 4};
+          }
         }
         else {
           globals.globalCameraOpenedStatus=false;
@@ -704,6 +745,47 @@ class SaveImage {
             "name": eName,
             "ShiftType": globals.shiftType
           });
+
+        /// for saving data in local database //////////////////
+          var now = new DateTime.now();
+          var formatter = new DateFormat('yyyy-MM-dd');
+          String date = formatter.format(now);
+          var Time = DateFormat("H:mm:ss").format(now);
+          print('date from local'+date);
+          print('time from local'+Time);
+
+          AttendanceOnline attendanceOnline = new AttendanceOnline(
+              null,
+              int.parse(mk.uid),
+              location,
+              int.parse(mk.aid),
+              Time,
+              date,
+              mk.act,
+              int.parse(mk.shiftid),
+              int.parse(mk.refid),
+              lat,
+              long,
+              imagei.readAsStringSync(),
+              mk.FakeLocationStatus,
+              'android',
+              1,
+              deviceidmobile,
+              globals.devicenamebrand,
+              city,
+              globals.appVersion,
+              globals.geofence,
+              eName,
+              globals.globalOrgTopic,
+              globals.shiftType
+          );
+
+          attendanceOnline.save();
+
+          /// for saving data in local database //////////////////
+
+
+
 
           print(formData);
          // print(globals.path + "saveImage?uid=${ mk.uid}&location=${location}&aid=${mk.aid}&act=${mk.act}");

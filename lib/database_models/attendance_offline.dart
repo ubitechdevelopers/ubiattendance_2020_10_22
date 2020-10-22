@@ -34,9 +34,9 @@ class AttendanceOffline{
   this.Longitude,
   this.Time,
   this.FakeLocationStatus,
-      this.FakeTimeStatus,
-      this.Geofence,
-      this.TimeInOutAppVersion
+  this.FakeTimeStatus,
+  this.Geofence,
+  this.TimeInOutAppVersion
   );
 
 

@@ -69,6 +69,38 @@ class DbHelper{
         'TimeInOutAppVersion TEXT'
         ")");
 
+    /// Table for Syncing attendance in home page/////////////////
+
+      await db.execute("CREATE TABLE AttendanceOnline (Id INTEGER PRIMARY KEY,"
+
+
+          'uid INTEGER,'
+          'location TEXT,'
+          'aid INTEGER,'
+          'time TEXT,'
+          'date TEXT,'
+          'act TEXT,'
+          'shiftid INTEGER,'
+          'refid INTEGER,'
+          'latit TEXT,'
+          'longi TEXT,'
+          'PictureBase64 TEXT,'
+          'FakeLocationStatus INTEGER,'
+          'platform TEXT,'
+          'tempimagestatus INTEGER,'
+          'deviceidmobile TEXT,'
+          'devicenamebrand TEXT,'
+          'city TEXT,'
+          'appVersion TEXT,'
+          'geofence TEXT,'
+          'name TEXT,'
+          'globalOrgTopic TEXT,'
+          'ShiftType TEXT'
+          ")");
+
+
+
+
     await db.execute("CREATE TABLE QROffline (Id INTEGER PRIMARY KEY,"
 
 
@@ -136,6 +168,7 @@ class DbHelper{
       await db.execute('DROP TABLE IF EXISTS QROffline;');
       await db.execute('DROP TABLE IF EXISTS LoginOffline;');
       await db.execute('DROP TABLE IF EXISTS AttendanceOffline;');
+      await db.execute('DROP TABLE IF EXISTS AttendanceOnline;');
       await db.execute('DROP TABLE IF EXISTS VisitsOffline;');
       await db.execute('DROP TABLE IF EXISTS TempImage;');
 await db.execute("CREATE TABLE LoginOffline (	Id INTEGER PRIMARY KEY,"
@@ -192,7 +225,39 @@ await db.execute("CREATE TABLE QROffline (Id INTEGER PRIMARY KEY,"
           'Geofence TEXT,'
           'TimeInOutAppVersion TEXT'
           ")");
-await db.execute("CREATE TABLE VisitsOffline (Id INTEGER PRIMARY KEY,"
+
+      /// Table for Syncing attendance in home page/////////////////
+
+      await db.execute("CREATE TABLE AttendanceOnline (Id INTEGER PRIMARY KEY,"
+
+          'uid INTEGER,'
+          'location TEXT,'
+          'aid INTEGER,'
+          'time TEXT,'
+          'date TEXT,'
+          'act TEXT,'
+          'shiftid INTEGER,'
+          'refid INTEGER,'
+          'latit TEXT,'
+          'longi TEXT,'
+          'PictureBase64 TEXT,'
+          'FakeLocationStatus INTEGER,'
+          'platform TEXT,'
+          'tempimagestatus INTEGER,'
+          'deviceidmobile TEXT,'
+          'devicenamebrand TEXT,'
+          'city TEXT,'
+          'appVersion TEXT,'
+          'geofence TEXT,'
+          'name TEXT,'
+          'globalOrgTopic TEXT,'
+          'ShiftType TEXT'
+          ")");
+
+
+
+
+      await db.execute("CREATE TABLE VisitsOffline (Id INTEGER PRIMARY KEY,"
 
 
     'EmployeeId INTEGER,'

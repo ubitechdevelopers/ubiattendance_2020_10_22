@@ -162,6 +162,7 @@ String locationTrackingAddon="0";
 String trackLocationForCurrentUser="0";
 String shiftId='';
 String shiftType='';
+int fencearea=0;
 var timeoffRunning=false;
 var ShiftPlanner=0;
 String defaultShiftTimings='';
